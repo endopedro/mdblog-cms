@@ -1,0 +1,8 @@
+module.exports = {
+  env: {
+    MONGODB_USERNAME: process.env.MONGODB_USERNAME,
+    MONGODB_PASSWORD: process.env.MONGODB_PASSWORD,
+    MONGODB_CLUSTER_NAME: process.env.MONGODB_CLUSTER_NAME,
+    MONGODB_DATABASE_NAME: process.env.MONGODB_DATABASE_NAME,
+  },
+}
