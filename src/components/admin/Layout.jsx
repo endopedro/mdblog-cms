@@ -2,6 +2,7 @@ import React from 'react'
 import Head from 'next/head'
 import { useMantineTheme } from '@mantine/core'
 import { Toaster } from 'react-hot-toast'
+import Guard from '../../domain/Guard'
 
 const AdminLayout = ({ children }) => {
   const theme = useMantineTheme()
@@ -18,7 +19,9 @@ const AdminLayout = ({ children }) => {
       <Head>
         <title>Admin</title>
       </Head>
-      <main>{children}</main>
+      <Guard>
+        <main>{children}</main>
+      </Guard>
       <Toaster />
     </>
   )

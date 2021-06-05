@@ -46,8 +46,10 @@ const Login = () => {
       password: data.password,
     })
     setLoading(false)
-    if (!result.error) router.replace('/admin')
-    else toast.error(result.error, darkToast)
+    if (!result.error) {
+      toast.success('Logged in!', darkToast)
+      router.replace('/admin')
+    } else toast.error(result.error, darkToast)
   }
 
   return (
@@ -59,11 +61,7 @@ const Login = () => {
         <Title order={1} className="mb-5">
           Login
         </Title>
-        <Paper
-          padding="lg"
-          shadow="md"
-          className="w-5/6 sm:w-96 mb-16 relative"
-        >
+        <Paper padding="lg" shadow="md" className="w-5/6 sm:w-96 mb-16">
           <LoadingOverlay visible={loading} />
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-5">

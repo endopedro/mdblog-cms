@@ -74,7 +74,7 @@ const SignUp = () => {
         <Title order={1} className="mb-5">
           Register
         </Title>
-        <Paper padding="lg" shadow="md" className="w-5/6 sm:w-96 mb-8 relative">
+        <Paper padding="lg" shadow="md" className="w-5/6 sm:w-96 mb-8">
           <LoadingOverlay visible={loading} />
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-5">
