@@ -173,6 +173,11 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@openfonts/baloo-tammudu-2_telugu@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@openfonts/baloo-tammudu-2_telugu/-/baloo-tammudu-2_telugu-1.0.7.tgz#af52db8dca4571aedbb7ce326e0b7cd13821d138"
+  integrity sha512-7Puf/pkYJQBLDm72HxL+3P2cbycEiy1+AOiDbAHcsl2l3+SohW/Up1aBqyEqkcoReTthOy17e+roxEKsX9/a1Q==
+
 "@opentelemetry/api@0.14.0":
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/@opentelemetry/api/-/api-0.14.0.tgz#4e17d8d2f1da72b19374efa7b6526aa001267cae"

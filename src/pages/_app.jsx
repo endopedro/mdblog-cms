@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { MantineProvider } from '@mantine/core'
 
 import 'tailwindcss/tailwind.css'
+import '@openfonts/baloo-tammudu-2_telugu/index.css'
 
 export default function App(props) {
   const { Component, pageProps } = props
@@ -24,7 +25,10 @@ export default function App(props) {
       <MantineProvider
         theme={{
           colorScheme: 'dark',
-          fontFamily: 'Open Sans',
+          fontFamily: 'Baloo Tammudu 2',
+          headings: {
+            fontFamily: 'Baloo Tammudu 2',
+          },
         }}
       >
         <Component {...pageProps} />
