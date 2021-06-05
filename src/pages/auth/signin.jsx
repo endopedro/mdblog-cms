@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Head from 'next/head'
 import {
   Title,
@@ -6,13 +6,19 @@ import {
   Center,
   TextInput,
   PasswordInput,
+  LoadingOverlay,
   Button,
 } from '@mantine/core'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { signIn } from 'next-auth/client'
+import { useRouter } from 'next/router'
+import { RiMailLine, RiLockPasswordLine } from 'react-icons/ri'
+import toast from 'react-hot-toast'
 
 import Layout from '../../components/admin/Layout'
+import { darkToast } from '../../data/toastStyles'
 
 const schema = yup.object().shape({
   email: yup.string().required('Type an e-mail.').email('Type a valid e-mail.'),
@@ -22,16 +28,27 @@ const schema = yup.object().shape({
     .required('Type a password.'),
 })
 
-const SignIn = () => {
+const Login = () => {
+  const router = useRouter()
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  })
+  } = useForm({ resolver: yupResolver(schema) })
 
-  const onSubmit = (data) => console.log(data)
+  const [loading, setLoading] = useState(false)
+
+  const onSubmit = async (data) => {
+    setLoading(true)
+    const result = await signIn('credentials', {
+      redirect: false,
+      email: data.email,
+      password: data.password,
+    })
+    setLoading(false)
+    if (!result.error) router.replace('/admin')
+    else toast.error(result.error, darkToast)
+  }
 
   return (
     <Layout>
@@ -42,7 +59,12 @@ const SignIn = () => {
         <Title order={1} className="mb-5">
           Login
         </Title>
-        <Paper padding="lg" shadow="md" className="w-5/6 sm:w-96 mb-16">
+        <Paper
+          padding="lg"
+          shadow="md"
+          className="w-5/6 sm:w-96 mb-16 relative"
+        >
+          <LoadingOverlay visible={loading} />
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-5">
               <TextInput
@@ -52,6 +74,8 @@ const SignIn = () => {
                 radius="xl"
                 required
                 className="mb-7"
+                disabled={loading}
+                icon={<RiMailLine />}
                 error={errors.email?.message}
               />
               <PasswordInput
@@ -61,6 +85,8 @@ const SignIn = () => {
                 radius="xl"
                 required
                 type="submit"
+                disabled={loading}
+                icon={<RiLockPasswordLine />}
                 error={errors.password?.message}
               />
             </div>
@@ -69,6 +95,7 @@ const SignIn = () => {
                 variant="light"
                 color="indigo"
                 radius="lg"
+                disabled={loading}
                 type="submit"
                 className="ml-auto"
               >
@@ -82,4 +109,4 @@ const SignIn = () => {
   )
 }
 
-export default SignIn
+export default Login
