@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Head from 'next/head'
+import Link from 'next/link'
 import {
   Title,
   Paper,
@@ -8,6 +9,7 @@ import {
   PasswordInput,
   LoadingOverlay,
   Button,
+  Text,
 } from '@mantine/core'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -88,7 +90,13 @@ const Login = () => {
                 error={errors.password?.message}
               />
             </div>
-            <div className="flex">
+            <div></div>
+            <div className="flex justify-between items-center">
+              <Link href="/auth/forgot-password">
+                <a>
+                  <Text size="xs">Forgot password?</Text>
+                </a>
+              </Link>
               <Button
                 variant="light"
                 color="indigo"
