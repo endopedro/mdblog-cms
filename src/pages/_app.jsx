@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import Head from 'next/head'
 import { MantineProvider } from '@mantine/core'
+import { NotificationsProvider } from '@mantine/notifications'
 
 import 'tailwindcss/tailwind.css'
 import '@openfonts/baloo-tammudu-2_telugu/index.css'
@@ -31,7 +32,9 @@ export default function App(props) {
           },
         }}
       >
-        <Component {...pageProps} />
+        <NotificationsProvider position="top-right">
+          <Component {...pageProps} />
+        </NotificationsProvider>
       </MantineProvider>
     </>
   )

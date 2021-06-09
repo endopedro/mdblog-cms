@@ -18,12 +18,13 @@ import {
   RiLockPasswordLine,
   RiLockPasswordFill,
   RiUserLine,
+  RiCloseLine,
+  RiCheckLine,
 } from 'react-icons/ri'
-import toast from 'react-hot-toast'
+import { useNotifications } from '@mantine/notifications'
 import { useRouter } from 'next/router'
 
 import Layout from '../../components/admin/Layout'
-import { darkToast } from '../../data/toastStyles'
 
 const schema = yup.object().shape({
   name: yup
@@ -43,6 +44,7 @@ const schema = yup.object().shape({
 
 const SignUp = () => {
   const router = useRouter()
+  const notifications = useNotifications()
 
   const {
     register,
@@ -57,10 +59,19 @@ const SignUp = () => {
     try {
       const response = await userApi().createUser(data)
       setLoading(false)
-      toast.success(response.data.message, darkToast)
+      notifications.showNotification({
+        title: 'Success',
+        message: response.data.message,
+        icon: <RiCheckLine />,
+      })
       router.replace('/auth/signin')
     } catch (error) {
-      toast.error(error.response.data.message, darkToast)
+      notifications.showNotification({
+        title: 'Fail',
+        color: 'red',
+        message: error.response.data.message,
+        icon: <RiCloseLine />,
+      })
       setLoading(false)
     }
   }

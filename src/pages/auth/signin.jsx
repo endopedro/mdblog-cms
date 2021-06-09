@@ -16,11 +16,15 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { signIn } from 'next-auth/client'
 import { useRouter } from 'next/router'
-import { RiMailLine, RiLockPasswordLine } from 'react-icons/ri'
-import toast from 'react-hot-toast'
+import {
+  RiMailLine,
+  RiLockPasswordLine,
+  RiCloseLine,
+  RiCheckLine,
+} from 'react-icons/ri'
+import { useNotifications } from '@mantine/notifications'
 
 import Layout from '../../components/admin/Layout'
-import { darkToast } from '../../data/toastStyles'
 
 const schema = yup.object().shape({
   email: yup.string().required('Type an e-mail.').email('Type a valid e-mail.'),
@@ -32,6 +36,7 @@ const schema = yup.object().shape({
 
 const Login = () => {
   const router = useRouter()
+  const notifications = useNotifications()
   const {
     register,
     handleSubmit,
@@ -49,9 +54,18 @@ const Login = () => {
     })
     setLoading(false)
     if (!result.error) {
-      toast.success('Logged in!', darkToast)
+      notifications.showNotification({
+        title: 'Logged in',
+        icon: <RiCheckLine />,
+      })
       router.replace('/admin')
-    } else toast.error(result.error, darkToast)
+    } else
+      notifications.showNotification({
+        title: 'Login Fail',
+        color: 'red',
+        message: result.error,
+        icon: <RiCloseLine />,
+      })
   }
 
   return (

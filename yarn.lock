@@ -104,6 +104,14 @@
   resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-1.3.1.tgz#4e6908cb6085088b4f476f70f888e83499b4c95b"
   integrity sha512-vE5Wk6XQXgOjg0MqWA8vl2zLlG+xcrfikV6jyCJQkPHyxKFYGv25XG1A+Egxa6vXakseCIBG1ERY0iDFkcQi0A==
 
+"@mantine/notifications@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@mantine/notifications/-/notifications-1.3.1.tgz#ecd583188e05642c0a333f651e0d5bf315b9f08f"
+  integrity sha512-eBTt+6z5KkwISfcVaHyjfXJIk3DNnBPSCq6AjlyGz1MoVJvMzaf0mriK/q1rVpgNfbmMqhxfTpZj8OTnyG0b0w==
+  dependencies:
+    clsx "^1.1.1"
+    react-transition-group "^4.4.2"
+
 "@next-auth/prisma-legacy-adapter@0.0.1-canary.127":
   version "0.0.1-canary.127"
   resolved "https://registry.yarnpkg.com/@next-auth/prisma-legacy-adapter/-/prisma-legacy-adapter-0.0.1-canary.127.tgz#09223de6d0350e53afc4bd0dda056a2fde27d8d3"
@@ -211,9 +219,9 @@
   integrity sha512-bpcvu/MKHHeYX+qeEN8GE7DIravODWdACVA1ctevD8CN24RhPZIKMn9ntfAsrvLfSX3cR5RrBKAbYm9bGs0A+Q==
 
 "@types/node@*":
-  version "15.12.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-15.12.0.tgz#6a459d261450a300e6865faeddb5af01c3389bb3"
-  integrity sha512-+aHJvoCsVhO2ZCuT4o5JtcPrCPyDE3+1nvbDprYes+pPkEsbjH7AGUCNtjMOXS0fqH14t+B7yLzaqSz92FPWyw==
+  version "15.12.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-15.12.2.tgz#1f2b42c4be7156ff4a6f914b2fb03d05fa84e38d"
+  integrity sha512-zjQ69G564OCIWIOHSXyQEEDpdpGl+G348RAKY0XXy9Z5kU9Vzv1GMNnkar/ZJ8dzXB3COzD9Mo9NtRZ4xfgUww==
 
 "@types/zen-observable@^0.8.2":
   version "0.8.2"
@@ -591,9 +599,9 @@ camelcase-css@^2.0.1:
   integrity sha512-QOSvevhslijgYwRx6Rv7zKdMF8lbRmx+uQGx2+vDc+KI/eBnsy9kit5aj23AgGu3pa4t9AgwbnXWqS+iOY+2aA==
 
 caniuse-lite@^1.0.30001202, caniuse-lite@^1.0.30001219, caniuse-lite@^1.0.30001228, caniuse-lite@^1.0.30001230:
-  version "1.0.30001234"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001234.tgz#8fc2e709e3b0679d7af7f073a1c661155c39b975"
-  integrity sha512-a3gjUVKkmwLdNysa1xkUAwN2VfJUJyVW47rsi3aCbkRCtbHAfo+rOsCqVw29G6coQ8gzAPb5XBXwiGHwme3isA==
+  version "1.0.30001236"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001236.tgz#0a80de4cdf62e1770bb46a30d884fc8d633e3958"
+  integrity sha512-o0PRQSrSCGJKCPZcgMzl5fUaj5xHe8qA2m4QRvnyY4e1lITqoNkr7q/Oh1NcpGSy0Th97UZ35yoKcINPoq7YOQ==
 
 chalk@2.4.2, chalk@^2.0.0, chalk@^2.4.1:
   version "2.4.2"
@@ -1022,9 +1030,9 @@ ecdsa-sig-formatter@1.0.11:
     safe-buffer "^5.0.1"
 
 electron-to-chromium@^1.3.723:
-  version "1.3.748"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.748.tgz#16638a8130f407ae5bf2fc168f2173574deb36c5"
-  integrity sha512-fmIKfYALVeEybk/L2ucdgt7jN3JsbGtg3K9pmF/MRWgkeADBI1VSAa5IzdG2gZwTxsnsrFtdMpOTSM5mrBRKVQ==
+  version "1.3.750"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.750.tgz#7e5ef6f478316b0bd656af5942fe502610e97eaf"
+  integrity sha512-Eqy9eHNepZxJXT+Pc5++zvEi5nQ6AGikwFYDCYwXUFBr+ynJ6pDG7MzZmwGYCIuXShLJM0n4bq+aoKDmvSGJ8A==
 
 elliptic@^6.5.3:
   version "6.5.4"
@@ -1357,11 +1365,6 @@ glob@^7.0.0, glob@^7.1.2, glob@^7.1.6:
     minimatch "^3.0.4"
     once "^1.3.0"
     path-is-absolute "^1.0.0"
-
-goober@^2.0.35:
-  version "2.0.37"
-  resolved "https://registry.yarnpkg.com/goober/-/goober-2.0.37.tgz#5598c41f4c19bc1fca2c926e876a58a685faffb8"
-  integrity sha512-wgj5C7IJX2+MyHZ4TgOA+hLL1mCDW+jGorQ5KCMLF1ofE9gQkfbo1s8txIrzIsAX65XRTm0qaipolId2KMYUkw==
 
 graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.2.0:
   version "4.2.6"
@@ -2323,9 +2326,9 @@ node-mailjet@^3.3.4:
     superagent-proxy "^2.1.0"
 
 node-releases@^1.1.71:
-  version "1.1.72"
-  resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-1.1.72.tgz#14802ab6b1039a79a0c7d662b610a5bbd76eacbe"
-  integrity sha512-LLUo+PpH3dU6XizX3iVoubUNheF/owjXCZZ5yACDxNnPtgFuludV1ZL3ayK1kVep42Rmm0+R9/Y60NQbZ2bifw==
+  version "1.1.73"
+  resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-1.1.73.tgz#dd4e81ddd5277ff846b80b52bb40c49edf7a7b20"
+  integrity sha512-uW7fodD6pyW2FZNZnp/Z3hvWKeEW1Y8R1+1CnErE8cXFXzl5blBOoVB41CvMer6P6Q0S5FXDwcHgFd1Wj0U9zg==
 
 nodemailer@^6.4.16:
   version "6.6.1"
@@ -2826,16 +2829,9 @@ react-dom@17.0.2:
     scheduler "^0.20.2"
 
 react-hook-form@^7.7.1:
-  version "7.7.1"
-  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.7.1.tgz#b0dc20c7122a8b647cad9adf0db8ee4ffb1d11e2"
-  integrity sha512-qpiMf670nrbgngH11qmpKTKa/ulTt+5JXNL7lBnF3C3jwusrw17dyyZ9J92mHFAflxwYWndKECPM85DLEnIf0A==
-
-react-hot-toast@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/react-hot-toast/-/react-hot-toast-2.0.0.tgz#6e83b2937a20b040acb2d5fd08bcf32561b7832a"
-  integrity sha512-J0J2rcSvKetlziVquwESgk85pV9JB0Dz3RJIZcAEv7CWU2y2z8BQqxmZHZUxjPKIBGPqXAocZch4Kj4oUdX4+w==
-  dependencies:
-    goober "^2.0.35"
+  version "7.8.3"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.8.3.tgz#104da2a1ae50aaaea949ddee9ec8684506c4e448"
+  integrity sha512-W444tNhyyR3eaQjgtdVOvzId8Fjoexdfko0d46Nme/3Cjo3ETcF9kSVg51ut8mI805Wh2K1GKim+hEgcfIrFLA==
 
 react-icons@^4.2.0:
   version "4.2.0"
