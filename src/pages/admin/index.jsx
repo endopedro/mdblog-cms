@@ -3,20 +3,12 @@ import Layout from '../../components/admin/Layout'
 import { signOut } from 'next-auth/client'
 
 import { Button } from '@mantine/core'
+import Sidebar from '../../components/admin/Sidebar'
 
 const Admin = () => {
   return (
     <Layout>
-      <Button
-        variant="light"
-        color="indigo"
-        radius="lg"
-        type="submit"
-        className="ml-auto"
-        onClick={signOut}
-      >
-        Logout
-      </Button>
+      <Sidebar />
     </Layout>
   )
 }
