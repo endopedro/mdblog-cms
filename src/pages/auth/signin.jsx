@@ -24,7 +24,7 @@ import {
 } from 'react-icons/ri'
 import { useNotifications } from '@mantine/notifications'
 
-import Layout from '../../components/admin/Layout'
+import Layout from '../../components/auth/Layout'
 
 const schema = yup.object().shape({
   email: yup.string().required('Type an e-mail.').email('Type a valid e-mail.'),

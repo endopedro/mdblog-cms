@@ -24,7 +24,7 @@ import {
 import { useNotifications } from '@mantine/notifications'
 import { useRouter } from 'next/router'
 
-import Layout from '../../components/admin/Layout'
+import Layout from '../../components/auth/Layout'
 
 const schema = yup.object().shape({
   name: yup

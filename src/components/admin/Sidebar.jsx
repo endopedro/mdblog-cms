@@ -78,7 +78,7 @@ const Sidebar = () => {
 
   return (
     <div
-      className="flex w-full max-w-xs p-4 rounded-lg"
+      className="flex w-full p-4 rounded-lg"
       style={{ backgroundColor: '#1D1E30' }}
     >
       <ul className="flex flex-col w-full">

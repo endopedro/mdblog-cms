@@ -14,7 +14,7 @@ import * as yup from 'yup'
 import { RiMailLine, RiMailCheckFill } from 'react-icons/ri'
 import { ThemeIcon } from '@mantine/core'
 
-import Layout from '../../components/admin/Layout'
+import Layout from '../../components/auth/Layout'
 import userApi from '../../services/userApi'
 
 const schema = yup.object().shape({
