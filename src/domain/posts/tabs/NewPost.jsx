@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import ReactMde from 'react-mde'
 import ReactMarkdown from 'react-markdown'
-import 'react-mde/lib/styles/css/react-mde-all.css'
 
 const NewPost = () => {
   const [value, setValue] = useState('**Hello world!!!**')

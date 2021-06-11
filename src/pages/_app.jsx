@@ -5,6 +5,7 @@ import { NotificationsProvider } from '@mantine/notifications'
 
 import 'tailwindcss/tailwind.css'
 import '@openfonts/baloo-tammudu-2_telugu/index.css'
+import '../assets/styles/vendor/react-mde/react-mde-all.scss'
 
 export default function App(props) {
   const { Component, pageProps } = props
