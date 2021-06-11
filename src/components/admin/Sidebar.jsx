@@ -83,7 +83,7 @@ const Sidebar = () => {
     >
       <ul className="flex flex-col w-full">
         {items.map((item) => (
-          <MenuItem {...item} />
+          <MenuItem key={item.label} {...item} />
         ))}
       </ul>
     </div>

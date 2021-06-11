@@ -29,6 +29,8 @@
     "react-hook-form": "^7.7.1",
     "react-icons": "^4.2.0",
     "react-jss": "^10.6.0",
+    "react-markdown": "^6.0.2",
+    "react-mde": "^11.5.0",
     "tailwindcss": "^2.1.4",
     "yup": "^0.32.9"
   }
