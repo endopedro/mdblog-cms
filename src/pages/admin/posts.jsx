@@ -6,7 +6,7 @@ import AllPostsTab from '../../domain/posts/tabs/AllPosts'
 import NewPostTab from '../../domain/posts/tabs/NewPost'
 
 const posts = () => {
-  const [activeTab, setActiveTab] = useState(0)
+  const [activeTab, setActiveTab] = useState(1)
 
   return (
     <Layout>

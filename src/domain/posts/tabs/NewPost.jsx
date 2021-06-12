@@ -1,45 +1,84 @@
 import React, { useState } from 'react'
-import ReactMde from 'react-mde'
-import ReactMarkdown from 'react-markdown'
+import { TextInput, Select, Badge, Button } from '@mantine/core'
+import { useForm } from "react-hook-form"
+
+import MdInput from '../../../components/MdInput'
 
 const NewPost = () => {
-  const [value, setValue] = useState('**Hello world!!!**')
-  const [selectedTab, setSelectedTab] = useState('write')
+  const { register, handleSubmit, setValue, getValues, watch, formState: { errors } } = useForm()
 
-  const save = async function* (data) {
-    // Promise that waits for "time" milliseconds
-    const wait = function (time) {
-      return new Promise((a, r) => {
-        setTimeout(() => a(), time)
-      })
-    }
+  const onSubmit = data => console.log(data)
 
-    // Upload "data" to your server
-    // Use XMLHttpRequest.send to send a FormData object containing
-    // "data"
-    // Check this question: https://stackoverflow.com/questions/18055422/how-to-receive-php-image-data-over-copy-n-paste-javascript-with-xmlhttprequest
+  register("content")
+  register("tags")
+  const watchContent = watch("content", '');
+  const watchTags = watch("tags", [])
 
-    await wait(2000)
-    // yields the URL that should be inserted in the markdown
-    yield 'https://picsum.photos/300'
-    await wait(2000)
+  const toggleTags = (tag, action) => {
+    const cleanTag = tag.toLowerCase().split(" ").filter(x => x)[0]
+    if (!cleanTag) return
+    const tags = watchTags ? [...watchTags] : []
+    const idx = tags.indexOf(cleanTag)
 
-    // returns true meaning that the save was successful
-    return true
+    if (idx !== -1 && action === 'remove') tags.splice(idx, 1)
+    else if(idx === -1 && action === 'add') tags.push(cleanTag)
+    
+    setValue('tags', tags)
   }
 
   return (
-    <ReactMde
-      value={value}
-      onChange={setValue}
-      selectedTab={selectedTab}
-      onTabChange={setSelectedTab}
-      generateMarkdownPreview={(markdown) =>
-        Promise.resolve(<ReactMarkdown children={markdown} />)
-      }
-      childProps={{ writeButton: { tabIndex: -1 } }}
-      paste={{ saveImage: save }}
-    />
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <TextInput
+        label="Title"
+        radius="md"
+        required
+        className="mb-3"
+        {...register("title")}
+      />
+      <TextInput
+        label="Slug"
+        radius="md"
+        required
+        className="mb-3"
+        {...register("slug")}
+      />
+      <div className="grid grid-cols-2 gap-4 mb-7">
+        <div>
+          <Select
+            data={[
+              { _id: 'react', label: 'React' },
+              { _id: 'vue', label: 'Vue' },
+              { _id: 'ng', label: 'Angular' },
+              { _id: 'svelte', label: 'Svelte' },
+            ]}
+            placeholder="Pick one"
+            label="Category"
+            radius="md"
+            required
+            {...register("category")}
+        />
+        </div>
+        <div>
+          <TextInput
+            label="Tags"
+            radius="md"
+            onKeyPress={e => {
+              if (e.key === "Enter") {
+                toggleTags(e.target.value, 'add')
+                e.preventDefault()
+              }
+            }}
+          />
+          <div className="mt-2">
+            {watchTags?.map(tag => (
+              <Badge variant="outline" className="mr-2 cursor-pointer" onClick={() => toggleTags(tag, 'remove')}>{tag}</Badge>
+            ))}
+          </div>
+        </div>
+      </div>
+      <MdInput value={watchContent} onChange={val => setValue('content', val)} className="mb-3" />
+      <Button type='submit' variant="light" radius="md" fullWidth>Create Post</Button>
+    </form>
   )
 }
 
