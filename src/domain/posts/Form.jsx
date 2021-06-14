@@ -1,8 +1,16 @@
 import React, { useState } from 'react'
 import { TextInput, Select, Badge, Button } from '@mantine/core'
 import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 
 import MdInput from '../../components/MdInput'
+
+const schema = yup.object().shape({
+  title: yup.string().required('Enter a title').min(3, 'Type at least 3 chars'),
+  slug: yup.string().required('Enter a slug').min(3, 'Type at least 3 chars'),
+  category: yup.string().required('Pick a category'),
+})
 
 const NewPostForm = ({ onSubmit }) => {
   const {
@@ -11,7 +19,7 @@ const NewPostForm = ({ onSubmit }) => {
     setValue,
     watch,
     formState: { errors },
-  } = useForm()
+  } = useForm({ resolver: yupResolver(schema) })
 
   register('content')
   register('tags')
@@ -40,6 +48,7 @@ const NewPostForm = ({ onSubmit }) => {
         radius="md"
         required
         className="mb-3"
+        error={errors.title?.message}
         {...register('title')}
       />
       <TextInput
@@ -47,6 +56,7 @@ const NewPostForm = ({ onSubmit }) => {
         radius="md"
         required
         className="mb-3"
+        error={errors.slug?.message}
         {...register('slug')}
       />
       <div className="grid grid-cols-2 gap-4 mb-7">
@@ -62,6 +72,7 @@ const NewPostForm = ({ onSubmit }) => {
             label="Category"
             radius="md"
             required
+            error={errors.category?.message}
             {...register('category')}
           />
         </div>
