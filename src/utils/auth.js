@@ -13,7 +13,7 @@ export async function verifyPassword(password, hashedPassword) {
 const extractUser = (user) => ({
   name: user.name,
   email: user.email,
-  _id: user._id,
+  id: user._id,
 })
 
 export { hashPassword, extractUser }

@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { TextInput, Select, Badge, Button } from '@mantine/core'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import slugify from 'slugify'
 
 import MdInput from '../../components/MdInput'
 
@@ -12,7 +13,7 @@ const schema = yup.object().shape({
   category: yup.string().required('Pick a category'),
 })
 
-const NewPostForm = ({ onSubmit }) => {
+const NewPostForm = ({ onSubmit, loading }) => {
   const {
     register,
     handleSubmit,
@@ -23,8 +24,10 @@ const NewPostForm = ({ onSubmit }) => {
 
   register('content')
   register('tags')
+  register('slug')
   const watchContent = watch('content', '')
   const watchTags = watch('tags', [])
+  const watchSlug = watch('slug', '')
 
   const toggleTags = (tag, action) => {
     const cleanTag = tag
@@ -49,6 +52,7 @@ const NewPostForm = ({ onSubmit }) => {
         required
         className="mb-3"
         error={errors.title?.message}
+        disabled={loading}
         {...register('title')}
       />
       <TextInput
@@ -56,29 +60,35 @@ const NewPostForm = ({ onSubmit }) => {
         radius="md"
         required
         className="mb-3"
+        onChange={e => setValue('slug' ,slugify(e.target.value, {lower: true, strict: true}))}
+        description={watchSlug}
         error={errors.slug?.message}
-        {...register('slug')}
+        disabled={loading}
+        name='slug'
       />
       <div className="grid grid-cols-2 gap-4 mb-7">
         <div>
           <Select
             data={[
-              { _id: 'react', label: 'React' },
-              { _id: 'vue', label: 'Vue' },
-              { _id: 'ng', label: 'Angular' },
-              { _id: 'svelte', label: 'Svelte' },
+              { value: '', label: 'Pick one' },
+              { value: 'react', label: 'React' },
+              { value: 'vue', label: 'Vue' },
+              { value: 'ng', label: 'Angular' },
+              { value: 'svelte', label: 'Svelte' },
             ]}
             placeholder="Pick one"
             label="Category"
             radius="md"
             required
             error={errors.category?.message}
+            disabled={loading}
             {...register('category')}
           />
         </div>
         <div>
           <TextInput
             label="Tags"
+            disabled={loading}
             radius="md"
             onKeyPress={(e) => {
               if (e.key === 'Enter') {
@@ -104,8 +114,9 @@ const NewPostForm = ({ onSubmit }) => {
         value={watchContent}
         onChange={(val) => setValue('content', val)}
         className="mb-3"
+        disabled={loading}
       />
-      <Button type="submit" variant="light" radius="md" fullWidth>
+      <Button type="submit" variant="light" radius="md" fullWidth disabled={loading}>
         Create Post
       </Button>
     </form>

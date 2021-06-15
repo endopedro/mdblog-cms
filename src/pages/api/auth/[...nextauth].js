@@ -33,7 +33,7 @@ export default NextAuth({
         }
 
         client.close()
-        return { user: extractUser(user) }
+        return extractUser(user)
       },
     }),
   ],
