@@ -13,14 +13,15 @@ const schema = yup.object().shape({
   category: yup.string().required('Pick a category'),
 })
 
-const NewPostForm = ({ onSubmit, loading }) => {
+const NewPostForm = ({ onSubmit, loading, post }) => {
   const {
     register,
     handleSubmit,
     setValue,
+    getValues,
     watch,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) })
+  } = useForm({ resolver: yupResolver(schema), defaultValues: post })
 
   register('content')
   register('tags')
@@ -28,6 +29,7 @@ const NewPostForm = ({ onSubmit, loading }) => {
   const watchContent = watch('content', '')
   const watchTags = watch('tags', [])
   const watchSlug = watch('slug', '')
+  const watchCategory = watch('category')
 
   const toggleTags = (tag, action) => {
     const cleanTag = tag
@@ -54,6 +56,7 @@ const NewPostForm = ({ onSubmit, loading }) => {
         error={errors.title?.message}
         disabled={loading}
         {...register('title')}
+        defaultValue={getValues('title')}
       />
       <TextInput
         label="Slug"
@@ -65,14 +68,14 @@ const NewPostForm = ({ onSubmit, loading }) => {
         error={errors.slug?.message}
         disabled={loading}
         name='slug'
+        defaultValue={getValues('slug')}
       />
       <div className="grid grid-cols-2 gap-4 mb-7">
         <div>
           <Select
             data={[
-              { value: '', label: 'Pick one' },
-              { value: 'react', label: 'React' },
               { value: 'vue', label: 'Vue' },
+              { value: 'react', label: 'React' },
               { value: 'ng', label: 'Angular' },
               { value: 'svelte', label: 'Svelte' },
             ]}
@@ -83,6 +86,8 @@ const NewPostForm = ({ onSubmit, loading }) => {
             error={errors.category?.message}
             disabled={loading}
             {...register('category')}
+            value={watchCategory}
+            onChange={e=>setValue('category', e.target.value)}
           />
         </div>
         <div>

@@ -8,7 +8,7 @@ import Form from '../Form'
 
 const NewPost = () => {
   const notifications = useNotifications()
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   const onSubmit = async (data) => {
     setLoading(true)
