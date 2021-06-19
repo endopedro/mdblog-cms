@@ -15,7 +15,7 @@ const posts = () => {
           <AllPostsTab />
         </Tab>
         <Tab label="New">
-          <NewPostTab />
+          <NewPostTab setActiveTab={setActiveTab} />
         </Tab>
       </Tabs>
     </Layout>

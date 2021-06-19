@@ -5,8 +5,9 @@ import { LoadingOverlay } from '@mantine/core'
 
 import postApi from '../../../services/postApi'
 import Form from '../Form'
+import { setPosts } from '../../../states/posts'
 
-const NewPost = () => {
+const NewPost = ({ setActiveTab }) => {
   const notifications = useNotifications()
   const [loading, setLoading] = useState(false)
 
@@ -20,6 +21,8 @@ const NewPost = () => {
         message: response.data.message,
         icon: <RiCheckLine />,
       })
+      setPosts((prevState) => [...prevState, response.data.post])
+      setActiveTab(0)
     } catch (error) {
       notifications.showNotification({
         title: 'Fail',
@@ -32,7 +35,7 @@ const NewPost = () => {
   }
 
   return (
-    <div className='relative'>
+    <div className="relative">
       <LoadingOverlay visible={loading} />
       <Form onSubmit={onSubmit} loading={loading} />
     </div>
