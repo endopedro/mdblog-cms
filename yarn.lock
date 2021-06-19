@@ -37,6 +37,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.13.10":
+  version "7.14.6"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.14.6.tgz#535203bc0892efc7dec60bdc27b2ecf6e409062d"
+  integrity sha512-/PCB2uJ7oM44tz8YhC4Z/6PeOKXp4K588f+5M3clr1M4zbqztlo0XEfJ2LEzj/FgwfgGcIdl8n7YYjTCI0BYwg==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/types@7.8.3":
   version "7.8.3"
   resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.8.3.tgz#5a383dffa5416db1b73dedffd311ffd0788fb31c"
@@ -3296,6 +3303,13 @@ simple-swizzle@^0.2.2:
   integrity sha1-pNprY1/8zMoz9w0Xy5JZLeleVXo=
   dependencies:
     is-arrayish "^0.3.1"
+
+simpler-state@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/simpler-state/-/simpler-state-1.0.2.tgz#f51e43296ad9593b495a5e951061ebfd2535de7c"
+  integrity sha512-TYZgD3PFke3uQQv7yRBkEjDf+uTCxzBK7plZrMmvao5oTzyb04hiwvMytkWrqUy9LoGmOk8wUG9zDXbvrIt/QA==
+  dependencies:
+    "@babel/runtime" "^7.13.10"
 
 slugify@^1.5.3:
   version "1.5.3"
