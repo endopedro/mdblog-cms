@@ -62,9 +62,42 @@ const handler = async (req, res) => {
       tags: tags,
       content: content,
       authorId: user._id,
+      createdAt: Date.now(),
     })
 
     res.status(200).json({ message: 'Post created!', post: result.ops[0] })
+    client.close()
+  }
+
+  if (req.method === 'DELETE') {
+    const session = await getSession({ req: req })
+    if (!session) {
+      res.status(401).json({ message: 'Not Authenticated.' })
+      return
+    }
+
+    const { slug } = req.body
+
+    if (!slug) {
+      res.status(422).json({ message: 'No slug given.' })
+      return
+    }
+
+    const client = await connectToDatabase()
+    const db = client.db()
+
+    const deletedPost = await db
+      .collection('posts')
+      .findOneAndDelete({ slug: slug })
+      .then((post) => post.value)
+
+    if (!deletedPost) {
+      res.status(422).json({ message: 'Slug no exists.' })
+      client.close()
+      return
+    }
+
+    res.status(200).json({ message: 'Post deleted!', post: deletedPost })
     client.close()
   }
 }

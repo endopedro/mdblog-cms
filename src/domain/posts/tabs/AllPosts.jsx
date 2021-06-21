@@ -4,7 +4,7 @@ import { Paper, Table, ActionIcon } from '@mantine/core'
 import { RiDeleteBin5Line, RiEyeLine } from 'react-icons/ri'
 
 import formatDate from '../../../utils/formatDate'
-import { data } from '../../../states/posts'
+import { data, deletePost } from '../../../states/posts'
 
 const AllPostsTab = () => {
   const posts = data.use()
@@ -33,7 +33,10 @@ const AllPostsTab = () => {
                       color="red"
                       radius="lg"
                       className="mr-2"
-                      onClick={(e) => e.stopPropagation()}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        deletePost(post.slug)
+                      }}
                     >
                       <RiDeleteBin5Line className="text-red-400" />
                     </ActionIcon>
