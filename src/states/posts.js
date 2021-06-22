@@ -33,10 +33,21 @@ const createPost = async (data) => {
   load.set(false)
   return response
 }
+
+const updatePost = async (data) => {
+  load.set(true)
+  const response = await postApi()
+    .updatePost(data)
+    .then(({data})=> data.post.value)
+    .catch(() => null)
+  load.set(false)
+  return response
+}
   
 export const data = entity(fetchPosts())
 
 export const setPosts = (newData) => data.set(newData)
+export const setLoading = (status) => load.set(status)
 
 export const deletePost = async (slug) => {
   const deletedPost = await destroyPost(slug)
@@ -53,6 +64,20 @@ export const newPost = async (data) => {
   const createdPost = await createPost(data)
   if (createdPost) {
     setPosts((prevState) => [...prevState, createdPost])
+    return true
+  }
+  return false
+}
+
+export const editPost = async (data) => {
+  const editedPost = await updatePost(data)
+  if (editedPost) {
+    setPosts((prevState) => {
+      const postsArray = [...prevState]
+      const index = prevState.findIndex((el) => el._id === data._id)
+      postsArray.splice(index, 1, data)
+      return postsArray
+    })
     return true
   }
   return false

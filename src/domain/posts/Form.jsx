@@ -13,7 +13,7 @@ const schema = yup.object().shape({
   category: yup.string().required('Pick a category'),
 })
 
-const NewPostForm = ({ onSubmit, loading, post }) => {
+const PostForm = ({ onSubmit, loading, post }) => {
   const {
     register,
     handleSubmit,
@@ -26,10 +26,10 @@ const NewPostForm = ({ onSubmit, loading, post }) => {
   register('content')
   register('tags')
   register('slug')
-  const watchContent = watch('content', '')
-  const watchTags = watch('tags', [])
-  const watchSlug = watch('slug', '')
+  const watchTags = watch('tags', post ? post.tags : [])
+  const watchSlug = watch('slug', post ? post.slug : '')
   const watchCategory = watch('category')
+  const watchContent= watch('content')
 
   const toggleTags = (tag, action) => {
     const cleanTag = tag
@@ -57,6 +57,7 @@ const NewPostForm = ({ onSubmit, loading, post }) => {
         disabled={loading}
         {...register('title')}
         defaultValue={getValues('title')}
+        onChange={e => setValue('title', e.target.value)}
       />
       <TextInput
         label="Slug"
@@ -122,10 +123,10 @@ const NewPostForm = ({ onSubmit, loading, post }) => {
         disabled={loading}
       />
       <Button type="submit" variant="light" radius="md" fullWidth disabled={loading}>
-        Create Post
+        {post ? 'Update' : 'Create'} Post
       </Button>
     </form>
   )
 }
 
-export default NewPostForm
+export default PostForm

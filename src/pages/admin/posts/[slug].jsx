@@ -4,58 +4,41 @@ import { useNotifications } from '@mantine/notifications'
 import { Title, Divider, LoadingOverlay } from '@mantine/core'
 import { useRouter } from 'next/router'
 
-import postApi from '../../../services/postApi'
 import Layout from '../../../components/admin/Layout'
 import Form from '../../../domain/posts/Form'
 
-const posts = () => {
-  const notifications = useNotifications()
+import { data, editPost, load } from '../../../states/posts'
+
+const updatePost = () => {
   const router = useRouter()
   const { slug } = router.query
-  const [loading, setLoading] = useState(true)
+  const posts = data.use()
+  const loading = load.use()
+  const notifications = useNotifications()
+
   const [post, setPost] = useState(null)
 
-  useEffect(() => {
-    if(slug) fetchPost(slug)
-  }, [slug])
-
-  const fetchPost = async (slug) => {
-    setLoading(true)
-    try {
-      const data = await postApi().getPost(slug).then(({data}) => data)
-      setPost(data.post)
-      setLoading(false)
-    } catch (error) {
-      notifications.showNotification({
-        title: 'Fail',
-        color: 'red',
-        message: error.response.data.message,
-        icon: <RiCloseLine />,
-      })
-      setLoading(false)
-    }
+  const notify = (success = true, message) => {
+    notifications.showNotification({
+      title: success ? 'Success' : 'Fail',
+      message: success ? 'Post Created' : 'Something went wrong',
+      color: success ? 'blue' : 'red',
+      icon: success ? <RiCheckLine /> : <RiCloseLine />,
+    })
   }
 
-  const onSubmit = async (data) => {
-    setLoading(true)
-    try {
-      const response = await postApi().updatePost(data)
-      setLoading(false)
-      notifications.showNotification({
-        title: 'Success',
-        message: response.data.message,
-        icon: <RiCheckLine />,
-      })
-    } catch (error) {
-      notifications.showNotification({
-        title: 'Fail',
-        color: 'red',
-        message: error.response.data.message,
-        icon: <RiCloseLine />,
-      })
-      router.replace('/admin')
-      setLoading(false)
+  useEffect(async () => {
+    if(slug) {
+      const postToEdit = posts?.find(post => post.slug == slug)
+      if (postToEdit) setPost(postToEdit)
+      else notify(false, "Post not found.")
     }
+  }, [posts])
+
+  const onSubmit = async (data) => {
+    const isPostUpdated = await editPost(data)
+    notify(isPostUpdated)
+    if (isPostUpdated) router.push('/admin/posts')
   }
 
   return (
@@ -70,4 +53,4 @@ const posts = () => {
   )
 }
 
-export default posts
+export default updatePost
