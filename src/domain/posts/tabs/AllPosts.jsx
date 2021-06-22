@@ -35,7 +35,7 @@ const AllPostsTab = () => {
             <th>Title</th>
             <th>Slug</th>
             <th>Date</th>
-            <th></th>
+            <th/>
           </tr>
         </thead>
         <tbody>

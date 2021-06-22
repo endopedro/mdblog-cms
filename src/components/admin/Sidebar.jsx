@@ -82,8 +82,8 @@ const Sidebar = () => {
       style={{ backgroundColor: '#1D1E30' }}
     >
       <ul className="flex flex-col w-full">
-        {items.map((item) => (
-          <MenuItem key={item.label} {...item} />
+        {items.map((item, i) => (
+          <MenuItem key={i} {...item} />
         ))}
       </ul>
     </div>
