@@ -7,6 +7,7 @@ import {
   RiTeamLine,
   RiUserLine,
   RiShutDownLine,
+  RiFileMarkLine,
 } from 'react-icons/ri'
 import { signOut } from 'next-auth/client'
 
@@ -28,6 +29,11 @@ const Sidebar = () => {
       label: 'Pages',
       icon: <RiPagesLine size="1.5rem" />,
       link: '/admin/pages',
+    },
+    {
+      label: 'Categories',
+      icon: <RiFileMarkLine size="1.5rem" />,
+      link: '/admin/categories',
     },
     {
       label: 'Editors',
