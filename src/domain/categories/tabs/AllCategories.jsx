@@ -1,17 +1,19 @@
-import React from 'react'
-import Link from 'next/link'
+import React, { useState } from 'react'
 import { Paper, Table, ActionIcon, LoadingOverlay } from '@mantine/core'
 import { useNotifications } from '@mantine/notifications'
 import {
   RiDeleteBin5Line,
-  RiEyeLine,
   RiCloseLine,
   RiCheckLine,
+  RiEdit2Line,
 } from 'react-icons/ri'
 
 import { data, load, deletePost } from '../../../states/categories'
 
+import EditModal from '../EditModal'
+
 const AllCategoriesTab = () => {
+  const [showModal, setShowModal] = useState(false)
   const categories = data.use()
   const loading = load.use()
   const notifications = useNotifications()
@@ -26,19 +28,19 @@ const AllCategoriesTab = () => {
   }
 
   return (
-    <Paper padding="lg" shadow="xs" className="relative">
-      <LoadingOverlay visible={loading} />
-      <Table highlightOnHover>
-        <thead>
-          <tr>
-            <th>Category</th>
-            <th />
-          </tr>
-        </thead>
-        <tbody>
-          {categories?.map((category) => (
-            <Link href={`/admin/categories/${category._id}`} key={category._id}>
-              <tr className="cursor-pointer">
+    <>
+      <Paper padding="lg" shadow="xs" className="relative">
+        <LoadingOverlay visible={loading} />
+        <Table highlightOnHover>
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            {categories?.map((category) => (
+              <tr>
                 <td>{category.label}</td>
                 <td>
                   <div className="flex">
@@ -56,20 +58,22 @@ const AllCategoriesTab = () => {
                     <ActionIcon
                       radius="lg"
                       color="blue"
-                      Posts
-                      Posts
-                      onClick={(e) => e.stopPropagation()}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setShowModal(category)
+                      }}
                     >
-                      <RiEyeLine />
+                      <RiEdit2Line />
                     </ActionIcon>
                   </div>
                 </td>
               </tr>
-            </Link>
-          ))}
-        </tbody>
-      </Table>
-    </Paper>
+            ))}
+          </tbody>
+        </Table>
+      </Paper>
+      <EditModal handleModal={{ state: showModal, set: setShowModal }} />
+    </>
   )
 }
 

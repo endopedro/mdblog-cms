@@ -53,7 +53,7 @@ const handler = async (req, res) => {
       return
     }
 
-    const result = await db.collection('posts').insertOne({
+    const result = await db.collection('categories').insertOne({
       label: label,
     })
 
