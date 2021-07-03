@@ -9,7 +9,7 @@ const fetchCategories = async () => {
   const data = await categoryApi()
     .getCategories()
     .then(({ data }) => data.categories)
-    .catch(() => null)
+    .catch(() => [])
   load.set(false)
   return data
 }

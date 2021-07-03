@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import slugify from 'slugify'
-
+import { data } from '../../states/categories'
 import MdInput from '../../components/MdInput'
 
 const schema = yup.object().shape({
@@ -14,6 +14,8 @@ const schema = yup.object().shape({
 })
 
 const PostForm = ({ onSubmit, loading, post }) => {
+  const categories = data.use()
+
   const {
     register,
     handleSubmit,
@@ -29,7 +31,7 @@ const PostForm = ({ onSubmit, loading, post }) => {
   const watchTags = watch('tags', post ? post.tags : [])
   const watchSlug = watch('slug', post ? post.slug : '')
   const watchCategory = watch('category')
-  const watchContent= watch('content')
+  const watchContent = watch('content')
 
   const toggleTags = (tag, action) => {
     const cleanTag = tag
@@ -57,38 +59,41 @@ const PostForm = ({ onSubmit, loading, post }) => {
         disabled={loading}
         {...register('title')}
         defaultValue={getValues('title')}
-        onChange={e => setValue('title', e.target.value)}
+        onChange={(e) => setValue('title', e.target.value)}
       />
       <TextInput
         label="Slug"
         radius="md"
         required
         className="mb-3"
-        onChange={e => setValue('slug' ,slugify(e.target.value, {lower: true, strict: true}))}
+        onChange={(e) =>
+          setValue(
+            'slug',
+            slugify(e.target.value, { lower: true, strict: true })
+          )
+        }
         description={watchSlug}
         error={errors.slug?.message}
         disabled={loading}
-        name='slug'
+        name="slug"
         defaultValue={getValues('slug')}
       />
       <div className="grid grid-cols-2 gap-4 mb-7">
         <div>
           <Select
-            data={[
-              { value: 'vue', label: 'Vue' },
-              { value: 'react', label: 'React' },
-              { value: 'ng', label: 'Angular' },
-              { value: 'svelte', label: 'Svelte' },
-            ]}
+            data={categories?.map((cat) => ({
+              value: cat._id,
+              label: cat.label,
+            }))}
             placeholder="Pick one"
             label="Category"
             radius="md"
             required
             error={errors.category?.message}
-            disabled={loading}
+            disabled={loading || !categories.length}
             {...register('category')}
             value={watchCategory}
-            onChange={e=>setValue('category', e.target.value)}
+            onChange={(e) => setValue('category', e.target.value)}
           />
         </div>
         <div>
@@ -122,7 +127,13 @@ const PostForm = ({ onSubmit, loading, post }) => {
         className="mb-3"
         disabled={loading}
       />
-      <Button type="submit" variant="light" radius="md" fullWidth disabled={loading}>
+      <Button
+        type="submit"
+        variant="light"
+        radius="md"
+        fullWidth
+        disabled={loading}
+      >
         {post ? 'Update' : 'Create'} Post
       </Button>
     </form>
