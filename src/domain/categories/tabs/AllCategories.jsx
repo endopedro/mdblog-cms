@@ -8,7 +8,7 @@ import {
   RiEdit2Line,
 } from 'react-icons/ri'
 
-import { data, load, deletePost } from '../../../states/categories'
+import { data, load, deleteCategory } from '../../../states/categories'
 
 import EditModal from '../EditModal'
 
@@ -50,7 +50,7 @@ const AllCategoriesTab = () => {
                       className="mr-2"
                       onClick={async (e) => {
                         e.stopPropagation()
-                        notify(await deletePost(category._id))
+                        notify(await deleteCategory(category._id))
                       }}
                     >
                       <RiDeleteBin5Line className="text-red-400" />

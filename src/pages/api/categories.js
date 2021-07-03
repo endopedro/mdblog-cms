@@ -121,7 +121,7 @@ const handler = async (req, res) => {
 
     const deletedCategory = await db
       .collection('categories')
-      .findOneAndDelete({ _id: id })
+      .findOneAndDelete({ _id: new ObjectID(id) })
       .then((category) => category.value)
 
     if (!deletedCategory) {
