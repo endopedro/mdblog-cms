@@ -13,7 +13,7 @@ const EditModal = ({ handleModal }) => {
   const notify = (success) => {
     notifications.showNotification({
       title: success ? 'Success' : 'Fail',
-      message: success ? 'Category updated' : 'Something went wrong',
+      message: success ? 'Category Updated' : 'Something went wrong',
       color: success ? 'blue' : 'red',
       icon: success ? <RiCheckLine /> : <RiCloseLine />,
     })

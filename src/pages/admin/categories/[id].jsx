@@ -5,23 +5,23 @@ import { Title, Divider, LoadingOverlay } from '@mantine/core'
 import { useRouter } from 'next/router'
 
 import Layout from '../../../components/admin/Layout'
-import Form from '../../../domain/posts/Form'
+import Form from '../../../domain/categories/Form'
 
-import { data, editPost, load } from '../../../states/posts'
+import { data, editCategory, load } from '../../../states/categories'
 
-const updatePost = () => {
+const updateCategory = () => {
   const router = useRouter()
   const { slug } = router.query
-  const posts = data.use()
+  const categories = data.use()
   const loading = load.use()
   const notifications = useNotifications()
 
-  const [post, setPost] = useState(null)
+  const [category, setCategory] = useState(null)
 
   const notify = (success = true, message) => {
     notifications.showNotification({
       title: success ? 'Success' : 'Fail',
-      message: success ? 'Post Created' : 'Something went wrong',
+      message: success ? 'Category Created' : 'Something went wrong',
       color: success ? 'blue' : 'red',
       icon: success ? <RiCheckLine /> : <RiCloseLine />,
     })
@@ -29,28 +29,35 @@ const updatePost = () => {
 
   useEffect(async () => {
     if (slug) {
-      const postToEdit = posts?.find((post) => post.slug == slug)
-      if (postToEdit) setPost(postToEdit)
-      else notify(false, 'Post not found.')
+      const categoryToEdit = categories?.find(
+        (category) => category.slug == slug
+      )
+      if (categoryToEdit) setCategory(categoryToEdit)
+      else notify(false, 'Category not found.')
     }
-  }, [posts])
+  }, [categories])
 
   const onSubmit = async (data) => {
-    const isPostUpdated = await editPost(data)
-    notify(isPostUpdated)
-    if (isPostUpdated) router.push('/admin/posts')
+    const isCategoryUpdated = await editCategory(data)
+    notify(isCategoryUpdated)
+    if (isCategoryUpdated) router.push('/admin/categories')
   }
 
   return (
     <Layout page="Categories">
       <LoadingOverlay visible={loading} />
-      <Title order={3}>Edit Post</Title>
+      <Title order={3}>Edit Category</Title>
       <Divider className="mb-5 mt-2" />
-      {post && (
-        <Form slug={slug} onSubmit={onSubmit} loading={loading} post={post} />
+      {category && (
+        <Form
+          slug={slug}
+          onSubmit={onSubmit}
+          loading={loading}
+          category={category}
+        />
       )}
     </Layout>
   )
 }
 
-export default updatePost
+export default updateCategory
