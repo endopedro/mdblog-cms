@@ -6,6 +6,8 @@ const userApi = () => ({
   verifyToken: (token) =>
     api.get('/auth/password', { params: { token: token } }),
   resetPassword: (data) => api.put('/auth/password', data),
+  getUsers: () => api.get('/users'),
+  getUser: (email) => api.get('/users', { params: { email: email } }),
 })
 
 export default userApi
