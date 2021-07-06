@@ -38,7 +38,7 @@ const AllEditorsTab = () => {
         </thead>
         <tbody>
           {editors?.map((editor) => (
-            <Link href={`/admin/editors/${editor.slug}`} key={editor._id}>
+            <Link href={`/admin/editors/${editor.email}`} key={editor._id}>
               <tr className="cursor-pointer">
                 <td>{editor.name}</td>
                 <td>{editor.email}</td>

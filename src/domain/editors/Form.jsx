@@ -10,21 +10,23 @@ const schema = yup.object().shape({
     .required('Type your name.')
     .min(3, 'Minimum of 3 characters.'),
   email: yup.string().required('Type an e-mail.').email('Type a valid e-mail.'),
-  password: yup
-    .string()
-    .min(6, 'Minimum of 6 characters.')
-    .required('Type a password.'),
+  // password: yup
+  //   .string()
+  //   .min(6, 'Minimum of 6 characters.')
+  //   .required('Type a password.'),
 })
 
 const EditorForm = ({ onSubmit, loading, editor }) => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema), defaultValues: editor })
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <input type="hidden" {...register('id')} />
       <TextInput
         {...register('name')}
         label="Name"
@@ -33,7 +35,9 @@ const EditorForm = ({ onSubmit, loading, editor }) => {
         maxLength="50"
         className="mb-3"
         disabled={loading}
+        defaultValue={editor?.name}
         error={errors.name?.message}
+        onChange={(e) => setValue('name', e.target.value)}
       />
       <TextInput
         {...register('email')}
@@ -43,7 +47,9 @@ const EditorForm = ({ onSubmit, loading, editor }) => {
         maxLength="50"
         className="mb-3"
         disabled={loading}
+        defaultValue={editor?.email}
         error={errors.email?.message}
+        onChange={(e) => setValue('email', e.target.value)}
       />
       <PasswordInput
         {...register('password')}
@@ -54,7 +60,8 @@ const EditorForm = ({ onSubmit, loading, editor }) => {
         maxLength="50"
         className="mb-5"
         disabled={loading}
-        error={errors.password?.message}
+        error={editor ? null : errors.password?.message}
+        onChange={(e) => setValue('password', e.target.value)}
       />
       <Button
         type="submit"

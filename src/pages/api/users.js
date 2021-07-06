@@ -11,7 +11,7 @@ const handler = async (req, res) => {
 
     if (!email) {
       const users = await db.collection('users').find().toArray()
-      res.status(200).json({ users: users })
+      res.status(200).json({ users: users.map((u) => extractUser(u)) })
     } else {
       const user = await db.collection('users').findOne({ user: user })
 
@@ -21,7 +21,7 @@ const handler = async (req, res) => {
         return
       }
 
-      res.status(200).json({ user: user })
+      res.status(200).json({ user: extractUser(user) })
     }
 
     client.close()
@@ -67,53 +67,53 @@ const handler = async (req, res) => {
     client.close()
   }
 
-  // if (req.method === 'PUT') {
-  //   const session = await getSession({ req: req })
-  //   if (!session) {
-  //     res.status(401).json({ message: 'Not Authenticated.' })
-  //     return
-  //   }
+  if (req.method === 'PUT') {
+    const session = await getSession({ req: req })
+    if (!session) {
+      res.status(401).json({ message: 'Not Authenticated.' })
+      return
+    }
 
-  //   const data = req.body
-  //   const { _id, title, slug, category, tags, content } = data
+    const data = req.body
+    const { id, name, email, password } = data
 
-  //   if (!title || !slug || !category) {
-  //     res.status(422).json({ message: 'Incomplete information.' })
-  //     return
-  //   }
+    if (!id) {
+      res.status(422).json({ message: 'Incomplete information.' })
+      return
+    }
 
-  //   const client = await connectToDatabase()
-  //   const db = client.db()
+    const client = await connectToDatabase()
+    const db = client.db()
 
-  //   const existingSlug = await db.collection('posts').findOne({ slug: slug })
+    const existingEmail = await db.collection('users').findOne({ email: email })
 
-  //   if (existingSlug && existingSlug._id != _id) {
-  //     res.status(422).json({ message: 'Slug already exists.' })
-  //     client.close()
-  //     return
-  //   }
+    if (existingEmail && existingEmail._id != id) {
+      res.status(422).json({ message: 'Email already exists.' })
+      client.close()
+      return
+    }
 
-  //   const result = await db.collection('posts').findOneAndUpdate(
-  //     {
-  //       _id: new ObjectID(_id)
-  //     },
-  //     {$set:{
-  //       title: title,
-  //       slug: slug,
-  //       category: category,
-  //       tags: tags,
-  //       content: content,
-  //       updatedAt: Date.now()
-  //     }},
-  //     {
-  //       returnNewDocument: true
-  //     }
-  //   )
+    const hashedPassword = password ? await hashPassword(password) : null
 
-  //   res.status(200).json({ message: 'Post updated!', post: result })
-  //   // res.status(200).json({ message: 'Post updated!'})
-  //   client.close()
-  // }
+    const result = await db.collection('users').findOneAndUpdate(
+      {
+        _id: new ObjectID(id),
+      },
+      {
+        $set: {
+          ...(name && { name: name }),
+          ...(email && { email: email }),
+          ...(password && { password: hashedPassword }),
+        },
+      },
+      {
+        returnNewDocument: true,
+      }
+    )
+
+    res.status(200).json({ message: 'User updated!', user: result })
+    client.close()
+  }
 
   // if (req.method === 'DELETE') {
   //   const session = await getSession({ req: req })
