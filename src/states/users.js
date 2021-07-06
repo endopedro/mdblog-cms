@@ -27,7 +27,7 @@ const destroyUser = async (email) => {
 const createUser = async (data) => {
   load.set(true)
   const response = await userApi()
-    .createUser(data)
+    .registerUser(data)
     .then(({ data }) => data.user)
     .catch(() => null)
   load.set(false)
