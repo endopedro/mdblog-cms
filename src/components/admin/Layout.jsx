@@ -4,7 +4,7 @@ import { useMantineTheme } from '@mantine/core'
 import Guard from '../../domain/Guard'
 import Sidebar from '../../components/admin/Sidebar'
 
-const AdminLayout = ({ children }) => {
+const AdminLayout = ({ children, page }) => {
   const theme = useMantineTheme()
 
   return (
@@ -44,7 +44,7 @@ const AdminLayout = ({ children }) => {
           <div className="container mx-auto">
             <div className="flex flex-wrap">
               <div className="p-4 md:w-1/4 w-full">
-                <Sidebar />
+                <Sidebar page={page} />
               </div>
               <div className="p-4 md:w-3/4 w-full">{children}</div>
             </div>

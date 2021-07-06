@@ -28,10 +28,10 @@ const updatePost = () => {
   }
 
   useEffect(async () => {
-    if(slug) {
-      const postToEdit = posts?.find(post => post.slug == slug)
+    if (slug) {
+      const postToEdit = posts?.find((post) => post.slug == slug)
       if (postToEdit) setPost(postToEdit)
-      else notify(false, "Post not found.")
+      else notify(false, 'Post not found.')
     }
   }, [posts])
 
@@ -42,10 +42,10 @@ const updatePost = () => {
   }
 
   return (
-    <Layout>
+    <Layout page="Categories">
       <LoadingOverlay visible={loading} />
       <Title order={3}>Edit Post</Title>
-      <Divider className="mb-5 mt-2"/>
+      <Divider className="mb-5 mt-2" />
       {post && (
         <Form slug={slug} onSubmit={onSubmit} loading={loading} post={post} />
       )}

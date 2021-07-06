@@ -42,7 +42,7 @@ const updatePage = () => {
   }
 
   return (
-    <Layout>
+    <Layout page="Pages">
       <LoadingOverlay visible={loading} />
       <Title order={3}>Edit Page</Title>
       <Divider className="mb-5 mt-2" />

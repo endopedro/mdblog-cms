@@ -9,7 +9,7 @@ const posts = () => {
   const [activeTab, setActiveTab] = useState(0)
 
   return (
-    <Layout>
+    <Layout page="Posts">
       <Tabs active={activeTab} onTabChange={setActiveTab}>
         <Tab label="All">
           <AllPostsTab />

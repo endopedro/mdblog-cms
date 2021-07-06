@@ -10,8 +10,9 @@ import {
   RiFileMarkLine,
 } from 'react-icons/ri'
 import { signOut } from 'next-auth/client'
+import cx from 'classnames'
 
-const Sidebar = () => {
+const Sidebar = ({ page }) => {
   const items = [
     {
       label: 'Dashboard',
@@ -59,9 +60,18 @@ const Sidebar = () => {
     <li className="my-px">
       {link && (
         <Link href={link}>
-          <a className="flex flex-row items-center h-12 px-4 rounded-lg text-gray-500 hover:bg-gray-700">
-            <span>{icon}</span>
-            <span className="ml-3">{label}</span>
+          <a
+            className={cx(
+              'flex flex-row items-center h-12 px-4 rounded-lg text-gray-500 hover:bg-gray-700 transition duration-300',
+              { 'bg-gray-700': label == page }
+            )}
+          >
+            <span className={cx({ 'text-blue-400': label == page })}>
+              {icon}
+            </span>
+            <span className={cx('ml-3', { 'text-blue-400': label == page })}>
+              {label}
+            </span>
           </a>
         </Link>
       )}

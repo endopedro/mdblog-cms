@@ -9,7 +9,7 @@ const Categories = () => {
   const [activeTab, setActiveTab] = useState(0)
 
   return (
-    <Layout>
+    <Layout page="Categories">
       <Tabs active={activeTab} onTabChange={setActiveTab}>
         <Tab label="All">
           <AllCategoriesTab />
