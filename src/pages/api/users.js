@@ -115,37 +115,37 @@ const handler = async (req, res) => {
     client.close()
   }
 
-  // if (req.method === 'DELETE') {
-  //   const session = await getSession({ req: req })
-  //   if (!session) {
-  //     res.status(401).json({ message: 'Not Authenticated.' })
-  //     return
-  //   }
+  if (req.method === 'DELETE') {
+    const session = await getSession({ req: req })
+    if (!session) {
+      res.status(401).json({ message: 'Not Authenticated.' })
+      return
+    }
 
-  //   const { slug } = req.body
+    const { email } = req.body
 
-  //   if (!slug) {
-  //     res.status(422).json({ message: 'No slug given.' })
-  //     return
-  //   }
+    if (!email) {
+      res.status(422).json({ message: 'No ID given.' })
+      return
+    }
 
-  //   const client = await connectToDatabase()
-  //   const db = client.db()
+    const client = await connectToDatabase()
+    const db = client.db()
 
-  //   const deletedPost = await db
-  //     .collection('posts')
-  //     .findOneAndDelete({ slug: slug })
-  //     .then((post) => post.value)
+    const deletedUser = await db
+      .collection('users')
+      .findOneAndDelete({ email: email })
+      .then((user) => user.value)
 
-  //   if (!deletedPost) {
-  //     res.status(422).json({ message: 'Slug no exists.' })
-  //     client.close()
-  //     return
-  //   }
+    if (!deletedUser) {
+      res.status(422).json({ message: 'Email no exists.' })
+      client.close()
+      return
+    }
 
-  //   res.status(200).json({ message: 'Post deleted!', post: deletedPost })
-  //   client.close()
-  // }
+    res.status(200).json({ message: 'User deleted!', user: deletedUser })
+    client.close()
+  }
 }
 
 export default handler
