@@ -21,7 +21,7 @@ const updatePost = () => {
   const notify = (success = true, message) => {
     notifications.showNotification({
       title: success ? 'Success' : 'Fail',
-      message: success ? 'Post Created' : 'Something went wrong',
+      message: success ? 'Post Updated' : 'Something went wrong',
       color: success ? 'blue' : 'red',
       icon: success ? <RiCheckLine /> : <RiCloseLine />,
     })
