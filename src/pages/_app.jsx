@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react'
+import Router from 'next/router'
 import Head from 'next/head'
 import { MantineProvider } from '@mantine/core'
 import { NotificationsProvider } from '@mantine/notifications'
+import NProgress from 'nprogress'
 
 import 'tailwindcss/tailwind.css'
 import '@openfonts/baloo-tammudu-2_telugu/index.css'
-import '../assets/styles/vendor/react-mde/react-mde-all.scss'
+import '../assets/styles/main.scss'
 
 export default function App(props) {
   const { Component, pageProps } = props
@@ -14,6 +16,11 @@ export default function App(props) {
     const jssStyles = document.getElementById('mantine-ssr-styles')
     if (jssStyles) jssStyles.parentElement.removeChild(jssStyles)
   }, [])
+
+  NProgress.configure({ showSpinner: false })
+  Router.events.on('routeChangeStart', (url) => NProgress.start())
+  Router.events.on('routeChangeComplete', () => NProgress.done())
+  Router.events.on('routeChangeError', () => NProgress.done())
 
   return (
     <>
