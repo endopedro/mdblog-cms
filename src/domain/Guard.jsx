@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { signIn, getSession, useSession } from 'next-auth/client'
+import { getSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import { LoadingOverlay } from '@mantine/core'
+import { data, setSession } from '../states/session'
 
 const Guard = ({ withSession, children }) => {
-  const [session, setSession] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+  const session = data.use()
   const router = useRouter()
 
   useEffect(() => {
@@ -14,7 +15,7 @@ const Guard = ({ withSession, children }) => {
       .finally(() => setIsLoading(false))
   }, [])
 
-  if (isLoading) return <LoadingOverlay visible />
+  if (isLoading && !session) return <LoadingOverlay visible />
 
   if (!session && router.pathname.includes('/admin')) {
     router.replace('/auth/signin')
