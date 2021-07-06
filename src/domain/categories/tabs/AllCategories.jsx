@@ -40,7 +40,7 @@ const AllCategoriesTab = () => {
           </thead>
           <tbody>
             {categories?.map((category) => (
-              <tr>
+              <tr key={category._id}>
                 <td>{category.label}</td>
                 <td>
                   <div className="flex">
