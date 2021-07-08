@@ -51,7 +51,7 @@ const Profile = () => {
         {profile ? (
           <Form onSubmit={onSubmit} loading={loading} profile={profile} />
         ) : (
-          <Loader className=" mx-auto" />
+          <Loader className="mx-auto" />
         )}
       </div>
     </Layout>

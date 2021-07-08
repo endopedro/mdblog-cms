@@ -10,7 +10,7 @@ const handler = async (req, res) => {
 
     if (!slug) {
       const posts = await db.collection('posts').find().toArray()
-      res.status(200).json({ posts: posts })
+      res.status(200).json({ result: posts })
     } else {
       const post = await db.collection('posts').findOne({ slug: slug })
 
@@ -79,18 +79,17 @@ const handler = async (req, res) => {
 
     const data = req.body
     const { _id, title, slug, category, tags, content } = data
-    
-    
+
     if (!title || !slug || !category) {
       res.status(422).json({ message: 'Incomplete information.' })
       return
     }
-    
+
     const client = await connectToDatabase()
     const db = client.db()
-    
+
     const existingSlug = await db.collection('posts').findOne({ slug: slug })
-    
+
     if (existingSlug && existingSlug._id != _id) {
       res.status(422).json({ message: 'Slug already exists.' })
       client.close()
@@ -99,18 +98,20 @@ const handler = async (req, res) => {
 
     const result = await db.collection('posts').findOneAndUpdate(
       {
-        _id: new ObjectID(_id)
+        _id: new ObjectID(_id),
       },
-      {$set:{
-        title: title,
-        slug: slug,
-        category: category,
-        tags: tags,
-        content: content,
-        updatedAt: Date.now()
-      }},
-      { 
-        returnNewDocument: true 
+      {
+        $set: {
+          title: title,
+          slug: slug,
+          category: category,
+          tags: tags,
+          content: content,
+          updatedAt: Date.now(),
+        },
+      },
+      {
+        returnNewDocument: true,
       }
     )
 
@@ -126,10 +127,10 @@ const handler = async (req, res) => {
       return
     }
 
-    const { slug } = req.body
+    const { _id } = req.body
 
-    if (!slug) {
-      res.status(422).json({ message: 'No slug given.' })
+    if (!_id) {
+      res.status(422).json({ message: 'No id given.' })
       return
     }
 
@@ -138,16 +139,16 @@ const handler = async (req, res) => {
 
     const deletedPost = await db
       .collection('posts')
-      .findOneAndDelete({ slug: slug })
+      .findOneAndDelete({ _id: new ObjectID(_id) })
       .then((post) => post.value)
 
     if (!deletedPost) {
-      res.status(422).json({ message: 'Slug no exists.' })
+      res.status(422).json({ message: 'Post no exists.' })
       client.close()
       return
     }
 
-    res.status(200).json({ message: 'Post deleted!', post: deletedPost })
+    res.status(200).json({ message: 'Post deleted!', result: deletedPost })
     client.close()
   }
 }
