@@ -7,7 +7,7 @@ const userApi = () => ({
     api.get('/auth/password', { params: { token: token } }),
   resetPassword: (data) => api.put('/auth/password', data),
   getUsers: () => api.get('/users'),
-  getUser: (email) => api.get('/users', { params: { email: email } }),
+  getUser: (id) => api.get('/users', { params: { _id: id } }),
   registerUser: (data) => api.post('/users', data),
   updateUser: (data) => api.put('/users', data),
   deleteUser: (email) => api.delete('/users', { data: { email: email } }),

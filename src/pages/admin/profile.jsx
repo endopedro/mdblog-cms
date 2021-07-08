@@ -4,35 +4,52 @@ import { useNotifications } from '@mantine/notifications'
 import { Title, Divider, LoadingOverlay } from '@mantine/core'
 
 import Layout from '../../components/admin/Layout'
-import Form from '../../domain/editors/Form'
-import { data, load } from '../../states/session'
+import Form from '../../domain/profile/Form'
+import { data, editUser } from '../../states/session'
+import userApi from '../../services/userApi'
 
 const Profile = () => {
   const session = data.use()
-  const loading = load.use()
   const notifications = useNotifications()
+  const [profile, setProfile] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   const notify = (success = true, message) => {
     notifications.showNotification({
       title: success ? 'Success' : 'Fail',
-      message: success ? 'Editor Updated' : 'Something went wrong',
+      message: success ? 'Profile Updated' : message,
       color: success ? 'blue' : 'red',
       icon: success ? <RiCheckLine /> : <RiCloseLine />,
     })
   }
 
   const onSubmit = async (data) => {
-    const isProfileUpdated = await editUser(data)
-    notify(isProfileUpdated)
+    setLoading(true)
+    await userApi()
+      .updateUser({ ...data, profile: true })
+      .then(() => notify(true))
+      .catch((error) => notify(false, error.response.data.message))
+    setLoading(false)
   }
+
+  useEffect(async () => {
+    if (session) {
+      setLoading(true)
+      const user = await userApi()
+        .getUser(session.user.id)
+        .then(({ data }) => data.user)
+      setProfile(user)
+      setLoading(false)
+    }
+  }, [session])
 
   return (
     <Layout page="Profile">
       <LoadingOverlay visible={loading} />
       <Title order={3}>Edit Profile</Title>
       <Divider className="mb-5 mt-2" />
-      {session && (
-        <Form onSubmit={onSubmit} loading={loading} profile={session} />
+      {profile && (
+        <Form onSubmit={onSubmit} loading={loading} profile={profile} />
       )}
     </Layout>
   )

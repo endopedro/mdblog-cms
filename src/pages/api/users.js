@@ -1,19 +1,21 @@
 import { connectToDatabase } from '../../utils/db'
 import { getSession } from 'next-auth/client'
 import { ObjectID } from 'mongodb'
-import { hashPassword, extractUser } from '../../utils/auth'
+import { hashPassword, extractUser, verifyPassword } from '../../utils/auth'
 
 const handler = async (req, res) => {
   if (req.method === 'GET') {
-    const { email } = req.query
+    const { _id } = req.query
     const client = await connectToDatabase()
     const db = client.db()
 
-    if (!email) {
+    if (!_id) {
       const users = await db.collection('users').find().toArray()
       res.status(200).json({ users: users.map((u) => extractUser(u)) })
     } else {
-      const user = await db.collection('users').findOne({ user: user })
+      const user = await db
+        .collection('users')
+        .findOne({ _id: new ObjectID(_id) })
 
       if (!user) {
         res.status(404).json({ message: 'User not found.' })
@@ -75,7 +77,7 @@ const handler = async (req, res) => {
     }
 
     const data = req.body
-    const { id, name, email, password } = data
+    const { id, name, email, password, bio, current_password, profile } = data
 
     if (!id) {
       res.status(422).json({ message: 'Incomplete information.' })
@@ -93,6 +95,18 @@ const handler = async (req, res) => {
       return
     }
 
+    if (profile && password) {
+      const isValid = await verifyPassword(
+        current_password ? current_password : '',
+        existingEmail.password
+      )
+      if (!isValid) {
+        res.status(422).json({ message: 'Incorrect Password' })
+        client.close()
+        return
+      }
+    }
+
     const hashedPassword = password ? await hashPassword(password) : null
 
     const result = await db.collection('users').findOneAndUpdate(
@@ -103,6 +117,7 @@ const handler = async (req, res) => {
         $set: {
           ...(name && { name: name }),
           ...(email && { email: email }),
+          ...(bio && { bio: bio }),
           ...(password && { password: hashedPassword }),
         },
       },

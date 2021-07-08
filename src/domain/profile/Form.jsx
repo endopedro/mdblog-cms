@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextInput, PasswordInput, Button } from '@mantine/core'
+import { TextInput, PasswordInput, Textarea, Button } from '@mantine/core'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -10,10 +10,6 @@ const schema = yup.object().shape({
     .required('Type your name.')
     .min(3, 'Minimum of 3 characters.'),
   email: yup.string().required('Type an e-mail.').email('Type a valid e-mail.'),
-  // password: yup
-  //   .string()
-  //   .min(6, 'Minimum of 6 characters.')
-  //   .required('Type a password.'),
 })
 
 const ProfileForm = ({ onSubmit, loading, profile }) => {
@@ -51,17 +47,39 @@ const ProfileForm = ({ onSubmit, loading, profile }) => {
         error={errors.email?.message}
         onChange={(e) => setValue('email', e.target.value)}
       />
+      <Textarea
+        {...register('bio')}
+        label="Bio"
+        radius="md"
+        className="mb-3"
+        disabled={loading}
+        defaultValue={profile?.bio}
+        error={errors.bio?.message}
+        onChange={(e) => setValue('bio', e.target.value)}
+        minRows={4}
+        maxRows={8}
+      />
       <PasswordInput
         {...register('password')}
-        label="Password"
+        label="New Password"
         radius="md"
-        required
         type="submit"
         maxLength="50"
         className="mb-5"
         disabled={loading}
         error={profile ? null : errors.password?.message}
         onChange={(e) => setValue('password', e.target.value)}
+      />
+      <PasswordInput
+        {...register('current_password')}
+        label="Current Password"
+        radius="md"
+        type="submit"
+        maxLength="50"
+        className="mb-5"
+        disabled={loading}
+        error={profile ? null : errors.password?.message}
+        onChange={(e) => setValue('current_password', e.target.value)}
       />
       <Button
         type="submit"
