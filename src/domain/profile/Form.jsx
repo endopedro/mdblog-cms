@@ -65,7 +65,7 @@ const ProfileForm = ({ onSubmit, loading, profile }) => {
         radius="md"
         type="submit"
         maxLength="50"
-        className="mb-5"
+        className="mb-3"
         disabled={loading}
         error={profile ? null : errors.password?.message}
         onChange={(e) => setValue('password', e.target.value)}
