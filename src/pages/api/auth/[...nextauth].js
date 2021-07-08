@@ -8,6 +8,14 @@ export default NextAuth({
   session: {
     jwt: true,
   },
+  callbacks: {
+    session: async (session, user) => {
+      return Promise.resolve({ ...session, user })
+    },
+    jwt: async (token, user, account, profile, isNewUser) => {
+      return Promise.resolve(user || token)
+    },
+  },
   providers: [
     Providers.Credentials({
       async authorize(credentials) {
