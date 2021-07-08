@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { RiCloseLine, RiCheckLine } from 'react-icons/ri'
 import { useNotifications } from '@mantine/notifications'
-import { Title, Divider, LoadingOverlay } from '@mantine/core'
+import { Title, Divider, Loader } from '@mantine/core'
 
 import Layout from '../../components/admin/Layout'
 import Form from '../../domain/profile/Form'
-import { data, editUser } from '../../states/session'
+import { data } from '../../states/session'
 import userApi from '../../services/userApi'
 
 const Profile = () => {
@@ -45,12 +45,15 @@ const Profile = () => {
 
   return (
     <Layout page="Profile">
-      <LoadingOverlay visible={loading} />
-      <Title order={3}>Edit Profile</Title>
-      <Divider className="mb-5 mt-2" />
-      {profile && (
-        <Form onSubmit={onSubmit} loading={loading} profile={profile} />
-      )}
+      <div className="relative">
+        <Title order={3}>Edit Profile</Title>
+        <Divider className="mb-5 mt-2" />
+        {profile ? (
+          <Form onSubmit={onSubmit} loading={loading} profile={profile} />
+        ) : (
+          <Loader className=" mx-auto" />
+        )}
+      </div>
     </Layout>
   )
 }

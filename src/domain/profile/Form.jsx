@@ -88,7 +88,7 @@ const ProfileForm = ({ onSubmit, loading, profile }) => {
         fullWidth
         disabled={loading}
       >
-        {profile ? 'Update' : 'Create'} Editor
+        Update Profile
       </Button>
     </form>
   )
