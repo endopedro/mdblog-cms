@@ -3,9 +3,9 @@ import { useNotifications } from '@mantine/notifications'
 import { RiCloseLine, RiCheckLine } from 'react-icons/ri'
 import { Loader } from '@mantine/core'
 
-import api from '../../services/api'
+import api from '../../../services/api'
 
-const Resource = ({ children, name }) => {
+const ResourceList = ({ children, name }) => {
   const [items, setItems] = useState(null)
   const [loading, setLoading] = useState(false)
   const notifications = useNotifications()
@@ -67,4 +67,4 @@ const Resource = ({ children, name }) => {
   )
 }
 
-export default Resource
+export default ResourceList

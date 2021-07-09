@@ -4,11 +4,11 @@ import { Paper, Table, ActionIcon, LoadingOverlay } from '@mantine/core'
 import { RiDeleteBin5Line, RiEyeLine } from 'react-icons/ri'
 
 import formatDate from '../../../utils/formatDate'
-import Resource from '../../../components/admin/Resource'
+import { ResourceList } from '../../../components/admin/Resource'
 
 const AllPostsTab = () => (
   <Paper padding="lg" shadow="xs" className="relative">
-    <Resource name="posts">
+    <ResourceList name="posts">
       {({ items, deleteItem, loading }) => (
         <Table highlightOnHover className="relative">
           <LoadingOverlay visible={loading} />
@@ -55,7 +55,7 @@ const AllPostsTab = () => (
           </tbody>
         </Table>
       )}
-    </Resource>
+    </ResourceList>
   </Paper>
 )
 
