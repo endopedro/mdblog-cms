@@ -66,7 +66,7 @@ const handler = async (req, res) => {
       createdAt: Date.now(),
     })
 
-    res.status(200).json({ message: 'Post created!', post: result.ops[0] })
+    res.status(200).json({ message: 'Post created!', result: result.ops[0] })
     client.close()
   }
 

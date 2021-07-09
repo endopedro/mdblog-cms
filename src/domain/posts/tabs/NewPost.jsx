@@ -1,14 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { RiCloseLine, RiCheckLine } from 'react-icons/ri'
 import { useNotifications } from '@mantine/notifications'
 import { LoadingOverlay } from '@mantine/core'
 
 import Form from '../Form'
-import { load, newPost } from '../../../states/posts'
+import api from '../../../services/api'
 
 const NewPost = ({ setActiveTab }) => {
+  const [loading, setLoading] = useState(false)
   const notifications = useNotifications()
-  const loading = load.use()
 
   const notify = (success = true, message) => {
     notifications.showNotification({
@@ -20,12 +20,18 @@ const NewPost = ({ setActiveTab }) => {
   }
 
   const onSubmit = async (data) => {
-    const isPostCreated = await newPost(data)
-    notify(isPostCreated)
-    if (isPostCreated) setActiveTab(0)
+    setLoading(true)
+    await api
+      .post('/posts', data)
+      .then(({ data }) => {
+        notify(true, 'Post created')
+        setActiveTab(0)
+      })
+      .catch(({ response }) => notify(false, response.data.message))
+      .finally(() => setLoading(false))
   }
 
-  return ( 
+  return (
     <div className="relative">
       <LoadingOverlay visible={loading} />
       <Form onSubmit={onSubmit} loading={loading} />
