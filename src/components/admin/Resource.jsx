@@ -5,7 +5,7 @@ import { Loader } from '@mantine/core'
 
 import api from '../../services/api'
 
-const Resource = ({ children }) => {
+const Resource = ({ children, name }) => {
   const [items, setItems] = useState(null)
   const [loading, setLoading] = useState(false)
   const notifications = useNotifications()
@@ -20,8 +20,9 @@ const Resource = ({ children }) => {
   }
 
   const deleteItem = async (id) => {
+    setLoading(true)
     await api
-      .delete('/posts', { data: { _id: id } })
+      .delete(name, { data: { _id: id } })
       .then(({ data }) => {
         setItems((prevState) => [
           ...prevState.filter((item) => item._id != data.result._id),
@@ -35,7 +36,7 @@ const Resource = ({ children }) => {
   const fetchResource = async () => {
     setLoading(true)
     await api
-      .get('/posts')
+      .get(name)
       .then(({ data }) =>
         setItems((prevState) =>
           items ? [...prevState, ...data.result] : data.result
@@ -60,7 +61,7 @@ const Resource = ({ children }) => {
           deleteItem,
         })
       ) : (
-        <Loader className=" mx-auto" />
+        <Loader className="mx-auto" />
       )}
     </>
   )

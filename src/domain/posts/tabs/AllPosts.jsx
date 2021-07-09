@@ -8,9 +8,10 @@ import Resource from '../../../components/admin/Resource'
 
 const AllPostsTab = () => (
   <Paper padding="lg" shadow="xs" className="relative">
-    <Resource>
-      {({ items, deleteItem }) => (
-        <Table highlightOnHover>
+    <Resource name="posts">
+      {({ items, deleteItem, loading }) => (
+        <Table highlightOnHover className="relative">
+          <LoadingOverlay visible={loading} />
           <thead>
             <tr>
               <th>Title</th>
