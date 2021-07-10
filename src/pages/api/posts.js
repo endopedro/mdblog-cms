@@ -4,13 +4,24 @@ import { ObjectID } from 'mongodb'
 
 const handler = async (req, res) => {
   if (req.method === 'GET') {
-    const { slug } = req.query
+    const { slug, page } = req.query
     const client = await connectToDatabase()
     const db = client.db()
 
     if (!slug) {
-      const posts = await db.collection('posts').find().toArray()
-      res.status(200).json({ result: posts })
+      const posts = await db.collection('posts').find()
+      if (page) {
+        res.status(200).json({
+          result: await posts
+            .skip(10 * (page - 1))
+            .limit(10)
+            .toArray(),
+          total: await posts.count(),
+          pages: Math.ceil((await posts.count()) / 10),
+        })
+      } else {
+        res.status(200).json({ result: await posts.toArray() })
+      }
     } else {
       const post = await db.collection('posts').findOne({ slug: slug })
 
