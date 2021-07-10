@@ -115,9 +115,9 @@ const handler = async (req, res) => {
       },
       {
         $set: {
-          ...(name && { name: name }),
-          ...(email && { email: email }),
-          ...(bio && { bio: bio }),
+          name: name,
+          email: email,
+          bio: bio,
           ...(password && { password: hashedPassword }),
         },
       },
