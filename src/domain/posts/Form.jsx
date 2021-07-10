@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { TextInput, Select, Badge, Button } from '@mantine/core'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import slugify from 'slugify'
-import { data } from '../../states/categories'
 import MdInput from '../../components/MdInput'
+
+import categoryApi from '../../services/categoryApi'
 
 const schema = yup.object().shape({
   title: yup.string().required('Enter a title').min(3, 'Type at least 3 chars'),
@@ -13,8 +14,15 @@ const schema = yup.object().shape({
   category: yup.string().required('Pick a category'),
 })
 
-const PostForm = ({ onSubmit, loading, post }) => {
-  const categories = data.use()
+const PostForm = ({ onSubmit, loading, content }) => {
+  const [categories, setCategories] = useState([])
+
+  useEffect(async () => {
+    await categoryApi()
+      .getCategories()
+      .then(({ data }) => setCategories(data.categories))
+      .catch(() => null)
+  }, [])
 
   const {
     register,
@@ -23,13 +31,13 @@ const PostForm = ({ onSubmit, loading, post }) => {
     getValues,
     watch,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(schema), defaultValues: post })
+  } = useForm({ resolver: yupResolver(schema), defaultValues: content })
 
   register('content')
   register('tags')
   register('slug')
-  const watchTags = watch('tags', post ? post.tags : [])
-  const watchSlug = watch('slug', post ? post.slug : '')
+  const watchTags = watch('tags', content ? content.tags : [])
+  const watchSlug = watch('slug', content ? content.slug : '')
   const watchCategory = watch('category')
   const watchContent = watch('content')
 
@@ -134,7 +142,7 @@ const PostForm = ({ onSubmit, loading, post }) => {
         fullWidth
         disabled={loading}
       >
-        {post ? 'Update' : 'Create'} Post
+        {content ? 'Update' : 'Create'} Post
       </Button>
     </form>
   )

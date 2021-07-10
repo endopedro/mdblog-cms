@@ -20,7 +20,7 @@ const handler = async (req, res) => {
         return
       }
 
-      res.status(200).json({ post: post })
+      res.status(200).json({ result: post })
     }
 
     client.close()

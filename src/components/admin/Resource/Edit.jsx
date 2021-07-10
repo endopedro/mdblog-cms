@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { RiCloseLine, RiCheckLine } from 'react-icons/ri'
 import { useNotifications } from '@mantine/notifications'
-import { LoadingOverlay } from '@mantine/core'
+import { Title, Divider, LoadingOverlay } from '@mantine/core'
 
 import api from '../../../services/api'
 
-const NewResource = ({ callback, Form, name }) => {
+const EditResource = ({ Form, name, content, title, callback }) => {
   const [loading, setLoading] = useState(false)
   const notifications = useNotifications()
 
@@ -21,9 +21,9 @@ const NewResource = ({ callback, Form, name }) => {
   const onSubmit = async (data) => {
     setLoading(true)
     await api
-      .post(name, data)
-      .then(({ data }) => {
-        notify(true, 'Item Created')
+      .put(name, data)
+      .then(() => {
+        notify(true, 'Item Updated')
         callback?.()
       })
       .catch(({ response }) => notify(false, response.data.message))
@@ -33,9 +33,13 @@ const NewResource = ({ callback, Form, name }) => {
   return (
     <div className="relative">
       <LoadingOverlay visible={loading} />
-      <Form onSubmit={onSubmit} loading={loading} />
+      <Title order={3}>{title}</Title>
+      <Divider className="mb-5 mt-2" />
+      {content && (
+        <Form onSubmit={onSubmit} loading={loading} content={content} />
+      )}
     </div>
   )
 }
 
-export default NewResource
+export default EditResource
