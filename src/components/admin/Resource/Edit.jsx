@@ -22,9 +22,9 @@ const EditResource = ({ Form, name, content, title, callback }) => {
     setLoading(true)
     await api
       .put(name, data)
-      .then(() => {
+      .then(({ data }) => {
         notify(true, 'Item Updated')
-        callback?.()
+        callback?.(data.result)
       })
       .catch(({ response }) => notify(false, response.data.message))
       .finally(() => setLoading(false))
@@ -33,8 +33,8 @@ const EditResource = ({ Form, name, content, title, callback }) => {
   return (
     <div className="relative">
       <LoadingOverlay visible={loading} />
-      <Title order={3}>{title}</Title>
-      <Divider className="mb-5 mt-2" />
+      {title && <Title order={3}>{title}</Title>}
+      {title && <Divider className="mb-5 mt-2" />}
       {content && (
         <Form onSubmit={onSubmit} loading={loading} content={content} />
       )}
