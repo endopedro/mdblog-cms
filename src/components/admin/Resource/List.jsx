@@ -30,6 +30,7 @@ const ResourceList = ({ children, name }) => {
         setItems((prevState) => [
           ...prevState.filter((item) => item._id != data.result._id),
         ])
+        setTotalItems((prevState) => prevState - 1)
         notify(true, 'Item deleted')
       })
       .catch(({ response }) => notify(false, response.data.message))
@@ -64,7 +65,7 @@ const ResourceList = ({ children, name }) => {
             if (page <= totalPages) await fetchResource(page)
           }}
           hasMore={items.length < totalItems}
-          loader={<h4>Loading...</h4>}
+          loader={<Loader className="mx-auto" />}
         >
           {children({
             items,
