@@ -11,7 +11,7 @@ const schema = yup.object().shape({
   slug: yup.string().required('Enter a slug').min(3, 'Type at least 3 chars'),
 })
 
-const PageForm = ({ onSubmit, loading, page }) => {
+const PageForm = ({ onSubmit, loading, content }) => {
   const {
     register,
     handleSubmit,
@@ -19,11 +19,11 @@ const PageForm = ({ onSubmit, loading, page }) => {
     getValues,
     watch,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(schema), defaultValues: page })
+  } = useForm({ resolver: yupResolver(schema), defaultValues: content })
 
   register('content')
   register('slug')
-  const watchSlug = watch('slug', page ? page.slug : '')
+  const watchSlug = watch('slug', content ? content.slug : '')
   const watchContent = watch('content')
 
   return (
@@ -70,7 +70,7 @@ const PageForm = ({ onSubmit, loading, page }) => {
         fullWidth
         disabled={loading}
       >
-        {page ? 'Update' : 'Create'} Page
+        {content ? 'Update' : 'Create'} Page
       </Button>
     </form>
   )

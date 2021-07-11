@@ -5,7 +5,7 @@ const pageApi = () => ({
   getPages: () => api.get('/pages'),
   createPage: (data) => api.post('/pages', data),
   updatePage: (data) => api.put('/pages', data),
-  deletePage: (slug) => api.delete('/pages', { data: { slug: slug } }),
+  deletePage: (id) => api.delete('/pages', { data: { _id: id } }),
 })
 
 export default pageApi

@@ -4,23 +4,34 @@ import { ObjectID } from 'mongodb'
 
 const handler = async (req, res) => {
   if (req.method === 'GET') {
-    const { slug } = req.query
+    const { slug, page } = req.query
     const client = await connectToDatabase()
     const db = client.db()
 
     if (!slug) {
-      const pages = await db.collection('pages').find().toArray()
-      res.status(200).json({ pages: pages })
+      const pages = await db.collection('pages').find()
+      if (page) {
+        res.status(200).json({
+          result: await pages
+            .skip(10 * (page - 1))
+            .limit(10)
+            .toArray(),
+          total: await pages.count(),
+          pages: Math.ceil((await pages.count()) / 10),
+        })
+      } else {
+        res.status(200).json({ result: await pages.toArray() })
+      }
     } else {
-      const page = await db.collection('pages').findOne({ slug: slug })
+      const pageObj = await db.collection('pages').findOne({ slug: slug })
 
-      if (!page) {
-        res.status(404).json({ message: 'Page not found.' })
+      if (!pageObj) {
+        res.status(404).json({ message: 'Post not found.' })
         client.close()
         return
       }
 
-      res.status(200).json({ page: page })
+      res.status(200).json({ result: pageObj })
     }
 
     client.close()
@@ -117,9 +128,9 @@ const handler = async (req, res) => {
       return
     }
 
-    const { slug } = req.body
+    const { _id } = req.body
 
-    if (!slug) {
+    if (!_id) {
       res.status(422).json({ message: 'No slug given.' })
       return
     }
@@ -129,16 +140,16 @@ const handler = async (req, res) => {
 
     const deletedPage = await db
       .collection('pages')
-      .findOneAndDelete({ slug: slug })
+      .findOneAndDelete({ _id: new ObjectID(_id) })
       .then((page) => page.value)
 
     if (!deletedPage) {
-      res.status(422).json({ message: 'Slug no exists.' })
+      res.status(422).json({ message: 'Page no exists.' })
       client.close()
       return
     }
 
-    res.status(200).json({ message: 'Page deleted!', page: deletedPage })
+    res.status(200).json({ message: 'Page deleted!', result: deletedPage })
     client.close()
   }
 }
