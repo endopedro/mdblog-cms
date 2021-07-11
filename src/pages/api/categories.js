@@ -4,15 +4,28 @@ import { ObjectID } from 'mongodb'
 
 const handler = async (req, res) => {
   if (req.method === 'GET') {
-    const { id } = req.query
+    const { _id, page } = req.query
     const client = await connectToDatabase()
     const db = client.db()
 
-    if (!id) {
-      const categories = await db.collection('categories').find().toArray()
-      res.status(200).json({ categories: categories })
+    if (!_id) {
+      const categories = await db.collection('categories').find()
+      if (page) {
+        res.status(200).json({
+          result: await categories
+            .skip(10 * (page - 1))
+            .limit(10)
+            .toArray(),
+          total: await categories.count(),
+          pages: Math.ceil((await categories.count()) / 10),
+        })
+      } else {
+        res.status(200).json({ result: await categories.toArray() })
+      }
     } else {
-      const category = await db.collection('categories').findOne({ _id: id })
+      const category = await db
+        .collection('categories')
+        .findOne({ _id: new ObjectID(_id) })
 
       if (!category) {
         res.status(404).json({ message: 'Category not found.' })
@@ -20,7 +33,7 @@ const handler = async (req, res) => {
         return
       }
 
-      res.status(200).json({ category: category })
+      res.status(200).json({ result: category })
     }
 
     client.close()
@@ -98,7 +111,12 @@ const handler = async (req, res) => {
         { returnNewDocument: true }
       )
 
-    res.status(200).json({ message: 'Category updated!', category: result })
+    res.status(200).json({
+      message: 'Category updated!',
+      oldEntry: result.value,
+      result: { _id: _id, label: label },
+    })
+
     client.close()
   }
 
@@ -109,9 +127,9 @@ const handler = async (req, res) => {
       return
     }
 
-    const { id } = req.body
+    const { _id } = req.body
 
-    if (!id) {
+    if (!_id) {
       res.status(422).json({ message: 'No category id given.' })
       return
     }
@@ -121,7 +139,7 @@ const handler = async (req, res) => {
 
     const deletedCategory = await db
       .collection('categories')
-      .findOneAndDelete({ _id: new ObjectID(id) })
+      .findOneAndDelete({ _id: new ObjectID(_id) })
       .then((category) => category.value)
 
     if (!deletedCategory) {
@@ -132,7 +150,7 @@ const handler = async (req, res) => {
 
     res
       .status(200)
-      .json({ message: 'Category deleted!', category: deletedCategory })
+      .json({ message: 'Category deleted!', result: deletedCategory })
 
     client.close()
   }

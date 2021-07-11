@@ -1,79 +1,74 @@
 import React, { useState } from 'react'
 import { Paper, Table, ActionIcon, LoadingOverlay } from '@mantine/core'
-import { useNotifications } from '@mantine/notifications'
-import {
-  RiDeleteBin5Line,
-  RiCloseLine,
-  RiCheckLine,
-  RiEdit2Line,
-} from 'react-icons/ri'
-
-import { data, load, deleteCategory } from '../../../states/categories'
+import { RiDeleteBin5Line, RiEdit2Line } from 'react-icons/ri'
 
 import EditModal from '../EditModal'
+import { ResourceList } from '../../../components/admin/Resource'
+import SearchPopover from '../../../components/SearchPopover'
 
 const AllCategoriesTab = () => {
   const [showModal, setShowModal] = useState(false)
-  const categories = data.use()
-  const loading = load.use()
-  const notifications = useNotifications()
-
-  const notify = (success) => {
-    notifications.showNotification({
-      title: success ? 'Success' : 'Fail',
-      message: success ? 'Post Deleted' : 'Something went wrong',
-      color: success ? 'blue' : 'red',
-      icon: success ? <RiCheckLine /> : <RiCloseLine />,
-    })
-  }
+  const [search, setSearch] = useState('')
 
   return (
-    <>
-      <Paper padding="lg" shadow="xs" className="relative">
-        <LoadingOverlay visible={loading} />
-        <Table highlightOnHover>
-          <thead>
-            <tr>
-              <th>Category</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {categories?.map((category) => (
-              <tr key={category._id}>
-                <td>{category.label}</td>
-                <td>
-                  <div className="flex">
-                    <ActionIcon
-                      color="red"
-                      radius="lg"
-                      className="mr-2"
-                      onClick={async (e) => {
-                        e.stopPropagation()
-                        notify(await deleteCategory(category._id))
-                      }}
-                    >
-                      <RiDeleteBin5Line className="text-red-400" />
-                    </ActionIcon>
-                    <ActionIcon
-                      radius="lg"
-                      color="blue"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        setShowModal(category)
-                      }}
-                    >
-                      <RiEdit2Line />
-                    </ActionIcon>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </Paper>
-      <EditModal handleModal={{ state: showModal, set: setShowModal }} />
-    </>
+    <Paper padding="lg" shadow="xs" className="relative">
+      <ResourceList name="categories">
+        {({ items, deleteItem, loading, updateItem }) => (
+          <>
+            <Table highlightOnHover className="relative">
+              <LoadingOverlay visible={loading} />
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>
+                    <SearchPopover value={search} setValue={setSearch} />
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {items
+                  ?.filter((category) =>
+                    category.label.toLowerCase().includes(search.toLowerCase())
+                  )
+                  .map((category) => (
+                    <tr key={category._id}>
+                      <td>{category.label}</td>
+                      <td className="flex">
+                        <ActionIcon
+                          color="red"
+                          radius="lg"
+                          className="mr-2"
+                          onClick={async (e) => {
+                            e.stopPropagation()
+                            deleteItem(category._id)
+                          }}
+                        >
+                          <RiDeleteBin5Line className="text-red-400" />
+                        </ActionIcon>
+                        <ActionIcon
+                          radius="lg"
+                          color="blue"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            setShowModal(category)
+                          }}
+                        >
+                          <RiEdit2Line />
+                        </ActionIcon>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </Table>
+
+            <EditModal
+              handleModal={{ state: showModal, set: setShowModal }}
+              updateItem={updateItem}
+            />
+          </>
+        )}
+      </ResourceList>
+    </Paper>
   )
 }
 

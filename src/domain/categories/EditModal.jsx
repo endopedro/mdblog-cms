@@ -1,38 +1,39 @@
-import React from 'react'
-import { Modal, LoadingOverlay } from '@mantine/core'
-import { RiCloseLine, RiCheckLine } from 'react-icons/ri'
-import { useNotifications } from '@mantine/notifications'
+import React, { useState, useEffect } from 'react'
+import { Modal } from '@mantine/core'
+import { useRouter } from 'next/router'
 
-import { load, editCategory } from '../../states/categories'
+import categoryApi from '../../services/categoryApi'
+import { EditResource } from '../../components/admin/Resource'
 import Form from './Form'
 
-const EditModal = ({ handleModal }) => {
-  const loading = load.use()
-  const notifications = useNotifications()
+const EditModal = ({ handleModal, updateItem }) => {
+  const router = useRouter()
+  const [category, setCategory] = useState(null)
 
-  const notify = (success) => {
-    notifications.showNotification({
-      title: success ? 'Success' : 'Fail',
-      message: success ? 'Category Updated' : 'Something went wrong',
-      color: success ? 'blue' : 'red',
-      icon: success ? <RiCheckLine /> : <RiCloseLine />,
-    })
-  }
-
-  const onSubmit = async (data) => {
-    const isCategoryUpdated = await editCategory(data)
-    notify(isCategoryUpdated)
-    handleModal.set(false)
-  }
+  useEffect(async () => {
+    if (handleModal.state) {
+      categoryApi()
+        .getCategory(handleModal.state._id)
+        .then(({ data }) => setCategory(data.result))
+        .catch(() => null)
+    }
+  }, [handleModal.state])
 
   return (
     <Modal
-      opened={handleModal.state}
+      opened={!!handleModal.state}
       onClose={() => handleModal.set(false)}
       title="Edit Category"
     >
-      <LoadingOverlay visible={loading} />
-      <Form category={handleModal.state} onSubmit={onSubmit} />
+      <EditResource
+        Form={Form}
+        name="categories"
+        content={category}
+        callback={(result) => {
+          updateItem(result)
+          handleModal.set(false)
+        }}
+      />
     </Modal>
   )
 }

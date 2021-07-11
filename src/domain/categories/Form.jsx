@@ -7,11 +7,11 @@ import * as yup from 'yup'
 const schema = yup.object().shape({
   label: yup
     .string()
-    .required('Enter a category')
+    .required('Enter a content')
     .min(3, 'Type at least 3 chars'),
 })
 
-const PostForm = ({ onSubmit, loading, category }) => {
+const PostForm = ({ onSubmit, loading, content }) => {
   const {
     register,
     handleSubmit,
@@ -20,7 +20,7 @@ const PostForm = ({ onSubmit, loading, category }) => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: { label: category?.label, _id: category?._id },
+    defaultValues: { label: content?.label, _id: content?._id },
   })
 
   return (
@@ -31,7 +31,7 @@ const PostForm = ({ onSubmit, loading, category }) => {
         radius="md"
         required
         className="mb-3"
-        error={errors.category?.message}
+        error={errors.content?.message}
         disabled={loading}
         {...register('label')}
         defaultValue={getValues('label')}
@@ -44,7 +44,7 @@ const PostForm = ({ onSubmit, loading, category }) => {
         fullWidth
         disabled={loading}
       >
-        {category ? 'Update' : 'Create'} Category
+        {content ? 'Update' : 'Create'} Category
       </Button>
     </form>
   )
