@@ -20,7 +20,7 @@ const PostForm = ({ onSubmit, loading, content }) => {
   useEffect(async () => {
     await categoryApi()
       .getCategories()
-      .then(({ data }) => setCategories(data.categories))
+      .then(({ data }) => setCategories(data.result))
       .catch(() => null)
   }, [])
 
