@@ -22,6 +22,14 @@ const ResourceList = ({ children, name }) => {
     })
   }
 
+  const updateItem = (newItem) =>
+    setItems((prevState) => [
+      ...prevState.map((item) => {
+        if (item._id == newItem._id) return newItem
+        else return item
+      }),
+    ])
+
   const deleteItem = async (id) => {
     setLoading(true)
     await api
@@ -75,6 +83,7 @@ const ResourceList = ({ children, name }) => {
             setLoading,
             notify,
             deleteItem,
+            updateItem,
           })}
         </InfiniteScroll>
       ) : (
