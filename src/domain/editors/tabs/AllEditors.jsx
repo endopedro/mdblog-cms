@@ -18,7 +18,7 @@ const AllEditorsTab = () => {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Email</th>
+                <th className="hidden md:table-cell">Email</th>
                 <th>
                   <SearchPopover value={search} setValue={setSearch} />
                 </th>
@@ -33,13 +33,13 @@ const AllEditorsTab = () => {
                   <Link href={`/admin/editors/${editor._id}`} key={editor._id}>
                     <tr className="cursor-pointer">
                       <td>{editor.name}</td>
-                      <td>{editor.email}</td>
+                      <td className="hidden md:table-cell">{editor.email}</td>
                       <td>
                         <div className="flex">
                           <ActionIcon
                             color="red"
                             radius="lg"
-                            className="mr-2"
+                            className="md:mr-2 float-left"
                             onClick={async (e) => {
                               e.stopPropagation()
                               deleteItem(editor._id)
@@ -51,6 +51,7 @@ const AllEditorsTab = () => {
                             radius="lg"
                             color="blue"
                             onClick={(e) => e.stopPropagation()}
+                            className="float-left"
                           >
                             <RiEyeLine />
                           </ActionIcon>
