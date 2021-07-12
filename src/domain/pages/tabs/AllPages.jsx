@@ -19,8 +19,8 @@ const AllPagesTab = () => {
             <thead>
               <tr>
                 <th>Title</th>
-                <th>Slug</th>
-                <th>Date</th>
+                <th className="hidden md:table-cell">Slug</th>
+                <th className="hidden md:table-cell">Date</th>
                 <th>
                   <SearchPopover value={search} setValue={setSearch} />
                 </th>
@@ -35,29 +35,30 @@ const AllPagesTab = () => {
                   <Link href={`/admin/pages/${page.slug}`} key={page._id}>
                     <tr className="cursor-pointer">
                       <td>{page.title}</td>
-                      <td>{page.slug}</td>
-                      <td>{formatDate(page.createdAt)}</td>
+                      <td className="hidden md:table-cell">{page.slug}</td>
+                      <td className="hidden md:table-cell">
+                        {formatDate(page.createdAt)}
+                      </td>
                       <td>
-                        <div className="flex">
-                          <ActionIcon
-                            color="red"
-                            radius="lg"
-                            className="mr-2"
-                            onClick={async (e) => {
-                              e.stopPropagation()
-                              deleteItem(page._id)
-                            }}
-                          >
-                            <RiDeleteBin5Line className="text-red-400" />
-                          </ActionIcon>
-                          <ActionIcon
-                            radius="lg"
-                            color="blue"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <RiEyeLine />
-                          </ActionIcon>
-                        </div>
+                        <ActionIcon
+                          color="red"
+                          radius="lg"
+                          className="md:mr-2 float-left"
+                          onClick={async (e) => {
+                            e.stopPropagation()
+                            deleteItem(page._id)
+                          }}
+                        >
+                          <RiDeleteBin5Line className="text-red-400" />
+                        </ActionIcon>
+                        <ActionIcon
+                          radius="lg"
+                          color="blue"
+                          onClick={(e) => e.stopPropagation()}
+                          className="float-left"
+                        >
+                          <RiEyeLine />
+                        </ActionIcon>
                       </td>
                     </tr>
                   </Link>
