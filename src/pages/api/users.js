@@ -5,13 +5,28 @@ import { hashPassword, extractUser, verifyPassword } from '../../utils/auth'
 
 const handler = async (req, res) => {
   if (req.method === 'GET') {
-    const { _id } = req.query
+    const { _id, page } = req.query
     const client = await connectToDatabase()
     const db = client.db()
 
     if (!_id) {
-      const users = await db.collection('users').find().toArray()
-      res.status(200).json({ users: users.map((u) => extractUser(u)) })
+      const users = await db.collection('users').find()
+      if (page) {
+        res.status(200).json({
+          result: await users
+            .skip(10 * (page - 1))
+            .limit(10)
+            .toArray(),
+          total: await users.count(),
+          pages: Math.ceil((await users.count()) / 10),
+        })
+      } else {
+        res.status(200).json({
+          result: await (
+            await users.toArray()
+          ).map((user) => extractUser(user)),
+        })
+      }
     } else {
       const user = await db
         .collection('users')
@@ -23,7 +38,7 @@ const handler = async (req, res) => {
         return
       }
 
-      res.status(200).json({ user: extractUser(user) })
+      res.status(200).json({ result: extractUser(user) })
     }
 
     client.close()
@@ -137,9 +152,9 @@ const handler = async (req, res) => {
       return
     }
 
-    const { email } = req.body
+    const { _id } = req.body
 
-    if (!email) {
+    if (!_id) {
       res.status(422).json({ message: 'No ID given.' })
       return
     }
@@ -149,7 +164,7 @@ const handler = async (req, res) => {
 
     const deletedUser = await db
       .collection('users')
-      .findOneAndDelete({ email: email })
+      .findOneAndDelete({ _id: new ObjectID(_id) })
       .then((user) => user.value)
 
     if (!deletedUser) {
@@ -158,7 +173,7 @@ const handler = async (req, res) => {
       return
     }
 
-    res.status(200).json({ message: 'User deleted!', user: deletedUser })
+    res.status(200).json({ message: 'User deleted!', result: deletedUser })
     client.close()
   }
 }

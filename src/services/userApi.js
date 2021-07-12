@@ -10,7 +10,7 @@ const userApi = () => ({
   getUser: (id) => api.get('/users', { params: { _id: id } }),
   registerUser: (data) => api.post('/users', data),
   updateUser: (data) => api.put('/users', data),
-  deleteUser: (email) => api.delete('/users', { data: { email: email } }),
+  deleteUser: (id) => api.delete('/users', { data: { _id: id } }),
 })
 
 export default userApi

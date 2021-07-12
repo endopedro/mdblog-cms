@@ -1,74 +1,68 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { Paper, Table, ActionIcon, LoadingOverlay } from '@mantine/core'
-import { useNotifications } from '@mantine/notifications'
-import {
-  RiDeleteBin5Line,
-  RiEyeLine,
-  RiCloseLine,
-  RiCheckLine,
-} from 'react-icons/ri'
+import { RiDeleteBin5Line, RiEyeLine } from 'react-icons/ri'
 
-import { data, load, deleteUser } from '../../../states/users'
+import { ResourceList } from '../../../components/admin/Resource'
+import SearchPopover from '../../../components/SearchPopover'
 
 const AllEditorsTab = () => {
-  const editors = data.use()
-  const loading = load.use()
-  const notifications = useNotifications()
-
-  const notify = (success) => {
-    notifications.showNotification({
-      title: success ? 'Success' : 'Fail',
-      message: success ? 'Editor Deleted' : 'Something went wrong',
-      color: success ? 'blue' : 'red',
-      icon: success ? <RiCheckLine /> : <RiCloseLine />,
-    })
-  }
+  const [search, setSearch] = useState('')
 
   return (
     <Paper padding="lg" shadow="xs" className="relative">
-      <LoadingOverlay visible={loading} />
-      <Table highlightOnHover>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th />
-          </tr>
-        </thead>
-        <tbody>
-          {editors?.map((editor) => (
-            <Link href={`/admin/editors/${editor.email}`} key={editor._id}>
-              <tr className="cursor-pointer">
-                <td>{editor.name}</td>
-                <td>{editor.email}</td>
-                <td>
-                  <div className="flex">
-                    <ActionIcon
-                      color="red"
-                      radius="lg"
-                      className="mr-2"
-                      onClick={async (e) => {
-                        e.stopPropagation()
-                        notify(await deleteUser(editor.email))
-                      }}
-                    >
-                      <RiDeleteBin5Line className="text-red-400" />
-                    </ActionIcon>
-                    <ActionIcon
-                      radius="lg"
-                      color="blue"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <RiEyeLine />
-                    </ActionIcon>
-                  </div>
-                </td>
+      <ResourceList name="users">
+        {({ items, deleteItem, loading }) => (
+          <Table highlightOnHover className="relative">
+            <LoadingOverlay visible={loading} />
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>
+                  <SearchPopover value={search} setValue={setSearch} />
+                </th>
               </tr>
-            </Link>
-          ))}
-        </tbody>
-      </Table>
+            </thead>
+            <tbody>
+              {items
+                ?.filter((editor) =>
+                  editor.name.toLowerCase().includes(search.toLowerCase())
+                )
+                .map((editor) => (
+                  <Link href={`/admin/editors/${editor._id}`} key={editor._id}>
+                    <tr className="cursor-pointer">
+                      <td>{editor.name}</td>
+                      <td>{editor.email}</td>
+                      <td>
+                        <div className="flex">
+                          <ActionIcon
+                            color="red"
+                            radius="lg"
+                            className="mr-2"
+                            onClick={async (e) => {
+                              e.stopPropagation()
+                              deleteItem(editor._id)
+                            }}
+                          >
+                            <RiDeleteBin5Line className="text-red-400" />
+                          </ActionIcon>
+                          <ActionIcon
+                            radius="lg"
+                            color="blue"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <RiEyeLine />
+                          </ActionIcon>
+                        </div>
+                      </td>
+                    </tr>
+                  </Link>
+                ))}
+            </tbody>
+          </Table>
+        )}
+      </ResourceList>
     </Paper>
   )
 }

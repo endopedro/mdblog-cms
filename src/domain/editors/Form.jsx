@@ -16,13 +16,13 @@ const schema = yup.object().shape({
   //   .required('Type a password.'),
 })
 
-const EditorForm = ({ onSubmit, loading, editor }) => {
+const EditorForm = ({ onSubmit, loading, content }) => {
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(schema), defaultValues: editor })
+  } = useForm({ resolver: yupResolver(schema), defaultValues: content })
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -35,7 +35,7 @@ const EditorForm = ({ onSubmit, loading, editor }) => {
         maxLength="50"
         className="mb-3"
         disabled={loading}
-        defaultValue={editor?.name}
+        defaultValue={content?.name}
         error={errors.name?.message}
         onChange={(e) => setValue('name', e.target.value)}
       />
@@ -47,7 +47,7 @@ const EditorForm = ({ onSubmit, loading, editor }) => {
         maxLength="50"
         className="mb-3"
         disabled={loading}
-        defaultValue={editor?.email}
+        defaultValue={content?.email}
         error={errors.email?.message}
         onChange={(e) => setValue('email', e.target.value)}
       />
@@ -60,7 +60,7 @@ const EditorForm = ({ onSubmit, loading, editor }) => {
         maxLength="50"
         className="mb-5"
         disabled={loading}
-        error={editor ? null : errors.password?.message}
+        error={content ? null : errors.password?.message}
         onChange={(e) => setValue('password', e.target.value)}
       />
       <Button
@@ -70,7 +70,7 @@ const EditorForm = ({ onSubmit, loading, editor }) => {
         fullWidth
         disabled={loading}
       >
-        {editor ? 'Update' : 'Create'} Editor
+        {content ? 'Update' : 'Create'} Editor
       </Button>
     </form>
   )
