@@ -80,7 +80,7 @@ const handler = async (req, res) => {
 
     const user = extractUser(result.ops[0])
 
-    res.status(200).json({ message: 'User created!', user: user })
+    res.status(200).json({ message: 'User created!', result: user })
     client.close()
   }
 
@@ -141,7 +141,7 @@ const handler = async (req, res) => {
       }
     )
 
-    res.status(200).json({ message: 'User updated!', user: result })
+    res.status(200).json({ message: 'User updated!', result: result })
     client.close()
   }
 

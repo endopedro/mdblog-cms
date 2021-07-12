@@ -12,13 +12,15 @@ const schema = yup.object().shape({
   email: yup.string().required('Type an e-mail.').email('Type a valid e-mail.'),
 })
 
-const ProfileForm = ({ onSubmit, loading, profile }) => {
+const ProfileForm = ({ onSubmit, loading, content }) => {
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(schema), defaultValues: profile })
+  } = useForm({ resolver: yupResolver(schema), defaultValues: content })
+
+  register('email')
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -31,7 +33,7 @@ const ProfileForm = ({ onSubmit, loading, profile }) => {
         maxLength="50"
         className="mb-3"
         disabled={loading}
-        defaultValue={profile?.name}
+        defaultValue={content?.name}
         error={errors.name?.message}
         onChange={(e) => setValue('name', e.target.value)}
       />
@@ -43,7 +45,7 @@ const ProfileForm = ({ onSubmit, loading, profile }) => {
         maxLength="50"
         className="mb-3"
         disabled={loading}
-        defaultValue={profile?.email}
+        defaultValue={content?.email}
         error={errors.email?.message}
         onChange={(e) => setValue('email', e.target.value)}
       />
@@ -53,7 +55,7 @@ const ProfileForm = ({ onSubmit, loading, profile }) => {
         radius="md"
         className="mb-3"
         disabled={loading}
-        defaultValue={profile?.bio}
+        defaultValue={content?.bio}
         error={errors.bio?.message}
         onChange={(e) => setValue('bio', e.target.value)}
         minRows={4}
@@ -67,7 +69,7 @@ const ProfileForm = ({ onSubmit, loading, profile }) => {
         maxLength="50"
         className="mb-3"
         disabled={loading}
-        error={profile ? null : errors.password?.message}
+        error={content ? null : errors.password?.message}
         onChange={(e) => setValue('password', e.target.value)}
       />
       <PasswordInput
@@ -78,7 +80,7 @@ const ProfileForm = ({ onSubmit, loading, profile }) => {
         maxLength="50"
         className="mb-5"
         disabled={loading}
-        error={profile ? null : errors.password?.message}
+        error={content ? null : errors.password?.message}
         onChange={(e) => setValue('current_password', e.target.value)}
       />
       <Button
