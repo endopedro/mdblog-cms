@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { RiCloseLine, RiCheckLine } from 'react-icons/ri'
 import { useNotifications } from '@mantine/notifications'
-import { Title, Divider, LoadingOverlay } from '@mantine/core'
+import { Title, Divider, Loader, LoadingOverlay } from '@mantine/core'
 
 import api from '../../../services/api'
 
@@ -35,8 +35,10 @@ const EditResource = ({ Form, name, content, title, callback }) => {
       <LoadingOverlay visible={loading} />
       {title && <Title order={3}>{title}</Title>}
       {title && <Divider className="mb-5 mt-2" />}
-      {content && (
+      {content ? (
         <Form onSubmit={onSubmit} loading={loading} content={content} />
+      ) : (
+        <Loader className="mx-auto" />
       )}
     </div>
   )
