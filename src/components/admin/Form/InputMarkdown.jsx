@@ -8,7 +8,6 @@ const InputMarkdown = ({ name, className, ...rest }) => {
   const [selectedTab, setSelectedTab] = useState('write')
 
   methods.register(name)
-  const watchField = methods.watch(name, '')
 
   const save = async function* (data) {
     // Promise that waits for "time" milliseconds
@@ -42,7 +41,7 @@ const InputMarkdown = ({ name, className, ...rest }) => {
         }
         childProps={{ writeButton: { tabIndex: -1 } }}
         paste={{ saveImage: save }}
-        value={watchField}
+        value={methods.getValues(name)}
         onChange={(val) => methods.setValue(name, val)}
         {...rest}
       />
