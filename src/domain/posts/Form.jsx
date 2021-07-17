@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import { TextInput, Select, Badge, Button } from '@mantine/core'
-import { useForm } from 'react-hook-form'
+import { Button, Loader } from '@mantine/core'
+import { useForm, FormProvider } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import slugify from 'slugify'
-import MdInput from '../../components/MdInput'
+import {
+  InputText,
+  InputSelect,
+  InputTags,
+  InputMarkdown,
+} from '../../components/admin/Form'
 
+import ImageUploader from '../../components/admin/ImageUploader'
 import categoryApi from '../../services/categoryApi'
 
 const schema = yup.object().shape({
@@ -15,7 +20,7 @@ const schema = yup.object().shape({
 })
 
 const PostForm = ({ onSubmit, loading, content }) => {
-  const [categories, setCategories] = useState([])
+  const [categories, setCategories] = useState(null)
 
   useEffect(async () => {
     await categoryApi()
@@ -24,127 +29,61 @@ const PostForm = ({ onSubmit, loading, content }) => {
       .catch(() => null)
   }, [])
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    getValues,
-    watch,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(schema), defaultValues: content })
+  const methods = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: content,
+  })
 
-  register('content')
-  register('tags')
-  register('slug')
-  const watchTags = watch('tags', content ? content.tags : [])
-  const watchSlug = watch('slug', content ? content.slug : '')
-  const watchCategory = watch('category')
-  const watchContent = watch('content')
-
-  const toggleTags = (tag, action) => {
-    const cleanTag = tag
-      .toLowerCase()
-      .split(' ')
-      .filter((x) => x)[0]
-    if (!cleanTag) return
-    const tags = watchTags ? [...watchTags] : []
-    const idx = tags.indexOf(cleanTag)
-
-    if (idx !== -1 && action === 'remove') tags.splice(idx, 1)
-    else if (idx === -1 && action === 'add') tags.push(cleanTag)
-
-    setValue('tags', tags)
-  }
+  if (!categories) return <Loader className="mx-auto" />
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <TextInput
-        label="Title"
-        radius="md"
-        required
-        className="mb-3"
-        error={errors.title?.message}
-        disabled={loading}
-        {...register('title')}
-        defaultValue={getValues('title')}
-        onChange={(e) => setValue('title', e.target.value)}
-      />
-      <TextInput
-        label="Slug"
-        radius="md"
-        required
-        className="mb-3"
-        onChange={(e) =>
-          setValue(
-            'slug',
-            slugify(e.target.value, { lower: true, strict: true })
-          )
-        }
-        description={watchSlug}
-        error={errors.slug?.message}
-        disabled={loading}
-        name="slug"
-        defaultValue={getValues('slug')}
-      />
-      <div className="grid grid-cols-2 gap-4 mb-7">
-        <div>
-          <Select
-            data={categories?.map((cat) => ({
-              value: cat._id,
-              label: cat.label,
-            }))}
-            placeholder="Pick one"
-            label="Category"
-            radius="md"
-            required
-            error={errors.category?.message}
-            disabled={loading || !categories.length}
-            {...register('category')}
-            value={watchCategory}
-            onChange={(e) => setValue('category', e.target.value)}
-          />
-        </div>
-        <div>
-          <TextInput
-            label="Tags"
-            disabled={loading}
-            radius="md"
-            onKeyPress={(e) => {
-              if (e.key === 'Enter') {
-                toggleTags(e.target.value, 'add')
-                e.preventDefault()
-              }
-            }}
-          />
-          <div className="mt-2">
-            {watchTags?.map((tag) => (
-              <Badge
-                variant="outline"
-                className="mr-2 cursor-pointer"
-                onClick={() => toggleTags(tag, 'remove')}
-              >
-                {tag}
-              </Badge>
-            ))}
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <InputText
+          className="mb-3"
+          name="title"
+          required
+          error={methods.errors?.title?.message}
+          disabled={loading}
+        />
+        <InputText
+          className="mb-3"
+          name="slug"
+          required
+          slugField
+          error={methods.errors?.slug?.message}
+          disabled={loading}
+        />
+        <div className="grid grid-cols-2 gap-4 mb-3">
+          <div>
+            <InputSelect
+              name="category"
+              data={categories?.map((cat) => ({
+                value: cat._id,
+                label: cat.label,
+              }))}
+              required
+              error={methods.errors?.category?.message}
+              disabled={loading}
+            />
+          </div>
+          <div>
+            <InputTags name="tags" disabled={loading} value={content?.tags} />
           </div>
         </div>
-      </div>
-      <MdInput
-        value={watchContent}
-        onChange={(val) => setValue('content', val)}
-        className="mb-3"
-        disabled={loading}
-      />
-      <Button
-        type="submit"
-        variant="light"
-        radius="md"
-        fullWidth
-        disabled={loading}
-      >
-        {content ? 'Update' : 'Create'} Post
-      </Button>
-    </form>
+        <ImageUploader className="mb-7" />
+        <InputMarkdown name="content" className="mb-3" disabled={loading} />
+        <Button
+          type="submit"
+          variant="light"
+          radius="md"
+          fullWidth
+          disabled={loading}
+        >
+          {content ? 'Update' : 'Create'} Post
+        </Button>
+      </form>
+    </FormProvider>
   )
 }
 
