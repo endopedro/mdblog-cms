@@ -1,10 +1,9 @@
 import React from 'react'
-import { TextInput, Button } from '@mantine/core'
-import { useForm } from 'react-hook-form'
+import { Button } from '@mantine/core'
+import { useForm, FormProvider } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import slugify from 'slugify'
-import MdInput from '../../components/MdInput'
+import { InputText, InputMarkdown } from '../../components/admin/Form'
 
 const schema = yup.object().shape({
   title: yup.string().required('Enter a title').min(3, 'Type at least 3 chars'),
@@ -12,67 +11,41 @@ const schema = yup.object().shape({
 })
 
 const PageForm = ({ onSubmit, loading, content }) => {
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    getValues,
-    watch,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(schema), defaultValues: content })
-
-  register('content')
-  register('slug')
-  const watchSlug = watch('slug', content ? content.slug : '')
-  const watchContent = watch('content')
+  const methods = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: content,
+  })
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <TextInput
-        label="Title"
-        radius="md"
-        required
-        className="mb-3"
-        error={errors.title?.message}
-        disabled={loading}
-        {...register('title')}
-        defaultValue={getValues('title')}
-        onChange={(e) => setValue('title', e.target.value)}
-      />
-      <TextInput
-        label="Slug"
-        radius="md"
-        required
-        className="mb-5"
-        onChange={(e) =>
-          setValue(
-            'slug',
-            slugify(e.target.value, { lower: true, strict: true })
-          )
-        }
-        description={watchSlug}
-        error={errors.slug?.message}
-        disabled={loading}
-        name="slug"
-        defaultValue={getValues('slug')}
-      />
-
-      <MdInput
-        value={watchContent}
-        onChange={(val) => setValue('content', val)}
-        className="mb-3"
-        disabled={loading}
-      />
-      <Button
-        type="submit"
-        variant="light"
-        radius="md"
-        fullWidth
-        disabled={loading}
-      >
-        {content ? 'Update' : 'Create'} Page
-      </Button>
-    </form>
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <InputText
+          className="mb-3"
+          name="title"
+          required
+          error={methods.errors?.title?.message}
+          disabled={loading}
+        />
+        <InputText
+          className="mb-7"
+          name="slug"
+          required
+          slugField
+          error={methods.errors?.slug?.message}
+          disabled={loading}
+        />
+        <InputMarkdown name="content" className="mb-3" disabled={loading} />
+        <Button
+          type="submit"
+          variant="light"
+          radius="md"
+          fullWidth
+          disabled={loading}
+        >
+          {content ? 'Update' : 'Create'} Page
+        </Button>
+      </form>
+    </FormProvider>
   )
 }
 
