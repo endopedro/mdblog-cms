@@ -1,8 +1,9 @@
 import React from 'react'
-import { TextInput, PasswordInput, Button } from '@mantine/core'
-import { useForm } from 'react-hook-form'
+import { Button } from '@mantine/core'
+import { useForm, FormProvider } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { InputText, InputPassword } from '../../components/admin/Form'
 
 const schema = yup.object().shape({
   name: yup
@@ -17,62 +18,51 @@ const schema = yup.object().shape({
 })
 
 const EditorForm = ({ onSubmit, loading, content }) => {
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(schema), defaultValues: content })
+  const methods = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: content,
+  })
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input type="hidden" {...register('id')} />
-      <TextInput
-        {...register('name')}
-        label="Name"
-        radius="md"
-        required
-        maxLength="50"
-        className="mb-3"
-        disabled={loading}
-        defaultValue={content?.name}
-        error={errors.name?.message}
-        onChange={(e) => setValue('name', e.target.value)}
-      />
-      <TextInput
-        {...register('email')}
-        label="E-mail"
-        radius="md"
-        required
-        maxLength="50"
-        className="mb-3"
-        disabled={loading}
-        defaultValue={content?.email}
-        error={errors.email?.message}
-        onChange={(e) => setValue('email', e.target.value)}
-      />
-      <PasswordInput
-        {...register('password')}
-        label="Password"
-        radius="md"
-        required
-        type="submit"
-        maxLength="50"
-        className="mb-5"
-        disabled={loading}
-        error={content ? null : errors.password?.message}
-        onChange={(e) => setValue('password', e.target.value)}
-      />
-      <Button
-        type="submit"
-        variant="light"
-        radius="md"
-        fullWidth
-        disabled={loading}
-      >
-        {content ? 'Update' : 'Create'} Editor
-      </Button>
-    </form>
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <input type="hidden" {...methods.register('id')} />
+        <InputText
+          className="mb-3"
+          name="name"
+          required
+          error={methods.errors?.title?.message}
+          disabled={loading}
+          maxLength="50"
+        />
+        <InputText
+          className="mb-3"
+          name="email"
+          label="E-mail"
+          required
+          error={methods.errors?.title?.message}
+          disabled={loading}
+          maxLength="50"
+        />
+        <InputPassword
+          className="mb-3"
+          name="password"
+          required
+          error={methods.errors?.title?.message}
+          disabled={loading}
+          maxLength="50"
+        />
+        <Button
+          type="submit"
+          variant="light"
+          radius="md"
+          fullWidth
+          disabled={loading}
+        >
+          {content ? 'Update' : 'Create'} Editor
+        </Button>
+      </form>
+    </FormProvider>
   )
 }
 
