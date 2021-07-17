@@ -1,8 +1,9 @@
 import React from 'react'
-import { TextInput, Button } from '@mantine/core'
-import { useForm } from 'react-hook-form'
+import { Button } from '@mantine/core'
+import { useForm, FormProvider } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { InputText } from '../../components/admin/Form'
 
 const schema = yup.object().shape({
   label: yup
@@ -12,41 +13,34 @@ const schema = yup.object().shape({
 })
 
 const PostForm = ({ onSubmit, loading, content }) => {
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    getValues,
-    formState: { errors },
-  } = useForm({
+  const methods = useForm({
     resolver: yupResolver(schema),
     defaultValues: { label: content?.label, _id: content?._id },
   })
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input type="hidden" {...register('_id')} />
-      <TextInput
-        label="Category"
-        radius="md"
-        required
-        className="mb-3"
-        error={errors.content?.message}
-        disabled={loading}
-        {...register('label')}
-        defaultValue={getValues('label')}
-        onChange={(e) => setValue('label', e.target.value)}
-      />
-      <Button
-        type="submit"
-        variant="light"
-        radius="md"
-        fullWidth
-        disabled={loading}
-      >
-        {content ? 'Update' : 'Create'} Category
-      </Button>
-    </form>
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <input type="hidden" {...methods.register('_id')} />
+        <InputText
+          className="mb-3"
+          name="label"
+          label='Category'
+          required
+          error={methods.formState.errors?.label?.message}
+          disabled={loading}
+        />
+        <Button
+          type="submit"
+          variant="light"
+          radius="md"
+          fullWidth
+          disabled={loading}
+        >
+          {content ? 'Update' : 'Create'} Category
+        </Button>
+      </form>
+    </FormProvider>
   )
 }
 
