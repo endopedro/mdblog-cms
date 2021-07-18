@@ -43,7 +43,6 @@ const PostForm = ({ onSubmit, loading, content }) => {
           className="mb-3"
           name="title"
           required
-          error={methods.errors?.title?.message}
           disabled={loading}
         />
         <InputText
@@ -51,7 +50,6 @@ const PostForm = ({ onSubmit, loading, content }) => {
           name="slug"
           required
           slugField
-          error={methods.errors?.slug?.message}
           disabled={loading}
         />
         <div className="grid grid-cols-2 gap-4 mb-3">
@@ -63,7 +61,6 @@ const PostForm = ({ onSubmit, loading, content }) => {
                 label: cat.label,
               }))}
               required
-              error={methods.errors?.category?.message}
               disabled={loading}
             />
           </div>

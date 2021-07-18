@@ -31,7 +31,6 @@ const EditorForm = ({ onSubmit, loading, content }) => {
           className="mb-3"
           name="name"
           required
-          error={methods.errors?.title?.message}
           disabled={loading}
           maxLength="50"
         />
@@ -40,7 +39,6 @@ const EditorForm = ({ onSubmit, loading, content }) => {
           name="email"
           label="E-mail"
           required
-          error={methods.errors?.title?.message}
           disabled={loading}
           maxLength="50"
         />
@@ -48,7 +46,6 @@ const EditorForm = ({ onSubmit, loading, content }) => {
           className="mb-3"
           name="password"
           required
-          error={methods.errors?.title?.message}
           disabled={loading}
           maxLength="50"
         />

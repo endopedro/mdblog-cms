@@ -23,7 +23,6 @@ const PageForm = ({ onSubmit, loading, content }) => {
           className="mb-3"
           name="title"
           required
-          error={methods.errors?.title?.message}
           disabled={loading}
         />
         <InputText
@@ -31,7 +30,6 @@ const PageForm = ({ onSubmit, loading, content }) => {
           name="slug"
           required
           slugField
-          error={methods.errors?.slug?.message}
           disabled={loading}
         />
         <InputMarkdown name="content" className="mb-3" disabled={loading} />

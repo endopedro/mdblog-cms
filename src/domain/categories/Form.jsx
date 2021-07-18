@@ -27,7 +27,6 @@ const PostForm = ({ onSubmit, loading, content }) => {
           name="label"
           label='Category'
           required
-          error={methods.formState.errors?.label?.message}
           disabled={loading}
         />
         <Button
