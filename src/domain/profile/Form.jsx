@@ -1,8 +1,9 @@
 import React from 'react'
-import { TextInput, PasswordInput, Textarea, Button } from '@mantine/core'
-import { useForm } from 'react-hook-form'
+import { Button } from '@mantine/core'
+import { useForm, FormProvider } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { InputText, InputTextarea, InputPassword } from '../../components/admin/Form'
 
 const schema = yup.object().shape({
   name: yup
@@ -13,86 +14,64 @@ const schema = yup.object().shape({
 })
 
 const ProfileForm = ({ onSubmit, loading, content }) => {
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(schema), defaultValues: content })
-
-  register('email')
+  const methods = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: content,
+  })
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input type="hidden" {...register('id')} />
-      <TextInput
-        {...register('name')}
-        label="Name"
-        radius="md"
-        required
-        maxLength="50"
-        className="mb-3"
-        disabled={loading}
-        defaultValue={content?.name}
-        error={errors.name?.message}
-        onChange={(e) => setValue('name', e.target.value)}
-      />
-      <TextInput
-        {...register('email')}
-        label="E-mail"
-        radius="md"
-        required
-        maxLength="50"
-        className="mb-3"
-        disabled={loading}
-        defaultValue={content?.email}
-        error={errors.email?.message}
-        onChange={(e) => setValue('email', e.target.value)}
-      />
-      <Textarea
-        {...register('bio')}
-        label="Bio"
-        radius="md"
-        className="mb-3"
-        disabled={loading}
-        defaultValue={content?.bio}
-        error={errors.bio?.message}
-        onChange={(e) => setValue('bio', e.target.value)}
-        minRows={4}
-        maxRows={8}
-      />
-      <PasswordInput
-        {...register('password')}
-        label="New Password"
-        radius="md"
-        type="submit"
-        maxLength="50"
-        className="mb-3"
-        disabled={loading}
-        error={content ? null : errors.password?.message}
-        onChange={(e) => setValue('password', e.target.value)}
-      />
-      <PasswordInput
-        {...register('current_password')}
-        label="Current Password"
-        radius="md"
-        type="submit"
-        maxLength="50"
-        className="mb-5"
-        disabled={loading}
-        error={content ? null : errors.password?.message}
-        onChange={(e) => setValue('current_password', e.target.value)}
-      />
-      <Button
-        type="submit"
-        variant="light"
-        radius="md"
-        fullWidth
-        disabled={loading}
-      >
-        Update Profile
-      </Button>
-    </form>
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <input type="hidden" {...methods.register('id')} />
+        <InputText
+          className="mb-3"
+          name="name"
+          required
+          disabled={loading}
+          maxLength="50"
+        />
+        <InputText
+          className="mb-3"
+          name="email"
+          required
+          disabled={loading}
+          maxLength="50"
+          label="E-mail"
+        />
+        <InputTextarea
+          className="mb-3"
+          name='bio'
+          disabled={loading}
+          minRows={4}
+          maxRows={8}
+        />
+        <InputPassword
+          className="mb-3"
+          name="password"
+          label="New Password"
+          maxLength="50"
+          disabled={loading}
+          error={content ? null : methods.formState.errors.password?.message}
+        />
+        <InputPassword
+          className="mb-3"
+          name="current_password"
+          label="Current Password"
+          maxLength="50"
+          disabled={loading}
+          error={content ? null : methods.formState.errors.password?.message}
+        />
+        <Button
+          type="submit"
+          variant="light"
+          radius="md"
+          fullWidth
+          disabled={loading}
+        >
+          Update Profile
+        </Button>
+      </form>
+    </FormProvider>
   )
 }
 
