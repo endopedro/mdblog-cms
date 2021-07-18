@@ -1,14 +1,7 @@
 import React, { useState } from 'react'
 import Head from 'next/head'
-import {
-  Title,
-  Paper,
-  Center,
-  TextInput,
-  LoadingOverlay,
-  Button,
-} from '@mantine/core'
-import { useForm } from 'react-hook-form'
+import { Title, Paper, Center, LoadingOverlay, Button } from '@mantine/core'
+import { useForm, FormProvider } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { RiMailLine, RiMailCheckFill } from 'react-icons/ri'
@@ -16,18 +9,14 @@ import { ThemeIcon } from '@mantine/core'
 
 import Layout from '../../components/auth/Layout'
 import userApi from '../../services/userApi'
+import { InputText } from '../../components/admin/Form'
 
 const schema = yup.object().shape({
   email: yup.string().required('Type an e-mail.').email('Type a valid e-mail.'),
 })
 
 const ForgotPassword = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) })
-
+  const methods = useForm({ resolver: yupResolver(schema) })
   const [loading, setLoading] = useState(false)
   const [emailSent, setEmailSent] = useState(false)
 
@@ -60,34 +49,32 @@ const ForgotPassword = () => {
               </Title>
             </div>
           ) : (
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="mb-5">
-                <TextInput
-                  {...register('email')}
-                  placeholder="e-mail"
-                  label="E-mail "
-                  radius="xl"
-                  required
-                  className="mb-7"
-                  disabled={loading}
-                  description="You'll receive an e-mail with instructions."
-                  icon={<RiMailLine />}
-                  error={errors.email?.message}
-                />
-              </div>
-              <div className="flex">
+            <FormProvider {...methods}>
+              <form onSubmit={methods.handleSubmit(onSubmit)}>
+                <div className="mb-5">
+                  <InputText
+                    name="email"
+                    placeholder="e-mail"
+                    label="E-mail"
+                    required
+                    maxLength="50"
+                    className="mb-3"
+                    disabled={loading}
+                    icon={<RiMailLine />}
+                  />
+                </div>
                 <Button
+                  className="float-right"
                   variant="light"
                   color="indigo"
                   radius="lg"
                   disabled={loading}
                   type="submit"
-                  className="ml-auto"
                 >
                   Enter
                 </Button>
-              </div>
-            </form>
+              </form>
+            </FormProvider>
           )}
         </Paper>
       </Center>
