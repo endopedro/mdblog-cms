@@ -24,6 +24,7 @@ const InputText = ({ name, slugField, ...rest }) => {
         else methods.setValue(name, e.target.value)
       }}
       description={slugField ? watchField : null}
+      error={methods.formState.errors?.[name]?.message}
       {...rest}
     />
   )

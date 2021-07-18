@@ -5,17 +5,15 @@ import { capitalize } from 'lodash'
 
 const InputSelect = ({ name, ...rest }) => {
   const methods = useFormContext()
-
   methods.register(name)
-  const watchField = methods.watch(name, '')
 
   return (
     <Select
       radius="md"
-      error={methods.errors?.category?.message}
       label={capitalize(name)}
-      value={watchField}
+      value={methods.getValues(name)}
       onChange={(e) => methods.setValue('category', e)}
+      error={methods.formState.errors?.[name]?.message}
       {...rest}
     />
   )
