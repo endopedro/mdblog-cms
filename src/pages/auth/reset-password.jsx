@@ -5,12 +5,11 @@ import {
   Title,
   Paper,
   Center,
-  PasswordInput,
   LoadingOverlay,
   Button,
   Text,
 } from '@mantine/core'
-import { useForm } from 'react-hook-form'
+import { useForm, FormProvider } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useRouter } from 'next/router'
@@ -24,6 +23,7 @@ import { ThemeIcon } from '@mantine/core'
 
 import Layout from '../../components/auth/Layout'
 import userApi from '../../services/userApi'
+import { InputPassword } from '../../components/admin/Form'
 
 const schema = yup.object().shape({
   password: yup
@@ -38,11 +38,7 @@ const schema = yup.object().shape({
 
 const ResetPassword = () => {
   const router = useRouter()
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) })
+  const methods = useForm({ resolver: yupResolver(schema) })
 
   const [loading, setLoading] = useState(true)
   const [validToken, setValidToken] = useState(false)
@@ -63,9 +59,7 @@ const ResetPassword = () => {
         .then(() => setValidToken(true))
         .catch(() => setValidToken(false))
         .finally(() => setLoading(false))
-    } else {
-      setLoading(false)
-    }
+    } else setLoading(false)
   }, [router.query])
 
   return (
@@ -92,46 +86,41 @@ const ResetPassword = () => {
                 </Title>
               </div>
             ) : (
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="mb-5">
-                  <PasswordInput
-                    {...register('password')}
-                    placeholder="password"
-                    label="Password"
-                    radius="xl"
-                    required
-                    type="submit"
-                    maxLength="50"
-                    className="mb-7"
-                    disabled={loading}
-                    icon={<RiLockPasswordLine />}
-                    error={errors.password?.message}
-                  />
-                  <PasswordInput
-                    {...register('confirm_password')}
-                    placeholder="confirm password"
-                    label="Confirm Password"
-                    radius="xl"
-                    required
-                    maxLength="50"
-                    disabled={loading}
-                    icon={<RiLockPasswordFill />}
-                    error={errors.confirm_password?.message}
-                  />
-                </div>
-                <div className="flex">
+              <FormProvider {...methods}>
+                <form onSubmit={methods.handleSubmit(onSubmit)}>
+                  <div className="mb-5">
+                    <InputPassword
+                      name="password"
+                      placeholder="password"
+                      required
+                      maxLength="50"
+                      className="mb-3"
+                      disabled={loading}
+                      icon={<RiLockPasswordLine />}
+                    />
+                    <InputPassword
+                      name="confirm_password"
+                      placeholder="confirm password"
+                      label="Confirm Password"
+                      required
+                      maxLength="50"
+                      disabled={loading}
+                      icon={<RiLockPasswordFill />}
+                      type="submit"
+                    />
+                  </div>
                   <Button
+                    className="float-right"
                     variant="light"
                     color="indigo"
                     radius="lg"
                     disabled={loading}
                     type="submit"
-                    className="ml-auto"
                   >
                     Enter
                   </Button>
-                </div>
-              </form>
+                </form>
+              </FormProvider>
             )
           ) : (
             <div className="text-center">
