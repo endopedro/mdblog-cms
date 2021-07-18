@@ -1,15 +1,7 @@
 import React, { useState } from 'react'
 import Head from 'next/head'
-import {
-  Title,
-  Paper,
-  Center,
-  TextInput,
-  PasswordInput,
-  Button,
-  LoadingOverlay,
-} from '@mantine/core'
-import { useForm } from 'react-hook-form'
+import { Title, Paper, Center, Button, LoadingOverlay } from '@mantine/core'
+import { useForm, FormProvider } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import userApi from '../../services/userApi'
@@ -25,6 +17,7 @@ import { useNotifications } from '@mantine/notifications'
 import { useRouter } from 'next/router'
 
 import Layout from '../../components/auth/Layout'
+import { InputText, InputPassword } from '../../components/admin/Form'
 
 const schema = yup.object().shape({
   name: yup
@@ -45,35 +38,28 @@ const schema = yup.object().shape({
 const SignUp = () => {
   const router = useRouter()
   const notifications = useNotifications()
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) })
-
+  const methods = useForm({ resolver: yupResolver(schema) })
   const [loading, setLoading] = useState(false)
+
+  const notify = (success = true, message) => {
+    notifications.showNotification({
+      title: success ? 'Success' : 'Fail',
+      message: message,
+      color: success ? 'blue' : 'red',
+      icon: success ? <RiCheckLine /> : <RiCloseLine />,
+    })
+  }
 
   const onSubmit = async (data) => {
     setLoading(true)
-    try {
-      const response = await userApi().createUser(data)
-      setLoading(false)
-      notifications.showNotification({
-        title: 'Success',
-        message: response.data.message,
-        icon: <RiCheckLine />,
+    await userApi()
+      .createUser(data)
+      .then(response => {
+        notify(true, response.data.message)
+        router.replace('/auth/signin')
       })
-      router.replace('/auth/signin')
-    } catch (error) {
-      notifications.showNotification({
-        title: 'Fail',
-        color: 'red',
-        message: error.response.data.message,
-        icon: <RiCloseLine />,
-      })
-      setLoading(false)
-    }
+      .catch(error => notify(false, error.response.data.message))
+      .finally(() => setLoading(false))
   }
 
   return (
@@ -87,70 +73,60 @@ const SignUp = () => {
         </Title>
         <Paper padding="lg" shadow="md" className="w-5/6 sm:w-96 mb-8">
           <LoadingOverlay visible={loading} />
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="mb-5">
-              <TextInput
-                {...register('name')}
-                placeholder="name"
-                label="Name"
-                radius="xl"
-                required
-                maxLength="50"
-                className="mb-7"
-                icon={<RiUserLine />}
-                disabled={loading}
-                error={errors.name?.message}
-              />
-              <TextInput
-                {...register('email')}
-                placeholder="e-mail"
-                label="E-mail"
-                radius="xl"
-                required
-                maxLength="50"
-                className="mb-7"
-                disabled={loading}
-                icon={<RiMailLine />}
-                error={errors.email?.message}
-              />
-              <PasswordInput
-                {...register('password')}
-                placeholder="password"
-                label="Password"
-                radius="xl"
-                required
-                type="submit"
-                maxLength="50"
-                className="mb-7"
-                disabled={loading}
-                icon={<RiLockPasswordLine />}
-                error={errors.password?.message}
-              />
-              <PasswordInput
-                {...register('confirm_password')}
-                placeholder="confirm password"
-                label="Confirm Password"
-                radius="xl"
-                required
-                maxLength="50"
-                disabled={loading}
-                icon={<RiLockPasswordFill />}
-                error={errors.confirm_password?.message}
-              />
-            </div>
-            <div className="flex">
-              <Button
-                variant="light"
-                color="indigo"
-                radius="lg"
-                type="submit"
-                disabled={loading}
-                className="ml-auto"
-              >
-                Enter
-              </Button>
-            </div>
-          </form>
+          <FormProvider {...methods}>
+            <form onSubmit={methods.handleSubmit(onSubmit)}>
+              <div className="mb-5">
+                <InputText
+                  name="name"
+                  placeholder="name"
+                  required
+                  maxLength="50"
+                  className="mb-3"
+                  icon={<RiUserLine />}
+                  disabled={loading}
+                />
+                <InputText
+                  name="email"
+                  placeholder="e-mail"
+                  label="E-mail"
+                  required
+                  maxLength="50"
+                  className="mb-3"
+                  disabled={loading}
+                  icon={<RiMailLine />}
+                />
+                <InputPassword
+                  name="password"
+                  placeholder="password"
+                  required
+                  maxLength="50"
+                  className="mb-3"
+                  disabled={loading}
+                  icon={<RiLockPasswordLine />}
+                />
+                <InputPassword
+                  name="confirm_password"
+                  placeholder="confirm password"
+                  label="Confirm Password"
+                  required
+                  maxLength="50"
+                  disabled={loading}
+                  icon={<RiLockPasswordFill />}
+                  type="submit"
+                />
+              </div>
+                <Button
+                  variant="light"
+                  color="indigo"
+                  radius="lg"
+                  type="submit"
+                  disabled={loading}
+                  className="float-right"
+                >
+                  Enter
+                </Button>
+            </form>
+          </FormProvider>
         </Paper>
       </Center>
     </Layout>
