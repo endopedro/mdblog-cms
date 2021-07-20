@@ -4,6 +4,7 @@ import InputTags from './InputTags'
 import InputMarkdown from './InputMarkdown'
 import InputPassword from './InputPassword'
 import InputTextarea from './InputTextarea'
+import InputCover from './InputCover'
 
 export {
   InputText,
@@ -12,4 +13,5 @@ export {
   InputMarkdown,
   InputPassword,
   InputTextarea,
+  InputCover,
 }
