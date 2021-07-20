@@ -15,12 +15,12 @@ const Gallery = ({ images, totalPages, totalImages, deleteImage }) => {
           hasMore={images.length < totalImages}
           loader={<Loader className="mx-auto" />}
         >
-          <div className="grid grid-cols-3 gap-4 mb-7">
+          <div className="grid grid-cols-3 gap-4 mb-5 pr-2 max-h-80 overflow-y-auto">
             {images.map((image) => (
               <div className="relative" key={image._id}>
                 <Image height={80} radius="sm" src={image.secure_url} />
                 <ActionIcon
-                  className="absolute -right-1 -bottom-1"
+                  className="absolute right-0 -bottom-1.5"
                   variant="filled"
                   color="red"
                   radius="xl"
