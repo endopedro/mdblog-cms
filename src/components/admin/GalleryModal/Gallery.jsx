@@ -3,7 +3,13 @@ import { Image, Loader, ActionIcon } from '@mantine/core'
 import InfiniteScroll from 'react-infinite-scroller'
 import { RiCloseFill } from 'react-icons/ri'
 
-const Gallery = ({ images, totalPages, totalImages, deleteImage }) => {
+const Gallery = ({
+  images,
+  totalPages,
+  totalImages,
+  deleteImage,
+  onSelect,
+}) => {
   return (
     <>
       {images ? (
@@ -18,9 +24,15 @@ const Gallery = ({ images, totalPages, totalImages, deleteImage }) => {
           <div className="grid grid-cols-3 gap-4 mb-5 pr-2 max-h-80 overflow-y-auto">
             {images.map((image) => (
               <div className="relative" key={image._id}>
-                <Image height={80} radius="sm" src={image.secure_url} />
+                <Image
+                  className="cursor-pointer"
+                  height={80}
+                  radius="sm"
+                  src={image.secure_url}
+                  onClick={() => onSelect(image)}
+                />
                 <ActionIcon
-                  className="absolute right-0 -bottom-1.5"
+                  className="absolute right-0 bottom-0"
                   variant="filled"
                   color="red"
                   radius="xl"
