@@ -24,7 +24,9 @@ const handler = async (req, res) => {
         res.status(200).json({ result: await images.toArray() })
       }
     } else {
-      const image = await db.collection('images').findOne({ _id: _id })
+      const image = await db
+        .collection('images')
+        .findOne({ _id: new ObjectID(_id) })
 
       if (!image) {
         res.status(404).json({ message: 'Image not found.' })
