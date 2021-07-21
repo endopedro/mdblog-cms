@@ -45,7 +45,7 @@ const handler = async (req, res) => {
     }
 
     const data = req.body
-    const { title, slug, category, tags, content } = data
+    const { title, slug, category, tags, content, cover_image } = data
 
     if (!title || !slug || !category) {
       res.status(422).json({ message: 'Incomplete information.' })
@@ -75,6 +75,7 @@ const handler = async (req, res) => {
       content: content,
       authorId: user._id,
       createdAt: Date.now(),
+      cover_image: cover_image,
     })
 
     res.status(200).json({ message: 'Post created!', result: result.ops[0] })
@@ -89,7 +90,7 @@ const handler = async (req, res) => {
     }
 
     const data = req.body
-    const { _id, title, slug, category, tags, content } = data
+    const { _id, title, slug, category, tags, content, cover_image } = data
 
     if (!title || !slug || !category) {
       res.status(422).json({ message: 'Incomplete information.' })
@@ -119,6 +120,7 @@ const handler = async (req, res) => {
           tags: tags,
           content: content,
           updatedAt: Date.now(),
+          cover_image: cover_image,
         },
       },
       {
