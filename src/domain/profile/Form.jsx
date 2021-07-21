@@ -1,9 +1,15 @@
 import React from 'react'
-import { Button } from '@mantine/core'
+import { Button, Divider } from '@mantine/core'
 import { useForm, FormProvider } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { InputText, InputTextarea, InputPassword } from '../../components/admin/Form'
+import {
+  InputText,
+  InputTextarea,
+  InputPassword,
+} from '../../components/admin/Form'
+
+import ProfilePicture from './ProfilePicture'
 
 const schema = yup.object().shape({
   name: yup
@@ -23,6 +29,8 @@ const ProfileForm = ({ onSubmit, loading, content }) => {
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <input type="hidden" {...methods.register('id')} />
+        <ProfilePicture className="mb-3" picture={content.picture} />
+        <Divider className="mb-3" variant="dotted" />
         <InputText
           className="mb-3"
           name="name"
@@ -40,7 +48,7 @@ const ProfileForm = ({ onSubmit, loading, content }) => {
         />
         <InputTextarea
           className="mb-3"
-          name='bio'
+          name="bio"
           disabled={loading}
           minRows={4}
           maxRows={8}
@@ -54,7 +62,7 @@ const ProfileForm = ({ onSubmit, loading, content }) => {
           error={content ? null : methods.formState.errors.password?.message}
         />
         <InputPassword
-          className="mb-3"
+          className="mb-5"
           name="current_password"
           label="Current Password"
           maxLength="50"
