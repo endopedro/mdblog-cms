@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Image, Button, ActionIcon } from '@mantine/core'
 import { useFormContext } from 'react-hook-form'
-import cx from 'classnames'
 import { RiCloseFill, RiEdit2Fill } from 'react-icons/ri'
+import cx from 'classnames'
 
 import GalleryModal from '../GalleryModal'
+import imageApi from '../../../services/imageApi'
 
 const InputCover = ({ className, name }) => {
   const methods = useFormContext()
@@ -16,6 +17,16 @@ const InputCover = ({ className, name }) => {
     setSelectedImage(image)
     setOpened(false)
   }
+
+  useEffect(() => {
+    const cover = methods.getValues(name)
+    if (cover) {
+      imageApi()
+        .getImage(methods.getValues(name))
+        .then(({ data }) => setSelectedImage(data.result))
+        .catch((e) => console.log(e))
+    }
+  }, [])
 
   return (
     <div className={cx('relative', className)}>

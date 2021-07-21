@@ -8,9 +8,9 @@ import {
   InputSelect,
   InputTags,
   InputMarkdown,
+  InputCover,
 } from '../../components/admin/Form'
 
-import ImageUploader from '../../components/admin/ImageUploader'
 import categoryApi from '../../services/categoryApi'
 
 const schema = yup.object().shape({
@@ -39,12 +39,7 @@ const PostForm = ({ onSubmit, loading, content }) => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <InputText
-          className="mb-3"
-          name="title"
-          required
-          disabled={loading}
-        />
+        <InputText className="mb-3" name="title" required disabled={loading} />
         <InputText
           className="mb-3"
           name="slug"
@@ -68,7 +63,7 @@ const PostForm = ({ onSubmit, loading, content }) => {
             <InputTags name="tags" disabled={loading} value={content?.tags} />
           </div>
         </div>
-        <ImageUploader className="mb-7" />
+        <InputCover className="mb-7" name="cover_image" />
         <InputMarkdown name="content" className="mb-3" disabled={loading} />
         <Button
           type="submit"
