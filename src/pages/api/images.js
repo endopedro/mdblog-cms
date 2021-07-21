@@ -89,7 +89,6 @@ const handler = async (req, res) => {
     }
 
     const deleteResult = await cloudinaryDestroy(public_id)
-    console.log('deleteResult', deleteResult)
 
     if (!deleteResult) {
       res.status(422).json({ message: 'Error' })
@@ -109,8 +108,6 @@ const handler = async (req, res) => {
       client.close()
       return
     }
-
-    console.log('deletedImage', deletedImage)
 
     res.status(200).json({ message: 'Image deleted!', result: deletedImage })
     client.close()
