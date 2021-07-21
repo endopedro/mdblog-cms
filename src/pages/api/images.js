@@ -74,6 +74,60 @@ const handler = async (req, res) => {
     client.close()
   }
 
+  if (req.method === 'PUT') {
+    const session = await getSession({ req: req })
+    if (!session) {
+      res.status(401).json({ message: 'Not Authenticated.' })
+      return
+    }
+
+    const { image } = req.body
+
+    if (!image) {
+      res.status(422).json({ message: 'No image given' })
+      return
+    }
+
+    const uploadResult = await cloudinaryUpload(image)
+
+    if (!uploadResult) {
+      res.status(422).json({ message: 'Error' })
+      return
+    }
+
+    const client = await connectToDatabase()
+    const db = client.db()
+
+    const user = await db
+      .collection('users')
+      .findOne({ _id: new ObjectID(session.user.id) })
+
+    if (user.picture) cloudinaryDestroy(user.picture.public_id)
+
+    const picture = {
+      public_id: uploadResult.public_id,
+      url: uploadResult.url,
+      secure_url: uploadResult.secure_url,
+    }
+
+    const result = await db.collection('users').findOneAndUpdate(
+      {
+        _id: new ObjectID(user._id),
+      },
+      {
+        $set: {
+          picture: picture,
+        },
+      },
+      {
+        returnNewDocument: true,
+      }
+    )
+
+    res.status(200).json({ message: 'Profile updated!', result: picture })
+    client.close()
+  }
+
   if (req.method === 'DELETE') {
     const session = await getSession({ req: req })
     if (!session) {
