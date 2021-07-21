@@ -25,7 +25,7 @@ const PageForm = ({ onSubmit, loading, content }) => {
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <InputText className="mb-3" name="title" required disabled={loading} />
         <InputText
-          className="mb-5"
+          className="mb-3"
           name="slug"
           required
           slugField

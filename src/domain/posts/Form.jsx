@@ -47,7 +47,7 @@ const PostForm = ({ onSubmit, loading, content }) => {
           slugField
           disabled={loading}
         />
-        <div className="grid grid-cols-2 gap-4 mb-3">
+        <div className="grid grid-cols-2 gap-4 mb-1">
           <div>
             <InputSelect
               name="category"
