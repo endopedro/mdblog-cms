@@ -4,7 +4,7 @@ import Gallery from './Gallery'
 import { useNotifications } from '@mantine/notifications'
 import { RiCloseLine, RiCheckLine } from 'react-icons/ri'
 
-import DropZone from './Dropzone'
+import DropZone from '../Dropzone'
 import imageApi from '../../../services/imageApi'
 
 const GalleryModal = ({ opened, setOpened, onSelect, selectedImage }) => {

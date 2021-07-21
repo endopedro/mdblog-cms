@@ -2,9 +2,9 @@ import React from 'react'
 import { useDropzone } from 'react-dropzone'
 import { Text } from '@mantine/core'
 
-import fileToBase64 from '../../../utils/fileToBase64'
+import fileToBase64 from '../../utils/fileToBase64'
 
-const Dropzone = ({ onDrop, onDropRejected }) => {
+const Dropzone = ({ children, onDrop, onDropRejected }) => {
   const { getRootProps, getInputProps } = useDropzone({
     multiple: false,
     accept: 'image/*',
@@ -27,7 +27,11 @@ const Dropzone = ({ onDrop, onDropRejected }) => {
       })}
     >
       <input {...getInputProps()} />
-      <Text>Drag 'n' drop image here, or click to select</Text>
+      {children ? (
+        children
+      ) : (
+        <Text>Drag 'n' drop image here, or click to select</Text>
+      )}
     </div>
   )
 }
