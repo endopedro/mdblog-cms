@@ -3,7 +3,11 @@ import { Button } from '@mantine/core'
 import { useForm, FormProvider } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { InputText, InputMarkdown } from '../../components/admin/Form'
+import {
+  InputText,
+  InputMarkdown,
+  InputCover,
+} from '../../components/admin/Form'
 
 const schema = yup.object().shape({
   title: yup.string().required('Enter a title').min(3, 'Type at least 3 chars'),
@@ -19,19 +23,15 @@ const PageForm = ({ onSubmit, loading, content }) => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <InputText className="mb-3" name="title" required disabled={loading} />
         <InputText
-          className="mb-3"
-          name="title"
-          required
-          disabled={loading}
-        />
-        <InputText
-          className="mb-7"
+          className="mb-5"
           name="slug"
           required
           slugField
           disabled={loading}
         />
+        <InputCover className="mb-7" name="cover_image" />
         <InputMarkdown name="content" className="mb-3" disabled={loading} />
         <Button
           type="submit"
