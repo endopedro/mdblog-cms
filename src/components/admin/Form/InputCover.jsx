@@ -42,7 +42,7 @@ const InputCover = ({ className, name }) => {
           // width={200}
           height={120}
           src={selectedImage?.secure_url}
-          alt="With default placeholder"
+          alt="cover image"
           withPlaceholder
           styles={{ placeholder: { backgroundColor: '#1D1E30' } }}
           radius="md"
