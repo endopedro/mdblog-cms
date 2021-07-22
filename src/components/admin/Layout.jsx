@@ -2,7 +2,6 @@ import React from 'react'
 import Head from 'next/head'
 import { useMantineTheme } from '@mantine/core'
 import Guard from '../../domain/Guard'
-import Sidebar from '../../components/admin/Sidebar'
 import Navbar from '../../components/admin/Navbar'
 
 const AdminLayout = ({ children, page }) => {
@@ -43,14 +42,7 @@ const AdminLayout = ({ children, page }) => {
       <Guard>
         <main>
           <Navbar page={page} />
-          <div className="container mx-auto">
-            <div className="flex flex-wrap">
-              <div className="p-4 md:w-1/4 w-full">
-                <Sidebar page={page} />
-              </div>
-              <div className="p-4 md:w-3/4 w-full">{children}</div>
-            </div>
-          </div>
+          <div className="container mx-auto px-2 lg:px-8">{children}</div>
         </main>
       </Guard>
     </>
