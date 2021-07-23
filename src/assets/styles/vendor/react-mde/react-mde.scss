@@ -1,6 +1,7 @@
 .react-mde {
   border: 1px solid $mde-border-color;
   border-radius: $mde-border-radius;
+  overflow: hidden;
 
   * {
     box-sizing: border-box;

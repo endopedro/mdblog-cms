@@ -67,7 +67,7 @@ const InputMarkdown = ({ name, className, ...rest }) => {
           Promise.resolve(<ReactMarkdown children={markdown} />)
         }
         childProps={{ writeButton: { tabIndex: -1 } }}
-        paste={{ saveImage: save }}
+        // paste={{ saveImage: save }}
         value={fieldWatch}
         onChange={(val) => methods.setValue(name, val)}
         {...rest}
