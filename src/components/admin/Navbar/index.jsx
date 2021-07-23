@@ -11,7 +11,7 @@ const Navbar = ({ page }) => (
   <Disclosure as="nav" style={{ backgroundColor: '#1D1E30' }}>
     {({ open }) => (
       <>
-        <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 mb-3">
           <div className="relative flex items-center justify-between h-14">
             <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
               <MobileMenuButton open={open} />
