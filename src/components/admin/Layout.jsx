@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { useMantineTheme } from '@mantine/core'
 import Guard from '../../domain/Guard'
 import Navbar from '../../components/admin/Navbar'
+import Footer from './Footer'
 
 const AdminLayout = ({ children, page }) => {
   const theme = useMantineTheme()
@@ -43,6 +44,7 @@ const AdminLayout = ({ children, page }) => {
         <main>
           <Navbar page={page} />
           <div className="container mx-auto px-2 lg:px-8">{children}</div>
+          <Footer />
         </main>
       </Guard>
     </>
