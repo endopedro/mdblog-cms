@@ -19,6 +19,10 @@ const InputCover = ({ className, name }) => {
     setOpened(false)
   }
 
+  const onDelete = (public_id) => {
+    if (selectedImage?.public_id == public_id) onSelect(null)
+  }
+
   useEffect(() => {
     const cover = methods.getValues(name)
     if (cover) {
@@ -80,6 +84,7 @@ const InputCover = ({ className, name }) => {
         <GalleryModal
           opened={opened}
           setOpened={setOpened}
+          onDelete={onDelete}
           onSelect={onSelect}
           selectedImage={selectedImage}
         />

@@ -7,7 +7,7 @@ import { RiCloseLine, RiCheckLine } from 'react-icons/ri'
 import DropZone from '../Dropzone'
 import imageApi from '../../../services/imageApi'
 
-const GalleryModal = ({ opened, setOpened, onSelect, selectedImage }) => {
+const GalleryModal = ({ opened, setOpened, onSelect, onDelete }) => {
   const [images, setImages] = useState(null)
   const [totalPages, setTotalPages] = useState(1)
   const [totalImages, setTotalImages] = useState(0)
@@ -47,7 +47,7 @@ const GalleryModal = ({ opened, setOpened, onSelect, selectedImage }) => {
           ),
         ])
         setTotalImages((prevState) => prevState - 1)
-        if (selectedImage.public_id == public_id) onSelect(null)
+        onDelete(public_id)
         notify(true, 'Image deleted')
       })
       .catch(({ response }) => notify(false, response.data.message))

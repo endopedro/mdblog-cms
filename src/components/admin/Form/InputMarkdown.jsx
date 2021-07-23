@@ -1,13 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import ReactMde from 'react-mde'
 import ReactMarkdown from 'react-markdown'
 import { useFormContext } from 'react-hook-form'
+import { RiImageAddLine } from 'react-icons/ri'
+
+import GalleryModal from '../GalleryModal'
 
 const InputMarkdown = ({ name, className, ...rest }) => {
   const methods = useFormContext()
   const [selectedTab, setSelectedTab] = useState('write')
+  const [opened, setOpened] = useState(false)
+  const optsRef = useRef()
 
   methods.register(name)
+  const fieldWatch = methods.watch(name)
 
   const save = async function* (data) {
     // Promise that waits for "time" milliseconds
@@ -31,9 +37,30 @@ const InputMarkdown = ({ name, className, ...rest }) => {
     return true
   }
 
+  const addImageFromGallery = {
+    name: 'add-from-gallery',
+    icon: () => <RiImageAddLine className="mt-1" />,
+    execute: (opts) => {
+      if (!optsRef.current) optsRef.current = opts
+      // opts.textApi.replaceSelection('NICE')
+      setOpened(true)
+    },
+  }
+
+  const onSelect = (image) => {
+    optsRef.current.textApi.replaceSelection(`![](${image.secure_url})`)
+    setOpened(false)
+  }
+
   return (
     <div className={className}>
       <ReactMde
+        commands={{ 'add-image': addImageFromGallery }}
+        toolbarCommands={[
+          ['header', 'bold', 'italic', 'strikethrough'],
+          ['link', 'quote', 'code', 'image', 'add-image'],
+          ['unordered-list', 'ordered-list', 'checked-list'],
+        ]}
         selectedTab={selectedTab}
         onTabChange={setSelectedTab}
         generateMarkdownPreview={(markdown) =>
@@ -41,10 +68,11 @@ const InputMarkdown = ({ name, className, ...rest }) => {
         }
         childProps={{ writeButton: { tabIndex: -1 } }}
         paste={{ saveImage: save }}
-        value={methods.getValues(name)}
+        value={fieldWatch}
         onChange={(val) => methods.setValue(name, val)}
         {...rest}
       />
+      <GalleryModal opened={opened} setOpened={setOpened} onSelect={onSelect} />
     </div>
   )
 }
