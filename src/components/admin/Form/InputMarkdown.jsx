@@ -47,6 +47,13 @@ const InputMarkdown = ({ name, className, ...rest }) => {
     },
   }
 
+  // const components = {
+  //   h1(h1) {
+  //     console.log(h1)
+  //     return <h1 className="h1">{h1.children}</h1>
+  //   },
+  // }
+
   const onSelect = (image) => {
     optsRef.current.textApi.replaceSelection(`![](${image.secure_url})`)
     setOpened(false)

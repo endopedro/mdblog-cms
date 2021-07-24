@@ -43,7 +43,9 @@ const AdminLayout = ({ children, page }) => {
       <Guard>
         <main>
           <Navbar page={page} />
-          <div className="container mx-auto px-2 lg:px-8">{children}</div>
+          <div className="container mx-auto px-2 lg:px-8 max-w-4xl">
+            {children}
+          </div>
           <Footer />
         </main>
       </Guard>
