@@ -7,6 +7,7 @@ import {
   RiUserLine,
   RiShutDownLine,
   RiFileMarkLine,
+  RiSettings5Line,
 } from 'react-icons/ri'
 
 const navItems = [
@@ -34,6 +35,11 @@ const navItems = [
     label: 'Editors',
     icon: <RiTeamLine size="1.25rem" />,
     link: '/admin/editors',
+  },
+  {
+    label: 'Settings',
+    icon: <RiSettings5Line size="1.25rem" />,
+    link: '/admin/settings',
   },
 ]
 
