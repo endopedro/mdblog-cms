@@ -81,7 +81,7 @@ const handler = async (req, res) => {
       return
     }
 
-    const { image } = req.body
+    const { image, avatar, logo } = req.body
 
     if (!image) {
       res.status(422).json({ message: 'No image given' })
@@ -98,33 +98,51 @@ const handler = async (req, res) => {
     const client = await connectToDatabase()
     const db = client.db()
 
-    const user = await db
-      .collection('users')
-      .findOne({ _id: new ObjectID(session.user.id) })
+    if (avatar) {
+      const user = await db
+        .collection('users')
+        .findOne({ _id: new ObjectID(session.user.id) })
 
-    if (user.picture) cloudinaryDestroy(user.picture.public_id)
+      if (user.picture) cloudinaryDestroy(user.picture.public_id)
 
-    const picture = {
-      public_id: uploadResult.public_id,
-      url: uploadResult.url,
-      secure_url: uploadResult.secure_url,
+      const picture = {
+        public_id: uploadResult.public_id,
+        url: uploadResult.url,
+        secure_url: uploadResult.secure_url,
+      }
+
+      const result = await db
+        .collection('users')
+        .findOneAndUpdate(
+          { _id: new ObjectID(user._id) },
+          { $set: { picture: picture } },
+          { returnNewDocument: true }
+        )
+
+      res.status(200).json({ message: 'Profile updated!', result: picture })
+    } else if (logo) {
+      const currentLogo = await db
+        .collection('settings')
+        .findOne({ type: 'logo' })
+
+      if (currentLogo) cloudinaryDestroy(currentLogo.data.public_id)
+
+      const data = {
+        public_id: uploadResult.public_id,
+        url: uploadResult.url,
+        secure_url: uploadResult.secure_url,
+      }
+
+      const result = await db
+        .collection('settings')
+        .updateOne({ type: 'logo' }, { $set: { data: data } }, { upsert: true })
+
+      res.status(200).json({
+        message: 'Logo updated!',
+        result: { ...currentLogo, data: data },
+      })
     }
 
-    const result = await db.collection('users').findOneAndUpdate(
-      {
-        _id: new ObjectID(user._id),
-      },
-      {
-        $set: {
-          picture: picture,
-        },
-      },
-      {
-        returnNewDocument: true,
-      }
-    )
-
-    res.status(200).json({ message: 'Profile updated!', result: picture })
     client.close()
   }
 
