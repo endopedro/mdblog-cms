@@ -6,6 +6,7 @@ import { RiCloseLine, RiCheckLine } from 'react-icons/ri'
 
 import Dropzone from '../../components/admin/Dropzone'
 import imageApi from '../../services/imageApi'
+import { updateSettings } from '../../states/settings'
 
 const LogoImage = ({ className, image }) => {
   const notifications = useNotifications()
@@ -28,6 +29,7 @@ const LogoImage = ({ className, image }) => {
       .then(({ data }) => {
         setLogo(data.result)
         notify(true, 'Image uploaded')
+        updateSettings((prevState) => ({ ...prevState, logo: data.result }))
       })
       .catch(({ response }) => notify(false, response.data.message))
       .finally(() => setLoading(false))

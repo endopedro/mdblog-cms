@@ -6,6 +6,7 @@ import { EditResource } from '../../components/admin/Resource'
 import { data } from '../../states/session'
 
 import settingsApi from '../../services/settingsApi'
+import { updateSettings } from '../../states/settings'
 
 const Profile = () => {
   const session = data.use()
@@ -27,6 +28,7 @@ const Profile = () => {
         name="settings"
         content={settings}
         title="Site Settings"
+        callback={updateSettings}
       />
     </Layout>
   )
