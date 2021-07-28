@@ -4,8 +4,23 @@ import _ from 'lodash'
 
 const handler = async (req, res) => {
   if (req.method === 'GET') {
+    const { metrics } = req.query
+
     const client = await connectToDatabase()
     const db = client.db()
+
+    if (metrics) {
+      const users = await db.collection('users').find().count()
+
+      res.status(200).json({
+        result: {
+          users: users,
+        },
+      })
+
+      client.close()
+      return
+    }
 
     const settings = await db.collection('settings').find().toArray()
 
