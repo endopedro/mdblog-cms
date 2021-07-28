@@ -29,6 +29,7 @@ const handler = async (req, res) => {
       name: name,
       email: email,
       password: hashedPassword,
+      super: true,
     })
 
     const user = extractUser(result.ops[0])

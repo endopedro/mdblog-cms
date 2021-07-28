@@ -27,6 +27,11 @@ const Guard = ({ withSession, children }) => {
     return <LoadingOverlay visible />
   }
 
+  if (!session.user.super && router.pathname.includes('/editors')) {
+    router.replace('/admin')
+    return <LoadingOverlay visible />
+  }
+
   return <>{children}</>
 }
 

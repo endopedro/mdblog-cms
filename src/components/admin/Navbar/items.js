@@ -35,6 +35,7 @@ const navItems = [
     label: 'Editors',
     icon: <RiTeamLine size="1.25rem" />,
     link: '/admin/editors',
+    super: true,
   },
   {
     label: 'Settings',

@@ -51,6 +51,11 @@ const handler = async (req, res) => {
       return
     }
 
+    if (!session.user.super) {
+      res.status(401).json({ message: 'You have no permission.' })
+      return
+    }
+
     const data = req.body
     const { name, email, password } = data
 

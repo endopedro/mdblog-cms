@@ -16,6 +16,7 @@ const extractUser = (user) => ({
   email: user.email,
   bio: user.bio,
   picture: user.picture,
+  super: user.super,
 })
 
 export { hashPassword, extractUser }
