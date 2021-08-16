@@ -17,18 +17,18 @@ const Guard = ({ withSession, children }) => {
 
   if (isLoading && !session) return <LoadingOverlay visible />
 
-  if (!session && router.pathname.includes('/admin')) {
+  if (!session && !router.pathname.includes('/auth')) {
     router.replace('/auth/signin')
     return <LoadingOverlay visible />
   }
 
   if (session && router.pathname.includes('/auth')) {
-    router.replace('/admin')
+    router.replace('/')
     return <LoadingOverlay visible />
   }
 
-  if (!session.user.super && router.pathname.includes('/editors')) {
-    router.replace('/admin')
+  if (router.pathname.includes('/editors') && !session.user.super) {
+    router.replace('/')
     return <LoadingOverlay visible />
   }
 
