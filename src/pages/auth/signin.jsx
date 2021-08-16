@@ -75,7 +75,7 @@ const Login = () => {
             <form onSubmit={methods.handleSubmit(onSubmit)}>
               <div className="mb-5">
                 <InputText
-                  name='email'
+                  name="email"
                   placeholder="e-mail"
                   label="E-mail"
                   required
@@ -84,8 +84,8 @@ const Login = () => {
                   icon={<RiMailLine />}
                 />
                 <InputPassword
-                  className='mb-7'
-                  name='password'
+                  className="mb-7"
+                  name="password"
                   placeholder="password"
                   required
                   type="submit"

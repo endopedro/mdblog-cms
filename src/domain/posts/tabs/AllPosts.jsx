@@ -5,7 +5,7 @@ import { RiDeleteBin5Line, RiEyeLine } from 'react-icons/ri'
 
 import formatDate from '../../../utils/formatDate'
 import { ResourceList } from '../../../components/admin/Resource'
-import SearchPopover from '../../../components/SearchPopover'
+import SearchPopover from '../../../components/admin/SearchPopover'
 
 const AllPostsTab = () => {
   const [search, setSearch] = useState('')
@@ -32,7 +32,7 @@ const AllPostsTab = () => {
                   post.title.toLowerCase().includes(search.toLowerCase())
                 )
                 .map((post) => (
-                  <Link href={`/admin/posts/${post.slug}`} key={post._id}>
+                  <Link href={`/posts/${post.slug}`} key={post._id}>
                     <tr className="cursor-pointer">
                       <td>{post.title}</td>
                       <td className="hidden md:table-cell">{post.slug}</td>

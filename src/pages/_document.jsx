@@ -1,6 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 import { SheetsRegistry, JssProvider, createGenerateId } from 'react-jss'
-
 export default class _Document extends Document {
   static async getInitialProps(ctx) {
     const registry = new SheetsRegistry()

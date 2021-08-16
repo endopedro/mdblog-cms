@@ -4,7 +4,7 @@ import { RiDeleteBin5Line, RiEdit2Line } from 'react-icons/ri'
 
 import EditModal from '../EditModal'
 import { ResourceList } from '../../../components/admin/Resource'
-import SearchPopover from '../../../components/SearchPopover'
+import SearchPopover from '../../../components/admin/SearchPopover'
 
 const AllCategoriesTab = () => {
   const [showModal, setShowModal] = useState(false)

@@ -5,7 +5,7 @@ import { RiDeleteBin5Line, RiEyeLine } from 'react-icons/ri'
 
 import formatDate from '../../../utils/formatDate'
 import { ResourceList } from '../../../components/admin/Resource'
-import SearchPopover from '../../../components/SearchPopover'
+import SearchPopover from '../../../components/admin/SearchPopover'
 
 const AllPagesTab = () => {
   const [search, setSearch] = useState('')
@@ -32,7 +32,7 @@ const AllPagesTab = () => {
                   page.title.toLowerCase().includes(search.toLowerCase())
                 )
                 .map((page) => (
-                  <Link href={`/admin/pages/${page.slug}`} key={page._id}>
+                  <Link href={`/pages/${page.slug}`} key={page._id}>
                     <tr className="cursor-pointer">
                       <td>{page.title}</td>
                       <td className="hidden md:table-cell">{page.slug}</td>

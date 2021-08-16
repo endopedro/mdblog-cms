@@ -14,33 +14,33 @@ const navItems = [
   {
     label: 'Dashboard',
     icon: <RiDashboard2Line size="1.25rem" />,
-    link: '/admin',
+    link: '/',
   },
   {
     label: 'Posts',
     icon: <RiDraftLine size="1.25rem" />,
-    link: '/admin/posts',
+    link: '/posts',
   },
   {
     label: 'Pages',
     icon: <RiPagesLine size="1.25rem" />,
-    link: '/admin/pages',
+    link: '/pages',
   },
   {
     label: 'Categories',
     icon: <RiFileMarkLine size="1.25rem" />,
-    link: '/admin/categories',
+    link: '/categories',
   },
   {
     label: 'Editors',
     icon: <RiTeamLine size="1.25rem" />,
-    link: '/admin/editors',
+    link: '/editors',
     super: true,
   },
   {
     label: 'Settings',
     icon: <RiSettings5Line size="1.25rem" />,
-    link: '/admin/settings',
+    link: '/settings',
   },
 ]
 
@@ -48,7 +48,7 @@ const accountItems = [
   {
     label: 'Profile',
     icon: <RiUserLine />,
-    link: '/admin/profile',
+    link: '/profile',
   },
   {
     label: 'Logout',

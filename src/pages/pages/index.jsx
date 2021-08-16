@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { Tabs, Tab } from '@mantine/core'
 
-import Layout from '../../../components/admin/Layout'
-import AllPagesTab from '../../../domain/pages/tabs/AllPages'
-import NewPageTab from '../../../domain/pages/tabs/NewPage'
+import Layout from '../../components/admin/Layout'
+import AllPagesTab from '../../domain/pages/tabs/AllPages'
+import NewPageTab from '../../domain/pages/tabs/NewPage'
 
 const pages = () => {
   const [activeTab, setActiveTab] = useState(0)

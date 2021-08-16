@@ -1,9 +1,8 @@
 import React from 'react'
+import Layout from '../components/admin/Layout'
 
-import Layout from '../components/blog/Layout'
-
-const index = () => {
-  return <Layout blogName="MDBLOG"></Layout>
+const Admin = () => {
+  return <Layout page="Dashboard">Dashboard</Layout>
 }
 
-export default index
+export default Admin

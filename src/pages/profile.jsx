@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import Layout from '../../components/admin/Layout'
 import Form from '../../domain/profile/Form'
-import { EditResource } from '../../components/admin/Resource'
+import { EditResource } from '../components/admin/Resource'
 import { data } from '../../states/session'
 
 import userApi from '../../services/userApi'

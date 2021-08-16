@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 
-import Layout from '../../../components/admin/Layout'
-import Form from '../../../domain/posts/Form'
-import { EditResource } from '../../../components/admin/Resource'
+import Layout from '../../components/admin/Layout'
+import Form from '../../domain/posts/Form'
+import { EditResource } from '../../components/admin/Resource'
 
-import postApi from '../../../services/postApi'
+import postApi from '../../services/postApi'
 
 const updatePost = () => {
   const router = useRouter()

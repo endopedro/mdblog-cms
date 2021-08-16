@@ -4,7 +4,7 @@ import { Paper, Table, ActionIcon, LoadingOverlay } from '@mantine/core'
 import { RiDeleteBin5Line, RiEyeLine } from 'react-icons/ri'
 
 import { ResourceList } from '../../../components/admin/Resource'
-import SearchPopover from '../../../components/SearchPopover'
+import SearchPopover from '../../../components/admin/SearchPopover'
 
 const AllEditorsTab = () => {
   const [search, setSearch] = useState('')
@@ -30,7 +30,7 @@ const AllEditorsTab = () => {
                   editor.name.toLowerCase().includes(search.toLowerCase())
                 )
                 .map((editor) => (
-                  <Link href={`/admin/editors/${editor._id}`} key={editor._id}>
+                  <Link href={`/editors/${editor._id}`} key={editor._id}>
                     <tr className="cursor-pointer">
                       <td>{editor.name}</td>
                       <td className="hidden md:table-cell">{editor.email}</td>
