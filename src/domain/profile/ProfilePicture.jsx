@@ -5,7 +5,7 @@ import { RiImageAddLine } from 'react-icons/ri'
 import { RiCloseLine, RiCheckLine } from 'react-icons/ri'
 
 import Dropzone from '../../components/admin/Dropzone'
-import imageApi from '../../../services/imageApi'
+import imageApi from '../../services/imageApi'
 
 const ProfilePicture = ({ className, picture }) => {
   const notifications = useNotifications()

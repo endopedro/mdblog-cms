@@ -9,7 +9,7 @@ import { ThemeIcon } from '@mantine/core'
 
 import Layout from '../../components/auth/Layout'
 import userApi from '../../services/userApi'
-import { InputText } from '../components/admin/Form'
+import { InputText } from '../../components/admin/Form'
 
 const schema = yup.object().shape({
   email: yup.string().required('Type an e-mail.').email('Type a valid e-mail.'),

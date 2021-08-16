@@ -57,7 +57,7 @@ const Login = () => {
     })
     setLoading(false)
     notify(!result.erro)
-    if (!result.error) router.replace('/admin')
+    if (!result.error) router.replace('/')
   }
 
   return (
