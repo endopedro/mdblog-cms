@@ -11,11 +11,11 @@ import {
 } from 'react-icons/ri'
 
 const navItems = [
-  {
-    label: 'Dashboard',
-    icon: <RiDashboard2Line size="1.25rem" />,
-    link: '/',
-  },
+  // {
+  //   label: 'Dashboard',
+  //   icon: <RiDashboard2Line size="1.25rem" />,
+  //   link: '/',
+  // },
   {
     label: 'Posts',
     icon: <RiDraftLine size="1.25rem" />,
