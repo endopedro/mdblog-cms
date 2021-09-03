@@ -7,7 +7,8 @@ import { data } from '../../../states/session'
 const NavItem = ({ item, page, sm }) => {
   const session = data.use()
 
-  if (!session.user.super && item.super) return <></>
+  if (!session?.user.super && item.super && !process.env.DEMONSTRATION)
+    return <></>
 
   return (
     <Link href={item.link}>

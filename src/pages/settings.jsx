@@ -21,6 +21,12 @@ const Profile = () => {
     }
   }, [session])
 
+  if (process.env.DEMONSTRATION)
+    settingsApi()
+      .getSettings()
+      .then(({ data }) => setSettings(data.result))
+      .catch(() => null)
+
   return (
     <Layout page="Settings">
       <EditResource

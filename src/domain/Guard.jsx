@@ -15,6 +15,10 @@ const Guard = ({ withSession, children }) => {
       .finally(() => setIsLoading(false))
   }, [])
 
+  if (process.env.DEMONSTRATION) {
+    return <>{children}</>
+  }
+
   if (isLoading && !session) return <LoadingOverlay visible />
 
   if (!session && !router.pathname.includes('/auth')) {
