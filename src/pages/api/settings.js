@@ -27,8 +27,8 @@ const handler = async (req, res) => {
     res.status(200).json({
       result: {
         logo: _.find(settings, ['type', 'logo']),
-        title: _.find(settings, ['type', 'info']).title,
-        description: _.find(settings, ['type', 'info']).description,
+        title: _.find(settings, ['type', 'info'])?.title,
+        description: _.find(settings, ['type', 'info'])?.description,
       },
     })
 
