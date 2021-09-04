@@ -14,6 +14,8 @@ const InputTextarea = ({ name, ...rest }) => {
       defaultValue={methods.getValues(name)}
       onChange={(e) => methods.setValue(name, e.target.value)}
       error={methods.formState.errors?.[name]?.message}
+      autosize
+      minRows={10}
       {...rest}
     />
   )

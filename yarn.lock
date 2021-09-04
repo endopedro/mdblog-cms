@@ -102,25 +102,25 @@
   resolved "https://registry.yarnpkg.com/@hookform/resolvers/-/resolvers-2.5.2.tgz#2b1134835170fcc6c8f8eb1d0273b27cf4f14270"
   integrity sha512-IS9Ycbezdzim5vRxytPcYVUUo8Jhtc9GR35SDXsCELwDCM63RUpjWnAaZLQnBO1XY1PMTBwEnBBBOBgGr9CzVA==
 
-"@mantine/core@^2.0.5":
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/@mantine/core/-/core-2.0.5.tgz#ba0d77c90813210e914b131f23d3c2ec001d8eb1"
-  integrity sha512-s6wiYv9h74cc/pq12bsZfz2hpGJQh7vAh2u2PGMiMNSHzCq7F2guNUhIixM1OysGpOhO9BS9HEjRbugY2MONaA==
+"@mantine/core@^2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@mantine/core/-/core-2.4.1.tgz#845540bcc3ba389855fa5e5328d465dcd7ffb3e8"
+  integrity sha512-5K6LFm/iUmcRXBk3SEoUw5RWrpJBPlZflOkoVr0VLBVLxivV5k6YG89CtE5P7qA8HLY4WFOWD1KQEFZ8+iPbTA==
   dependencies:
+    "@popperjs/core" "^2.9.3"
     clsx "^1.1.1"
-    normalize-jss "^4.0.0"
+    react-popper "^2.2.5"
     react-textarea-autosize "^8.3.2"
-    react-transition-group "^4.4.2"
 
-"@mantine/hooks@^2.0.5":
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-2.0.5.tgz#793dc7e5b37886d4d30576afdb78dd02c141a467"
-  integrity sha512-FVfCeEZfXEtglhyqzmTS7D7ZrzrSmsCeSrSJW6Z4Z/rMJPuARWi/kOgnEUQwGF1rSkC7+lJou6GLzdwYO7bR1A==
+"@mantine/hooks@^2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-2.4.1.tgz#06434141aae96c87b76e699e5440da5bced6e7ac"
+  integrity sha512-diq4giC3WGTIvkEXy/f8D1SwYyOlqD0KJRWYn3gYPfd6PI9inVBj3S1FFYVP7VefIw0AMTi+cA0Fgj2TbwLuOg==
 
-"@mantine/notifications@^2.0.5":
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/@mantine/notifications/-/notifications-2.0.5.tgz#d4cef84dae00a0757e01eec9c28c1effcba61951"
-  integrity sha512-QpxeN9VXETi8lGWdo5hVQ++qi96bfWC0JDo7S48SXnc2CH02n36eRugOcA5dVG6hHqjOvP2aZREz9qgdIdpPmA==
+"@mantine/notifications@^2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@mantine/notifications/-/notifications-2.4.1.tgz#517a20a2e31953ad9f2c515abf5260fdaeaaddfa"
+  integrity sha512-CZMsxGP/WEGCS4al5tw4ALgDoyCmXjcRdh6E5clJTWYD9nryBd08zZg+1INS//k/PYiP/F1qdDmxjnRL2mLdwg==
   dependencies:
     clsx "^1.1.1"
     react-transition-group "^4.4.2"
@@ -215,6 +215,11 @@
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@panva/asn1.js/-/asn1.js-1.0.0.tgz#dd55ae7b8129e02049f009408b97c61ccf9032f6"
   integrity sha512-UdkG3mLEqXgnlKsWanWcgb6dOjUzJ+XC5f+aWw30qrtjxeNUSfKX1cd5FBzOaXQumoe9nIqeZUvrRJS03HCCtw==
+
+"@popperjs/core@^2.9.3":
+  version "2.10.1"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.10.1.tgz#728ecd95ab207aab8a9a4e421f0422db329232be"
+  integrity sha512-HnUhk1Sy9IuKrxEMdIRCxpIqPw6BFsbYSEUO9p/hNw5sMld/+3OLMWQP80F8/db9qsv3qUjs7ZR5bS/R+iinXw==
 
 "@sqltools/formatter@^1.2.2":
   version "1.2.3"
@@ -2148,7 +2153,7 @@ lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.20, lodash@^4.17.21:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
-loose-envify@^1.1.0, loose-envify@^1.4.0:
+loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"
   integrity sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==
@@ -2521,11 +2526,6 @@ nodemailer@^6.4.16:
   version "6.6.1"
   resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-6.6.1.tgz#2a05fbf205b897d71bf43884167b5d4d3bd01b99"
   integrity sha512-1xzFN3gqv+/qJ6YRyxBxfTYstLNt0FCtZaFRvf4Sg9wxNGWbwFmGXVpfSi6ThGK6aRxAo+KjHtYSW8NvCsNSAg==
-
-normalize-jss@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/normalize-jss/-/normalize-jss-4.0.0.tgz#355e514127e7ba8f4b38a7e705cfeb86507ea0dd"
-  integrity sha512-zsn6yP0fOoDpzktjHCWKGVDMssYso0h6wxjW3+ABUp5CeEPpYc9YUy6cy7/SLO2yrPvtEzx0vu79Y9iEF2qSnA==
 
 normalize-path@^3.0.0, normalize-path@~3.0.0:
   version "3.0.0"
@@ -3058,6 +3058,11 @@ react-dropzone@^11.3.4:
     file-selector "^0.2.2"
     prop-types "^15.7.2"
 
+react-fast-compare@^3.0.1:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-3.2.0.tgz#641a9da81b6a6320f270e89724fb45a0b39e43bb"
+  integrity sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==
+
 react-hook-form@^7.7.1:
   version "7.11.0"
   resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.11.0.tgz#9cae5e21ba1c1a98a40c65cfee07db9e677edc21"
@@ -3125,6 +3130,14 @@ react-mde@^11.5.0:
   version "11.5.0"
   resolved "https://registry.yarnpkg.com/react-mde/-/react-mde-11.5.0.tgz#3e81a505071aa80287fb23a1c0ce5e8b34c82055"
   integrity sha512-CH/VK6d+tpVjJ8rTXfh1dDt6GWedTgCU0668p8toqhAc3vy0Lu872O2RKYDSpkUrlbHI08fjUPTl++nExp6gag==
+
+react-popper@^2.2.5:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-2.2.5.tgz#1214ef3cec86330a171671a4fbcbeeb65ee58e96"
+  integrity sha512-kxGkS80eQGtLl18+uig1UIf9MKixFSyPxglsgLBxlYnyDf65BiY9B3nZSc6C9XUNDgStROB0fMQlTEz1KxGddw==
+  dependencies:
+    react-fast-compare "^3.0.1"
+    warning "^4.0.2"
 
 react-refresh@0.8.3:
   version "0.8.3"
@@ -4005,6 +4018,13 @@ vm-browserify@1.1.2, vm-browserify@^1.0.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
+
+warning@^4.0.2:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/warning/-/warning-4.0.3.tgz#16e9e077eb8a86d6af7d64aa1e05fd85b4678ca3"
+  integrity sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==
+  dependencies:
+    loose-envify "^1.0.0"
 
 watchpack@2.1.1:
   version "2.1.1"

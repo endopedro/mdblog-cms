@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from 'react'
-import { Image, Button, ActionIcon, Text, Loader } from '@mantine/core'
 import { useFormContext } from 'react-hook-form'
 import { RiCloseFill, RiEdit2Fill } from 'react-icons/ri'
 import cx from 'classnames'
+import {
+  Image,
+  Button,
+  ActionIcon,
+  Text,
+  Loader,
+  useMantineTheme,
+} from '@mantine/core'
 
 import GalleryModal from '../GalleryModal'
 import imageApi from '../../../services/imageApi'
 
 const InputCover = ({ className, name }) => {
+  const theme = useMantineTheme()
   const methods = useFormContext()
   const [opened, setOpened] = useState(false)
   const [selectedImage, setSelectedImage] = useState(null)
@@ -43,12 +51,14 @@ const InputCover = ({ className, name }) => {
       <div className={cx('relative', className)}>
         <input type="hidden" {...methods.register(name)} />
         <Image
-          // width={200}
+          classNames={{
+            figure: 'h-full',
+          }}
           height={120}
           src={selectedImage?.secure_url}
           alt="cover image"
           withPlaceholder
-          styles={{ placeholder: { backgroundColor: '#1D1E30' } }}
+          styles={{ placeholder: { backgroundColor: theme.colors['dark'][5] } }}
           radius="md"
           placeholder={
             loadingImage ? (
