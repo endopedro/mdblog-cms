@@ -75,7 +75,7 @@ const handler = async (req, res) => {
       content: content,
       authorId: user._id,
       createdAt: Date.now(),
-      cover_image: cover_image,
+      coverId: new ObjectID(cover_image),
     })
 
     res.status(200).json({ message: 'Post created!', result: result.ops[0] })
@@ -120,7 +120,7 @@ const handler = async (req, res) => {
           tags: tags,
           content: content,
           updatedAt: Date.now(),
-          cover_image: cover_image,
+          coverId: new ObjectID(cover_image),
         },
       },
       {
