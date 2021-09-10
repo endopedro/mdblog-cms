@@ -2,6 +2,9 @@ import { connectToDatabase } from '../../utils/db'
 import { getSession } from 'next-auth/client'
 import { ObjectID } from 'mongodb'
 
+import { extractPosts, extractPost } from '../../utils/extractors'
+import { postsQuery, postQuery } from '../../utils/mongoQuery'
+
 const handler = async (req, res) => {
   if (req.method === 'GET') {
     const { slug, page } = req.query
@@ -9,29 +12,26 @@ const handler = async (req, res) => {
     const db = client.db()
 
     if (!slug) {
-      const posts = await db.collection('posts').find()
-      if (page) {
-        res.status(200).json({
-          result: await posts
-            .skip(10 * (page - 1))
-            .limit(10)
-            .toArray(),
-          total: await posts.count(),
-          pages: Math.ceil((await posts.count()) / 10),
-        })
-      } else {
-        res.status(200).json({ result: await posts.toArray() })
-      }
+      const posts = await db.collection('posts')
+      const postsCount = await posts.count()
+      res.status(200).json({
+        result: extractPosts(await posts.aggregate(postsQuery(page)).toArray()),
+        total: postsCount,
+        pages: Math.ceil(postsCount / 10),
+      })
     } else {
-      const post = await db.collection('posts').findOne({ slug: slug })
+      const post = await db
+        .collection('posts')
+        .aggregate(postQuery(slug))
+        .toArray()
 
-      if (!post) {
+      if (!post.length) {
         res.status(404).json({ message: 'Post not found.' })
         client.close()
         return
       }
 
-      res.status(200).json({ result: post })
+      res.status(200).json({ result: extractPost(post[0]) })
     }
 
     client.close()

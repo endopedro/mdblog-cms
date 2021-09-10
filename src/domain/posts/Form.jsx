@@ -32,7 +32,11 @@ const PostForm = ({ onSubmit, loading, content }) => {
 
   const methods = useForm({
     resolver: yupResolver(schema),
-    defaultValues: content,
+    defaultValues: {
+      ...content,
+      categoryId: content.category._id,
+      coverId: content.cover._id,
+    },
   })
 
   if (!categories) return <Loader className="mx-auto" />
