@@ -51,13 +51,14 @@ const PostForm = ({ onSubmit, loading, content }) => {
         <div className="grid grid-cols-2 gap-4 mb-1">
           <div>
             <InputSelect
-              name="category"
+              name="categoryId"
               data={categories?.map((cat) => ({
                 value: cat._id,
                 label: cat.label,
               }))}
               required
               disabled={loading}
+              label="Category"
             />
           </div>
           <div>

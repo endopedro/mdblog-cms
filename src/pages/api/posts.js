@@ -70,7 +70,7 @@ const handler = async (req, res) => {
     const result = await db.collection('posts').insertOne({
       title: title,
       slug: slug,
-      category: new ObjectID(category),
+      categoryId: new ObjectID(category),
       tags: tags,
       content: content,
       excerpt: excerpt,
@@ -117,7 +117,7 @@ const handler = async (req, res) => {
         $set: {
           title: title,
           slug: slug,
-          category: new ObjectID(category),
+          categoryId: new ObjectID(category),
           tags: tags,
           content: content,
           excerpt: excerpt,
