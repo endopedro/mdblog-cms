@@ -28,7 +28,7 @@ const updatePost = () => {
         name="posts"
         content={post}
         title="Edit Post"
-        callback={() => router.push('/admin/posts')}
+        callback={() => router.push('/posts')}
       />
     </Layout>
   )
