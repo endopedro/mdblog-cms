@@ -45,7 +45,7 @@ const handler = async (req, res) => {
     }
 
     const data = req.body
-    const { title, slug, content, cover_image } = data
+    const { title, slug, content, coverId } = data
 
     if (!title || !slug) {
       res.status(422).json({ message: 'Incomplete information.' })
@@ -68,7 +68,7 @@ const handler = async (req, res) => {
       slug: slug,
       content: content,
       createdAt: Date.now(),
-      cover_image: cover_image,
+      coverId: new ObjectID(coverId),
     })
 
     res.status(200).json({ message: 'Page created!', page: result.ops[0] })
@@ -83,7 +83,7 @@ const handler = async (req, res) => {
     }
 
     const data = req.body
-    const { _id, title, slug, content, cover_image } = data
+    const { _id, title, slug, content, coverId } = data
 
     if (!title || !slug) {
       res.status(422).json({ message: 'Incomplete information.' })
@@ -111,7 +111,7 @@ const handler = async (req, res) => {
           slug: slug,
           content: content,
           updatedAt: Date.now(),
-          cover_image: cover_image,
+          coverId: new ObjectID(coverId),
         },
       },
       {

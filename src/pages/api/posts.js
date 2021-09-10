@@ -45,7 +45,7 @@ const handler = async (req, res) => {
     }
 
     const data = req.body
-    const { title, slug, category, tags, content, cover_image } = data
+    const { title, slug, category, tags, content, coverId, excerpt } = data
 
     if (!title || !slug || !category) {
       res.status(422).json({ message: 'Incomplete information.' })
@@ -73,9 +73,10 @@ const handler = async (req, res) => {
       category: category,
       tags: tags,
       content: content,
+      excerpt: excerpt,
       authorId: user._id,
       createdAt: Date.now(),
-      coverId: new ObjectID(cover_image),
+      coverId: new ObjectID(coverId),
     })
 
     res.status(200).json({ message: 'Post created!', result: result.ops[0] })
@@ -90,7 +91,7 @@ const handler = async (req, res) => {
     }
 
     const data = req.body
-    const { _id, title, slug, category, tags, content, cover_image } = data
+    const { _id, title, slug, category, tags, content, coverId, excerpt } = data
 
     if (!title || !slug || !category) {
       res.status(422).json({ message: 'Incomplete information.' })
@@ -119,8 +120,9 @@ const handler = async (req, res) => {
           category: category,
           tags: tags,
           content: content,
+          excerpt: excerpt,
           updatedAt: Date.now(),
-          coverId: new ObjectID(cover_image),
+          coverId: new ObjectID(coverId),
         },
       },
       {
