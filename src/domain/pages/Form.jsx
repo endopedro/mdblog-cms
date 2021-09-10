@@ -31,7 +31,7 @@ const PageForm = ({ onSubmit, loading, content }) => {
           slugField
           disabled={loading}
         />
-        <InputCover className="mb-7" name="cover_image" />
+        <InputCover className="mb-7" name="coverId" />
         <InputMarkdown name="content" className="mb-3" disabled={loading} />
         <Button
           type="submit"

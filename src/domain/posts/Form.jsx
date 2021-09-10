@@ -9,6 +9,7 @@ import {
   InputTags,
   InputMarkdown,
   InputCover,
+  InputTextarea,
 } from '../../components/admin/Form'
 
 import categoryApi from '../../services/categoryApi'
@@ -63,7 +64,8 @@ const PostForm = ({ onSubmit, loading, content }) => {
             <InputTags name="tags" disabled={loading} value={content?.tags} />
           </div>
         </div>
-        <InputCover className="mb-7" name="cover_image" />
+        <InputCover className="mb-5" name="coverId" />
+        <InputTextarea className="mb-7" name="excerpt" minRows={2} />
         <InputMarkdown name="content" className="mb-3" disabled={loading} />
         <Button
           type="submit"
