@@ -42,4 +42,16 @@ const relatedQuery = (post) => [
   ...basePostQuery,
 ]
 
-export { postsQuery, postQuery, relatedQuery }
+const settingsQuery = [
+  {
+    $lookup: {
+      from: 'images',
+      localField: 'coverId',
+      foreignField: '_id',
+      as: 'cover',
+    },
+  },
+  { $unwind: { path: '$cover', preserveNullAndEmptyArrays: true } },
+]
+
+export { postsQuery, postQuery, relatedQuery, settingsQuery }

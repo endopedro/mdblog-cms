@@ -1,8 +1,12 @@
 import Cors from 'cors'
-import { connectToDatabase } from '../../utils/db'
+import { ObjectID } from 'mongodb'
 import { getSession } from 'next-auth/client'
 import _ from 'lodash'
+
+import { connectToDatabase } from '../../utils/db'
 import initMiddleware from '../../utils/initMiddleware.js'
+import { settingsQuery } from '../../utils/mongoQuery'
+import { extractSettings } from '../../utils/extractors'
 
 const cors = Cors({ methods: ['GET', 'HEAD'] })
 
@@ -28,15 +32,12 @@ const handler = async (req, res) => {
       return
     }
 
-    const settings = await db.collection('settings').find().toArray()
-    res.status(200).json({
-      result: {
-        logo: _.find(settings, ['type', 'logo']),
-        title: _.find(settings, ['type', 'info'])?.title,
-        name: _.find(settings, ['type', 'info']).name,
-        description: _.find(settings, ['type', 'info'])?.description,
-      },
-    })
+    const settings = await db
+      .collection('settings')
+      .aggregate(settingsQuery)
+      .toArray()
+
+    res.status(200).json({ result: extractSettings(settings[0]) })
 
     client.close()
   }
@@ -50,18 +51,23 @@ const handler = async (req, res) => {
     }
 
     const data = req.body
-    const { title, description, name } = data
+    const { title, description, name, coverId } = data
 
     const client = await connectToDatabase()
     const db = client.db()
 
-    const result = await db
-      .collection('settings')
-      .updateOne(
-        { type: 'info' },
-        { $set: { title: title, description: description, name: name } },
-        { upsert: true }
-      )
+    const result = await db.collection('settings').updateOne(
+      { type: 'info' },
+      {
+        $set: {
+          title: title,
+          description: description,
+          name: name,
+          coverId: new ObjectID(coverId),
+        },
+      },
+      { upsert: true }
+    )
 
     const settings = await db.collection('settings').find().toArray()
 
@@ -71,6 +77,7 @@ const handler = async (req, res) => {
         logo: _.find(settings, ['type', 'logo']),
         title: _.find(settings, ['type', 'info']).title,
         name: _.find(settings, ['type', 'info']).name,
+        coverId: _.find(settings, ['type', 'info']).coverId,
         description: _.find(settings, ['type', 'info']).description,
       },
     })

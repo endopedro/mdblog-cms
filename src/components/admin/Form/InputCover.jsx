@@ -14,7 +14,7 @@ import {
 import GalleryModal from '../GalleryModal'
 import imageApi from '../../../services/imageApi'
 
-const InputCover = ({ className, name }) => {
+const InputCover = ({ className, name, label = 'Cover image' }) => {
   const theme = useMantineTheme()
   const methods = useFormContext()
   const [opened, setOpened] = useState(false)
@@ -46,7 +46,7 @@ const InputCover = ({ className, name }) => {
   return (
     <>
       <Text className="mb-1" size="sm">
-        Cover image
+        {label}
       </Text>
       <div className={cx('relative', className)}>
         <input type="hidden" {...methods.register(name)} />

@@ -1,7 +1,11 @@
 import React from 'react'
 import { Button, Divider } from '@mantine/core'
 import { useForm, FormProvider } from 'react-hook-form'
-import { InputText, InputTextarea } from '../../components/admin/Form'
+import {
+  InputText,
+  InputTextarea,
+  InputCover,
+} from '../../components/admin/Form'
 
 import LogoImage from './LogoImage'
 
@@ -14,6 +18,7 @@ const SettingsForm = ({ onSubmit, loading, content }) => {
         <input type="hidden" {...methods.register('id')} />
         <LogoImage className="mb-3" image={content.logo} />
         <Divider className="mb-3" variant="dotted" />
+        <InputCover className="mb-3" name="coverId" label="Main cover" />
         <InputText
           className="mb-3"
           name="name"

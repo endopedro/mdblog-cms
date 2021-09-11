@@ -20,4 +20,12 @@ const extractPost = (post) => ({
 
 const extractPosts = (posts) => posts.map((post) => extractPost(post))
 
-export { extractPosts, extractPost }
+const extractSettings = (settings) => ({
+  name: settings.name,
+  title: settings.title,
+  description: settings.description,
+  cover: settings.cover,
+  logo: settings.logo,
+})
+
+export { extractPosts, extractPost, extractSettings }
