@@ -40,4 +40,22 @@ const extractSettings = (settings) => ({
   logo: settings.logo,
 })
 
-export { extractPosts, extractPost, extractSettings, extractPage, extractPages }
+const extractUser = (user) => ({
+  _id: user._id,
+  name: user.name,
+  email: user.email,
+  bio: user.bio,
+  picture: user.picture,
+})
+
+const extractUsers = (users) => users.map((user) => extractUser(user))
+
+export {
+  extractPosts,
+  extractPost,
+  extractSettings,
+  extractPage,
+  extractPages,
+  extractUser,
+  extractUsers,
+}

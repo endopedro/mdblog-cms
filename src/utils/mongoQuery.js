@@ -74,6 +74,8 @@ const settingsQuery = [
   { $unwind: { path: '$cover', preserveNullAndEmptyArrays: true } },
 ]
 
+const usersQuery = (page = 1) => [{ $skip: 10 * (page - 1) }, { $limit: 10 }]
+
 export {
   postsQuery,
   postQuery,
@@ -81,4 +83,5 @@ export {
   settingsQuery,
   pagesQuery,
   pageQuery,
+  usersQuery,
 }

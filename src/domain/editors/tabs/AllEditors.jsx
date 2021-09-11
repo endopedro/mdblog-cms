@@ -29,37 +29,40 @@ const AllEditorsTab = () => {
                 ?.filter((editor) =>
                   editor.name.toLowerCase().includes(search.toLowerCase())
                 )
-                .map((editor) => (
-                  <Link href={`/editors/${editor._id}`} key={editor._id}>
-                    <tr className="cursor-pointer">
-                      <td>{editor.name}</td>
-                      <td className="hidden md:table-cell">{editor.email}</td>
-                      <td>
-                        <div className="flex">
-                          <ActionIcon
-                            color="red"
-                            radius="lg"
-                            className="md:mr-2 float-left"
-                            onClick={async (e) => {
-                              e.stopPropagation()
-                              deleteItem(editor._id)
-                            }}
-                          >
-                            <RiDeleteBin5Line className="text-red-400" />
-                          </ActionIcon>
-                          <ActionIcon
-                            radius="lg"
-                            color="blue"
-                            onClick={(e) => e.stopPropagation()}
-                            className="float-left"
-                          >
-                            <RiEyeLine />
-                          </ActionIcon>
-                        </div>
-                      </td>
-                    </tr>
-                  </Link>
-                ))}
+                .map((editor) => {
+                  console.log(editor)
+                  return (
+                    <Link href={`/editors/${editor._id}`} key={editor._id}>
+                      <tr className="cursor-pointer">
+                        <td>{editor.name}</td>
+                        <td className="hidden md:table-cell">{editor.email}</td>
+                        <td>
+                          <div className="flex">
+                            <ActionIcon
+                              color="red"
+                              radius="lg"
+                              className="md:mr-2 float-left"
+                              onClick={async (e) => {
+                                e.stopPropagation()
+                                deleteItem(editor._id)
+                              }}
+                            >
+                              <RiDeleteBin5Line className="text-red-400" />
+                            </ActionIcon>
+                            <ActionIcon
+                              radius="lg"
+                              color="blue"
+                              onClick={(e) => e.stopPropagation()}
+                              className="float-left"
+                            >
+                              <RiEyeLine />
+                            </ActionIcon>
+                          </div>
+                        </td>
+                      </tr>
+                    </Link>
+                  )
+                })}
             </tbody>
           </Table>
         )}

@@ -101,7 +101,7 @@ const handler = async (req, res) => {
     if (avatar) {
       const user = await db
         .collection('users')
-        .findOne({ _id: new ObjectID(session.user.id) })
+        .findOne({ _id: new ObjectID(session.user._id) })
 
       if (user.picture) cloudinaryDestroy(user.picture.public_id)
 

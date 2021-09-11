@@ -14,7 +14,7 @@ const Profile = () => {
   useEffect(async () => {
     if (session) {
       userApi()
-        .getUser(session.user.id)
+        .getUser(session.user._id)
         .then(({ data }) => setUser(data.result))
         .catch(() => null)
     }
