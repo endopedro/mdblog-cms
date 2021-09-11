@@ -7,7 +7,11 @@ import { data } from '../../../states/session'
 const NavItem = ({ item, page, sm }) => {
   const session = data.use()
 
-  if (!session?.user.super && item.super && !process.env.DEMONSTRATION)
+  if (
+    !session?.user.super &&
+    item.super &&
+    process.env.DEMONSTRATION !== 'true'
+  )
     return <></>
 
   return (

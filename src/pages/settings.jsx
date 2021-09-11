@@ -21,7 +21,7 @@ const Profile = () => {
     }
   }, [session])
 
-  if (process.env.DEMONSTRATION)
+  if (process.env.DEMONSTRATION === 'true')
     settingsApi()
       .getSettings()
       .then(({ data }) => setSettings(data.result))

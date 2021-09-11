@@ -15,7 +15,7 @@ const Guard = ({ withSession, children }) => {
       .finally(() => setIsLoading(false))
   }, [])
 
-  if (process.env.DEMONSTRATION) {
+  if (process.env.DEMONSTRATION === 'true') {
     return <>{children}</>
   }
 
