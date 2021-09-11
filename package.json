@@ -24,7 +24,7 @@
     "lodash": "^4.17.21",
     "mongodb": "^3.6.9",
     "next": "10.2.3",
-    "next-auth": "^3.25.0",
+    "next-auth": "^3.29.0",
     "node-mailjet": "^3.3.4",
     "nprogress": "^0.2.0",
     "postcss": "^8.3.0",

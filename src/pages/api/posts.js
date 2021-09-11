@@ -5,7 +5,7 @@ import { ObjectID } from 'mongodb'
 import { connectToDatabase } from '../../utils/db'
 import { extractPosts, extractPost } from '../../utils/extractors'
 import { postsQuery, postQuery, relatedQuery } from '../../utils/mongoQuery'
-import initMiddleware from '../../utils/initMiddleware,js'
+import initMiddleware from '../../utils/initMiddleware.js'
 
 const cors = Cors({ methods: ['GET', 'HEAD'] })
 
@@ -61,16 +61,16 @@ const handler = async (req, res) => {
   }
 
   if (req.method === 'POST') {
-    const session = await getSession({ req: req })
+    const session = await getSession({ req })
     if (!session) {
       res.status(401).json({ message: 'Not Authenticated.' })
       return
     }
 
     const data = req.body
-    const { title, slug, category, tags, content, coverId, excerpt } = data
+    const { title, slug, categoryId, tags, content, coverId, excerpt } = data
 
-    if (!title || !slug || !category) {
+    if (!title || !slug || !categoryId) {
       res.status(422).json({ message: 'Incomplete information.' })
       return
     }
@@ -93,7 +93,7 @@ const handler = async (req, res) => {
     const result = await db.collection('posts').insertOne({
       title: title,
       slug: slug,
-      categoryId: new ObjectID(category),
+      categoryId: new ObjectID(categoryId),
       tags: tags,
       content: content,
       excerpt: excerpt,
@@ -114,9 +114,10 @@ const handler = async (req, res) => {
     }
 
     const data = req.body
-    const { _id, title, slug, category, tags, content, coverId, excerpt } = data
+    const { _id, title, slug, categoryId, tags, content, coverId, excerpt } =
+      data
 
-    if (!title || !slug || !category) {
+    if (!title || !slug || !categoryId) {
       res.status(422).json({ message: 'Incomplete information.' })
       return
     }
@@ -140,7 +141,7 @@ const handler = async (req, res) => {
         $set: {
           title: title,
           slug: slug,
-          categoryId: new ObjectID(category),
+          categoryId: new ObjectID(categoryId),
           tags: tags,
           content: content,
           excerpt: excerpt,

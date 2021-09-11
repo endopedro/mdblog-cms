@@ -5,7 +5,7 @@ axios.defaults.paramsSerializer = (params) =>
   qs.stringify(params, { arrayFormat: 'brackets' })
 
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: `${process.env.NEXT_PUBLIC_SITE_URL}/api`,
 })
 
 // api.interceptors.request.use((config) => {
