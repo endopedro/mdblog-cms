@@ -7,7 +7,6 @@ import { postsQuery, postQuery, relatedQuery } from '../../utils/mongoQuery'
 
 const handler = async (req, res) => {
   if (req.method === 'GET') {
-    res.header('Access-Control-Allow-Origin', '*')
     const { slug, page, related } = req.query
     const client = await connectToDatabase()
     const db = client.db()
