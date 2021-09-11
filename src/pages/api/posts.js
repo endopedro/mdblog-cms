@@ -3,23 +3,15 @@ import { getSession } from 'next-auth/client'
 import { ObjectID } from 'mongodb'
 
 import { extractPosts, extractPost } from '../../utils/extractors'
-import { postsQuery, postQuery } from '../../utils/mongoQuery'
+import { postsQuery, postQuery, relatedQuery } from '../../utils/mongoQuery'
 
 const handler = async (req, res) => {
   if (req.method === 'GET') {
-    const { slug, page } = req.query
+    const { slug, page, related } = req.query
     const client = await connectToDatabase()
     const db = client.db()
 
-    if (!slug) {
-      const posts = await db.collection('posts')
-      const postsCount = await posts.count()
-      res.status(200).json({
-        result: extractPosts(await posts.aggregate(postsQuery(page)).toArray()),
-        total: postsCount,
-        pages: Math.ceil(postsCount / 10),
-      })
-    } else {
+    if (slug) {
       const post = await db
         .collection('posts')
         .aggregate(postQuery(slug))
@@ -32,7 +24,32 @@ const handler = async (req, res) => {
       }
 
       res.status(200).json({ result: extractPost(post[0]) })
+      client.close()
+      return
     }
+
+    if (related) {
+      const post = await db
+        .collection('posts')
+        .findOne({ _id: new ObjectID(related) })
+
+      const relatedPosts = await db
+        .collection('posts')
+        .aggregate(relatedQuery(post))
+        .toArray()
+
+      res.status(200).json({ result: extractPosts(relatedPosts) })
+      client.close()
+      return
+    }
+
+    const posts = await db.collection('posts')
+    const postsCount = await posts.count()
+    res.status(200).json({
+      result: extractPosts(await posts.aggregate(postsQuery(page)).toArray()),
+      total: postsCount,
+      pages: Math.ceil(postsCount / 10),
+    })
 
     client.close()
   }

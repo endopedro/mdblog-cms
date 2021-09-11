@@ -1,6 +1,4 @@
-const postsQuery = (page = 1) => [
-  { $skip: 10 * (page - 1) },
-  { $limit: 10 },
+const basePostQuery = [
   {
     $lookup: {
       from: 'users',
@@ -30,6 +28,18 @@ const postsQuery = (page = 1) => [
   { $unwind: { path: '$category', preserveNullAndEmptyArrays: true } },
 ]
 
+const postsQuery = (page = 1) => [
+  { $skip: 10 * (page - 1) },
+  { $limit: 10 },
+  ...basePostQuery,
+]
+
 const postQuery = (slug) => [{ $match: { slug: slug } }, ...postsQuery()]
 
-export { postsQuery, postQuery }
+const relatedQuery = (post) => [
+  { $match: { tags: { $in: post.tags }, _id: { $ne: post._id } } },
+  { $limit: 4 },
+  ...basePostQuery,
+]
+
+export { postsQuery, postQuery, relatedQuery }
