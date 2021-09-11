@@ -16,6 +16,13 @@ const SettingsForm = ({ onSubmit, loading, content }) => {
         <Divider className="mb-3" variant="dotted" />
         <InputText
           className="mb-3"
+          name="name"
+          disabled={loading}
+          maxLength="50"
+          label="Site name"
+        />
+        <InputText
+          className="mb-3"
           name="title"
           disabled={loading}
           maxLength="50"
