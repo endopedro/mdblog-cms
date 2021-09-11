@@ -1,28 +1,22 @@
-import { connectToDatabase } from '../../utils/db'
+import Cors from 'cors'
 import { getSession } from 'next-auth/client'
 import { ObjectID } from 'mongodb'
 
+import { connectToDatabase } from '../../utils/db'
+import initMiddleware from '../../utils/initMiddleware.js'
+import { categoriesQuery } from '../../utils/mongoQuery'
+
+const cors = Cors({ methods: ['GET', 'HEAD'] })
+
 const handler = async (req, res) => {
+  await initMiddleware(req, res, cors)
+
   if (req.method === 'GET') {
     const { _id, page } = req.query
     const client = await connectToDatabase()
     const db = client.db()
 
-    if (!_id) {
-      const categories = await db.collection('categories').find()
-      if (page) {
-        res.status(200).json({
-          result: await categories
-            .skip(10 * (page - 1))
-            .limit(10)
-            .toArray(),
-          total: await categories.count(),
-          pages: Math.ceil((await categories.count()) / 10),
-        })
-      } else {
-        res.status(200).json({ result: await categories.toArray() })
-      }
-    } else {
+    if (_id) {
       const category = await db
         .collection('categories')
         .findOne({ _id: new ObjectID(_id) })
@@ -34,7 +28,25 @@ const handler = async (req, res) => {
       }
 
       res.status(200).json({ result: category })
+      client.close()
+      return
     }
+
+    const categories = await db.collection('categories')
+
+    if (page) {
+      const categoriesCount = await categories.count()
+      res.status(200).json({
+        result: await categories.aggregate(categoriesQuery(page)).toArray(),
+        total: categoriesCount,
+        pages: Math.ceil(categoriesCount / 10),
+      })
+
+      client.close()
+      return
+    }
+
+    res.status(200).json({ result: await categories.find().toArray() })
 
     client.close()
   }

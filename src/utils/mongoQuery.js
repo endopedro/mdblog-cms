@@ -62,6 +62,11 @@ const pagesQuery = (page = 1) => [
 
 const pageQuery = (slug) => [{ $match: { slug: slug } }, ...pagesQuery()]
 
+const categoriesQuery = (page = 1) => [
+  { $skip: 10 * (page - 1) },
+  { $limit: 10 },
+]
+
 const settingsQuery = [
   {
     $lookup: {
@@ -84,4 +89,5 @@ export {
   pagesQuery,
   pageQuery,
   usersQuery,
+  categoriesQuery,
 }
