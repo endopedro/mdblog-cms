@@ -17,7 +17,7 @@ import categoryApi from '../../services/categoryApi'
 const schema = yup.object().shape({
   title: yup.string().required('Enter a title').min(3, 'Type at least 3 chars'),
   slug: yup.string().required('Enter a slug').min(3, 'Type at least 3 chars'),
-  category: yup.string().required('Pick a category'),
+  categoryId: yup.string().required('Pick a category'),
 })
 
 const PostForm = ({ onSubmit, loading, content }) => {
@@ -34,8 +34,8 @@ const PostForm = ({ onSubmit, loading, content }) => {
     resolver: yupResolver(schema),
     defaultValues: {
       ...content,
-      categoryId: content.category._id,
-      coverId: content.cover._id,
+      categoryId: content?.category._id,
+      coverId: content?.cover._id,
     },
   })
 
