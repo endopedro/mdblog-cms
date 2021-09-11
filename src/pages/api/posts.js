@@ -1,11 +1,17 @@
-import { connectToDatabase } from '../../utils/db'
+import Cors from 'cors'
 import { getSession } from 'next-auth/client'
 import { ObjectID } from 'mongodb'
 
+import { connectToDatabase } from '../../utils/db'
 import { extractPosts, extractPost } from '../../utils/extractors'
 import { postsQuery, postQuery, relatedQuery } from '../../utils/mongoQuery'
+import initMiddleware from '../../utils/initMiddleware,js'
+
+const cors = Cors({ methods: ['GET', 'HEAD'] })
 
 const handler = async (req, res) => {
+  await initMiddleware(req, res, cors)
+
   if (req.method === 'GET') {
     const { slug, page, related } = req.query
     const client = await connectToDatabase()
