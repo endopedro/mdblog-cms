@@ -56,7 +56,7 @@ const Login = () => {
       password: data.password,
     })
     setLoading(false)
-    notify(!result.erro)
+    notify(!result.error)
     if (!result.error) router.replace('/')
   }
 
