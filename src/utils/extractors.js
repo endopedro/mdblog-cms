@@ -20,6 +20,18 @@ const extractPost = (post) => ({
 
 const extractPosts = (posts) => posts.map((post) => extractPost(post))
 
+const extractPage = (page) => ({
+  _id: page._id,
+  title: page.title,
+  slug: page.slug,
+  content: page.content,
+  createdAt: page.createdAt,
+  updatedAt: page.updatedAt,
+  cover: page.cover,
+})
+
+const extractPages = (pages) => pages.map((page) => extractPage(page))
+
 const extractSettings = (settings) => ({
   name: settings.name,
   title: settings.title,
@@ -28,4 +40,4 @@ const extractSettings = (settings) => ({
   logo: settings.logo,
 })
 
-export { extractPosts, extractPost, extractSettings }
+export { extractPosts, extractPost, extractSettings, extractPage, extractPages }

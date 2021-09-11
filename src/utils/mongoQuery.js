@@ -28,6 +28,18 @@ const basePostQuery = [
   { $unwind: { path: '$category', preserveNullAndEmptyArrays: true } },
 ]
 
+const basePageQuery = [
+  {
+    $lookup: {
+      from: 'images',
+      localField: 'coverId',
+      foreignField: '_id',
+      as: 'cover',
+    },
+  },
+  { $unwind: { path: '$cover', preserveNullAndEmptyArrays: true } },
+]
+
 const postsQuery = (page = 1) => [
   { $skip: 10 * (page - 1) },
   { $limit: 10 },
@@ -42,6 +54,14 @@ const relatedQuery = (post) => [
   ...basePostQuery,
 ]
 
+const pagesQuery = (page = 1) => [
+  { $skip: 10 * (page - 1) },
+  { $limit: 10 },
+  ...basePageQuery,
+]
+
+const pageQuery = (slug) => [{ $match: { slug: slug } }, ...pagesQuery()]
+
 const settingsQuery = [
   {
     $lookup: {
@@ -54,4 +74,11 @@ const settingsQuery = [
   { $unwind: { path: '$cover', preserveNullAndEmptyArrays: true } },
 ]
 
-export { postsQuery, postQuery, relatedQuery, settingsQuery }
+export {
+  postsQuery,
+  postQuery,
+  relatedQuery,
+  settingsQuery,
+  pagesQuery,
+  pageQuery,
+}

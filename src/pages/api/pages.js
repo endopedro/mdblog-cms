@@ -1,38 +1,46 @@
-import { connectToDatabase } from '../../utils/db'
+import Cors from 'cors'
 import { getSession } from 'next-auth/client'
 import { ObjectID } from 'mongodb'
 
+import { pagesQuery, pageQuery } from '../../utils/mongoQuery'
+import { connectToDatabase } from '../../utils/db'
+import { extractPages, extractPage } from '../../utils/extractors'
+import initMiddleware from '../../utils/initMiddleware.js'
+
+const cors = Cors({ methods: ['GET', 'HEAD'] })
+
 const handler = async (req, res) => {
+  await initMiddleware(req, res, cors)
+
   if (req.method === 'GET') {
     const { slug, page } = req.query
     const client = await connectToDatabase()
     const db = client.db()
 
-    if (!slug) {
-      const pages = await db.collection('pages').find()
-      if (page) {
-        res.status(200).json({
-          result: await pages
-            .skip(10 * (page - 1))
-            .limit(10)
-            .toArray(),
-          total: await pages.count(),
-          pages: Math.ceil((await pages.count()) / 10),
-        })
-      } else {
-        res.status(200).json({ result: await pages.toArray() })
-      }
-    } else {
-      const pageObj = await db.collection('pages').findOne({ slug: slug })
+    if (slug) {
+      const pageObj = await db
+        .collection('pages')
+        .aggregate(pageQuery(slug))
+        .toArray()
 
-      if (!pageObj) {
-        res.status(404).json({ message: 'Post not found.' })
+      if (!pageObj.length) {
+        res.status(404).json({ message: 'Page not found.' })
         client.close()
         return
       }
 
-      res.status(200).json({ result: pageObj })
+      res.status(200).json({ result: extractPage(pageObj[0]) })
+      client.close()
+      return
     }
+
+    const pages = await db.collection('pages')
+    const pagesCount = await pages.count()
+    res.status(200).json({
+      result: extractPages(await pages.aggregate(pagesQuery(page)).toArray()),
+      total: pagesCount,
+      pages: Math.ceil(pagesCount / 10),
+    })
 
     client.close()
   }

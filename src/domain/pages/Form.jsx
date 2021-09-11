@@ -17,7 +17,10 @@ const schema = yup.object().shape({
 const PageForm = ({ onSubmit, loading, content }) => {
   const methods = useForm({
     resolver: yupResolver(schema),
-    defaultValues: content,
+    defaultValues: {
+      ...content,
+      coverId: content?.cover._id,
+    },
   })
 
   return (
