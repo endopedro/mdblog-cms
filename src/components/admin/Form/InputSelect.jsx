@@ -12,7 +12,7 @@ const InputSelect = ({ name, ...rest }) => {
       radius="md"
       label={capitalize(name)}
       value={methods.getValues(name)}
-      onChange={(e) => methods.setValue('category', e)}
+      onChange={(e) => methods.setValue(name, e)}
       error={methods.formState.errors?.[name]?.message}
       {...rest}
     />
