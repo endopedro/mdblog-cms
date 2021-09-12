@@ -42,6 +42,7 @@ const extractSettings = (settings) => ({
 
 const extractUser = (user) => ({
   _id: user._id,
+  username: user.username,
   name: user.name,
   email: user.email,
   bio: user.bio,

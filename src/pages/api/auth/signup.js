@@ -4,9 +4,9 @@ import { hashPassword, extractUser } from '../../../utils/auth'
 const handler = async (req, res) => {
   if (req.method === 'POST') {
     const data = req.body
-    const { name, email, password, confirm_password } = data
+    const { name, email, username, password, confirm_password } = data
 
-    if (!name || !email || !password || !confirm_password)
+    if (!name || !email || !password || !confirm_password || !username)
       res.status(422).json({ message: 'Incomplete information.' })
 
     if (password != confirm_password)
@@ -15,10 +15,21 @@ const handler = async (req, res) => {
     const client = await connectToDatabase()
     const db = client.db()
 
-    const existingUser = await db.collection('users').findOne({ email: email })
+    const existingUserEmail = await db
+      .collection('users')
+      .findOne({ email: email })
+    const existingUserUsername = await db
+      .collection('users')
+      .findOne({ username: username })
 
-    if (existingUser) {
-      res.status(422).json({ message: 'Email already been taken.' })
+    if (existingUserEmail || existingUserUsername) {
+      res
+        .status(422)
+        .json({
+          message: `${
+            existingUserEmail ? 'Email' : 'Username'
+          } already been taken.`,
+        })
       client.close()
       return
     }
@@ -28,6 +39,7 @@ const handler = async (req, res) => {
     const result = await db.collection('users').insertOne({
       name: name,
       email: email,
+      username: username,
       password: hashedPassword,
       super: true,
     })

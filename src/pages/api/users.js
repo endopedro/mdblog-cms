@@ -14,7 +14,7 @@ const handler = async (req, res) => {
   await initMiddleware(req, res, cors)
 
   if (req.method === 'GET') {
-    const { _id, page, main_user } = req.query
+    const { _id, page, main_user, username } = req.query
     const client = await connectToDatabase()
     const db = client.db()
 
@@ -22,6 +22,20 @@ const handler = async (req, res) => {
       const user = await db
         .collection('users')
         .findOne({ _id: new ObjectID(_id) })
+
+      if (!user) {
+        res.status(404).json({ message: 'User not found.' })
+        client.close()
+        return
+      }
+
+      res.status(200).json({ result: extractUser(user) })
+      client.close()
+      return
+    }
+
+    if (username) {
+      const user = await db.collection('users').findOne({ username: username })
 
       if (!user) {
         res.status(404).json({ message: 'User not found.' })
@@ -72,9 +86,9 @@ const handler = async (req, res) => {
     }
 
     const data = req.body
-    const { name, email, password } = data
+    const { name, email, password, username } = data
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !username) {
       res.status(422).json({ message: 'Incomplete information.' })
       return
     }
@@ -82,10 +96,19 @@ const handler = async (req, res) => {
     const client = await connectToDatabase()
     const db = client.db()
 
-    const existingEmail = await db.collection('users').findOne({ email: email })
+    const existingUserEmail = await db
+      .collection('users')
+      .findOne({ email: email })
+    const existingUserUsername = await db
+      .collection('users')
+      .findOne({ username: username })
 
-    if (existingEmail) {
-      res.status(422).json({ message: 'Email already registered.' })
+    if (existingUserEmail || existingUserUsername) {
+      res.status(422).json({
+        message: `${
+          existingUserEmail ? 'Email' : 'Username'
+        } already been taken.`,
+      })
       client.close()
       return
     }
@@ -94,6 +117,7 @@ const handler = async (req, res) => {
 
     const result = await db.collection('users').insertOne({
       name: name,
+      username: username,
       email: email,
       password: hashedPassword,
     })
@@ -112,7 +136,16 @@ const handler = async (req, res) => {
     }
 
     const data = req.body
-    const { id, name, email, password, bio, current_password, profile } = data
+    const {
+      id,
+      name,
+      email,
+      password,
+      bio,
+      current_password,
+      profile,
+      username,
+    } = data
 
     if (!id) {
       res.status(422).json({ message: 'Incomplete information.' })
@@ -122,10 +155,19 @@ const handler = async (req, res) => {
     const client = await connectToDatabase()
     const db = client.db()
 
-    const existingEmail = await db.collection('users').findOne({ email: email })
+    const existingUserEmail = await db
+      .collection('users')
+      .findOne({ email: email })
+    const existingUserUsername = await db
+      .collection('users')
+      .findOne({ username: username })
 
-    if (existingEmail && existingEmail._id != id) {
-      res.status(422).json({ message: 'Email already exists.' })
+    if (existingUserEmail || existingUserUsername) {
+      res.status(422).json({
+        message: `${
+          existingUserEmail ? 'Email' : 'Username'
+        } already been taken.`,
+      })
       client.close()
       return
     }
@@ -152,6 +194,7 @@ const handler = async (req, res) => {
         $set: {
           name: name,
           email: email,
+          username: username,
           bio: bio,
           ...(password && { password: hashedPassword }),
         },

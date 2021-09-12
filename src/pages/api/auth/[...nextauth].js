@@ -10,7 +10,6 @@ export default NextAuth({
   },
   callbacks: {
     session: async (session, user) => {
-      console.log(session, user)
       return Promise.resolve({ ...session, user })
     },
     jwt: async (token, user, account, profile, isNewUser) => {
@@ -23,7 +22,7 @@ export default NextAuth({
         const client = await connectToDatabase()
         const usersCollection = client.db().collection('users')
         const user = await usersCollection.findOne({
-          email: credentials.email,
+          username: credentials.username,
         })
 
         if (!user) {

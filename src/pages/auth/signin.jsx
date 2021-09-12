@@ -15,7 +15,7 @@ import * as yup from 'yup'
 import { signIn } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import {
-  RiMailLine,
+  RiAtLine,
   RiLockPasswordLine,
   RiCloseLine,
   RiCheckLine,
@@ -26,7 +26,10 @@ import Layout from '../../components/auth/Layout'
 import { InputText, InputPassword } from '../../components/admin/Form'
 
 const schema = yup.object().shape({
-  email: yup.string().required('Type an e-mail.').email('Type a valid e-mail.'),
+  username: yup
+    .string()
+    .required('Type an username.')
+    .min(3, 'Minimum of 3 characters.'),
   password: yup
     .string()
     .min(6, 'Minimum of 6 characters.')
@@ -52,7 +55,7 @@ const Login = () => {
     setLoading(true)
     const result = await signIn('credentials', {
       redirect: false,
-      email: data.email,
+      username: data.username,
       password: data.password,
     })
     setLoading(false)
@@ -75,13 +78,13 @@ const Login = () => {
             <form onSubmit={methods.handleSubmit(onSubmit)}>
               <div className="mb-5">
                 <InputText
-                  name="email"
-                  placeholder="e-mail"
-                  label="E-mail"
+                  name="username"
+                  placeholder="username"
                   required
+                  maxLength="50"
                   className="mb-3"
+                  icon={<RiAtLine />}
                   disabled={loading}
-                  icon={<RiMailLine />}
                 />
                 <InputPassword
                   className="mb-7"

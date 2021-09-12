@@ -9,13 +9,13 @@ import userApi from '../../services/userApi'
 
 const updatePost = () => {
   const router = useRouter()
-  const { id } = router.query
+  const { username } = router.query
   const [user, setEditor] = useState(null)
 
   useEffect(async () => {
-    if (id) {
+    if (username) {
       userApi()
-        .getUser(id)
+        .getUser(username)
         .then(({ data }) => setEditor(data.result))
         .catch(() => null)
     }

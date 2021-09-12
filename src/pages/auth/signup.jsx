@@ -19,6 +19,7 @@ import {
   RiUserLine,
   RiCloseLine,
   RiCheckLine,
+  RiAtLine,
 } from 'react-icons/ri'
 import { useNotifications } from '@mantine/notifications'
 import { useRouter } from 'next/router'
@@ -31,6 +32,10 @@ const schema = yup.object().shape({
   name: yup
     .string()
     .required('Type your name.')
+    .min(3, 'Minimum of 3 characters.'),
+  username: yup
+    .string()
+    .required('Type an username.')
     .min(3, 'Minimum of 3 characters.'),
   email: yup.string().required('Type an e-mail.').email('Type a valid e-mail.'),
   password: yup
@@ -107,6 +112,15 @@ const SignUp = () => {
                       maxLength="50"
                       className="mb-3"
                       icon={<RiUserLine />}
+                      disabled={loading}
+                    />
+                    <InputText
+                      name="username"
+                      placeholder="username"
+                      required
+                      maxLength="50"
+                      className="mb-3"
+                      icon={<RiAtLine />}
                       disabled={loading}
                     />
                     <InputText

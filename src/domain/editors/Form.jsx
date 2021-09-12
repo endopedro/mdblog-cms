@@ -10,6 +10,10 @@ const schema = yup.object().shape({
     .string()
     .required('Type your name.')
     .min(3, 'Minimum of 3 characters.'),
+  username: yup
+    .string()
+    .required('Type an username.')
+    .min(3, 'Minimum of 3 characters.'),
   email: yup.string().required('Type an e-mail.').email('Type a valid e-mail.'),
   // password: yup
   //   .string()
@@ -30,6 +34,13 @@ const EditorForm = ({ onSubmit, loading, content }) => {
         <InputText
           className="mb-3"
           name="name"
+          required
+          disabled={loading}
+          maxLength="50"
+        />
+        <InputText
+          className="mb-3"
+          name="username"
           required
           disabled={loading}
           maxLength="50"

@@ -30,9 +30,8 @@ const AllEditorsTab = () => {
                   editor.name.toLowerCase().includes(search.toLowerCase())
                 )
                 .map((editor) => {
-                  console.log(editor)
                   return (
-                    <Link href={`/editors/${editor._id}`} key={editor._id}>
+                    <Link href={`/editors/${editor.username}`} key={editor._id}>
                       <tr className="cursor-pointer">
                         <td>{editor.name}</td>
                         <td className="hidden md:table-cell">{editor.email}</td>
