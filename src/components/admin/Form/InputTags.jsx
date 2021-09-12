@@ -34,6 +34,7 @@ const InputTags = ({ name, value, ...rest }) => {
           if (e.key === 'Enter') {
             toggleTags(e.target.value, 'add')
             e.preventDefault()
+            e.target.value = ''
           }
         }}
         {...rest}
