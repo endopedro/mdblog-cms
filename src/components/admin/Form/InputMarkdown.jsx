@@ -5,6 +5,7 @@ import { useFormContext } from 'react-hook-form'
 import { RiImageAddLine } from 'react-icons/ri'
 
 import GalleryModal from '../GalleryModal'
+import mdComponents from '../../../utils/mdComponents'
 
 const InputMarkdown = ({ name, className, ...rest }) => {
   const methods = useFormContext()
@@ -71,7 +72,9 @@ const InputMarkdown = ({ name, className, ...rest }) => {
         selectedTab={selectedTab}
         onTabChange={setSelectedTab}
         generateMarkdownPreview={(markdown) =>
-          Promise.resolve(<ReactMarkdown children={markdown} />)
+          Promise.resolve(
+            <ReactMarkdown components={mdComponents} children={markdown} />
+          )
         }
         childProps={{ writeButton: { tabIndex: -1 } }}
         // paste={{ saveImage: save }}
