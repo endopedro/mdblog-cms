@@ -1,7 +1,9 @@
-import { connectToDatabase } from '../../utils/db'
 import { getSession } from 'next-auth/client'
 import { ObjectID } from 'mongodb'
+
+import { connectToDatabase } from '../../utils/db'
 import { cloudinaryUpload, cloudinaryDestroy } from '../../utils/cloudinary'
+import { imagesQuery } from '../../utils/mongoQuery'
 
 const handler = async (req, res) => {
   if (req.method === 'GET') {
@@ -9,21 +11,7 @@ const handler = async (req, res) => {
     const client = await connectToDatabase()
     const db = client.db()
 
-    if (!_id) {
-      const images = await db.collection('images').find()
-      if (page) {
-        res.status(200).json({
-          result: await images
-            .skip(10 * (page - 1))
-            .limit(10)
-            .toArray(),
-          total: await images.count(),
-          pages: Math.ceil((await images.count()) / 10),
-        })
-      } else {
-        res.status(200).json({ result: await images.toArray() })
-      }
-    } else {
+    if (_id) {
       const image = await db
         .collection('images')
         .findOne({ _id: new ObjectID(_id) })
@@ -35,7 +23,17 @@ const handler = async (req, res) => {
       }
 
       res.status(200).json({ result: image })
+      client.close()
+      return
     }
+
+    const images = await db.collection('images')
+    const imagesCount = await images.count()
+    res.status(200).json({
+      result: await images.aggregate(imagesQuery(page)).toArray(),
+      total: imagesCount,
+      pages: Math.ceil(imagesCount / 10),
+    })
 
     client.close()
   }

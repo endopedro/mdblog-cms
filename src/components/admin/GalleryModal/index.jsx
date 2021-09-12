@@ -4,13 +4,24 @@ import Gallery from './Gallery'
 import { useNotifications } from '@mantine/notifications'
 import { RiCloseLine, RiCheckLine } from 'react-icons/ri'
 
+import {
+  data,
+  nPages,
+  nImages,
+  setImages,
+  setTotalImages,
+  setTotalPages,
+} from '../../../states/images'
 import DropZone from '../Dropzone'
 import imageApi from '../../../services/imageApi'
 
 const GalleryModal = ({ opened, setOpened, onSelect, onDelete }) => {
-  const [images, setImages] = useState(null)
-  const [totalPages, setTotalPages] = useState(1)
-  const [totalImages, setTotalImages] = useState(0)
+  const images = data.use()
+  const totalPages = nPages.use()
+  const totalImages = nImages.use()
+  // const [images, setImages] = useState(null)
+  // const [totalPages, setTotalPages] = useState(1)
+  // const [totalImages, setTotalImages] = useState(0)
   const [loading, setLoading] = useState(false)
   const notifications = useNotifications()
 
@@ -63,11 +74,11 @@ const GalleryModal = ({ opened, setOpened, onSelect, onDelete }) => {
         setTotalImages((prevState) => prevState + 1)
         notify(true, 'Image uploaded')
       })
-      .catch(({ response }) => notify(false, response.data.message))
+      .catch(({ response }) => notify(false, response?.data.message))
       .finally(() => setLoading(false))
   }
 
-  useEffect(async () => await fetchImages(1), [])
+  // useEffect(async () => await fetchImages(1), [])
 
   return (
     <Modal
@@ -85,6 +96,7 @@ const GalleryModal = ({ opened, setOpened, onSelect, onDelete }) => {
         totalPages={totalPages}
         deleteImage={deleteImage}
         onSelect={onSelect}
+        fetchImages={fetchImages}
       />
       <DropZone onDrop={createImage} />
     </Modal>

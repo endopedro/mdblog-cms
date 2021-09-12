@@ -9,17 +9,24 @@ const Gallery = ({
   totalImages,
   deleteImage,
   onSelect,
+  fetchImages,
 }) => {
   return (
     <>
       {images ? (
         <InfiniteScroll
+          className="relative"
           pageStart={1}
           loadMore={async (page) => {
-            if (page <= totalPages) await fetchResource(page)
+            if (page <= totalPages) await fetchImages(page)
           }}
           hasMore={images.length < totalImages}
-          loader={<Loader className="mx-auto" />}
+          loader={
+            <Loader
+              variant="dots"
+              className="absolute -bottom-3 right-1/2 transform translate-x-1/2"
+            />
+          }
         >
           <div className="grid grid-cols-3 gap-4 mb-5 pr-2 max-h-80 overflow-y-auto">
             {images.map((image) => (

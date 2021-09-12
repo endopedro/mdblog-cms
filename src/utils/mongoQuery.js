@@ -67,6 +67,12 @@ const categoriesQuery = (page = 1) => [
   { $limit: 10 },
 ]
 
+const imagesQuery = (page = 1) => [
+  { $sort: { _id: -1 } },
+  { $skip: 10 * (page - 1) },
+  { $limit: 10 },
+]
+
 const settingsQuery = [
   {
     $lookup: {
@@ -90,4 +96,5 @@ export {
   pageQuery,
   usersQuery,
   categoriesQuery,
+  imagesQuery,
 }
