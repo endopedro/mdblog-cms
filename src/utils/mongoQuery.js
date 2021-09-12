@@ -41,6 +41,7 @@ const basePageQuery = [
 ]
 
 const postsQuery = (page = 1) => [
+  { $sort: { _id: -1 } },
   { $skip: 10 * (page - 1) },
   { $limit: 10 },
   ...basePostQuery,
