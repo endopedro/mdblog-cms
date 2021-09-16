@@ -37,7 +37,14 @@ const handler = async (req, res) => {
       .aggregate(settingsQuery)
       .toArray()
 
-    res.status(200).json({ result: extractSettings(settings[0]) })
+    const pages = await db
+      .collection('pages')
+      .aggregate([{ $project: { slug: 1 } }])
+      .toArray()
+
+    res
+      .status(200)
+      .json({ result: { ...extractSettings(settings[0]), pages: pages } })
 
     client.close()
   }
