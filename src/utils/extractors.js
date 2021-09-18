@@ -9,13 +9,7 @@ const extractPost = (post) => ({
   cover: post.cover,
   excerpt: post.excerpt,
   category: post.category,
-  author: {
-    _id: post.author._id,
-    name: post.author.name,
-    email: post.author.email,
-    bio: post.author.bio,
-    picture: post.author.picture,
-  },
+  author: extractUser(post.author),
 })
 
 const extractPosts = (posts) => posts.map((post) => extractPost(post))
