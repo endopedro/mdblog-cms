@@ -40,14 +40,15 @@ const basePageQuery = [
   { $unwind: { path: '$cover', preserveNullAndEmptyArrays: true } },
 ]
 
-const postsQuery = (page = 1) => [
+const postsQuery = (page = 1, filter = {}) => [
   { $sort: { _id: -1 } },
+  { $match: filter },
   { $skip: 10 * (page - 1) },
   { $limit: 10 },
   ...basePostQuery,
 ]
 
-const postQuery = (slug) => [{ $match: { slug: slug } }, ...postsQuery()]
+const postQuery = (slug) => [...postsQuery(), { $match: { slug: slug } }]
 
 const relatedQuery = (post) => [
   { $match: { tags: { $in: post.tags }, _id: { $ne: post._id } } },

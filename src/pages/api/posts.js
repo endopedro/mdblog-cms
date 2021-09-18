@@ -13,7 +13,7 @@ const handler = async (req, res) => {
   await initMiddleware(req, res, cors)
 
   if (req.method === 'GET') {
-    const { slug, page, related } = req.query
+    const { slug, page, related, author, search, category } = req.query
     const client = await connectToDatabase()
     const db = client.db()
 
@@ -49,12 +49,36 @@ const handler = async (req, res) => {
       return
     }
 
+    let filter = {}
+    if (author) {
+      const postAuthor = await db
+        .collection('users')
+        .findOne({ username: new RegExp(`^${author}$`, 'i') })
+      filter = { authorId: postAuthor?._id }
+    }
+    if (search) filter = { title: new RegExp(search, 'i') }
+    if (category) {
+      const postCategory = await db
+        .collection('categories')
+        .findOne({ label: new RegExp(`^${category}$`, 'i') })
+      filter = { categoryId: postCategory?._id }
+    }
+
     const posts = await db.collection('posts')
-    const postsCount = await posts.count()
+
+    const filteredPosts = await posts
+      .aggregate(postsQuery(page, filter))
+      .toArray()
+
+    const postsCount = await posts
+      .aggregate([{ $match: filter }, { $count: 'total' }])
+      .toArray()
+      .then((result) => result[0])
+
     res.status(200).json({
-      result: extractPosts(await posts.aggregate(postsQuery(page)).toArray()),
-      total: postsCount,
-      pages: Math.ceil(postsCount / 10),
+      result: extractPosts(filteredPosts),
+      total: postsCount ? postsCount.total : 0,
+      pages: postsCount ? Math.ceil(postsCount.total / 10) : 0,
     })
 
     client.close()
