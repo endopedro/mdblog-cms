@@ -56,6 +56,12 @@ const relatedQuery = (post) => [
   ...basePostQuery,
 ]
 
+const latestQuery = () => [
+  { $sort: { _id: -1 } },
+  { $limit: 4 },
+  ...basePostQuery,
+]
+
 const pagesQuery = (page = 1) => [
   { $skip: 10 * (page - 1) },
   { $limit: 10 },
@@ -93,6 +99,7 @@ export {
   postsQuery,
   postQuery,
   relatedQuery,
+  latestQuery,
   settingsQuery,
   pagesQuery,
   pageQuery,

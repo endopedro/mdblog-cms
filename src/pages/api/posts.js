@@ -4,7 +4,12 @@ import { ObjectID } from 'mongodb'
 
 import { connectToDatabase } from '../../utils/db'
 import { extractPosts, extractPost } from '../../utils/extractors'
-import { postsQuery, postQuery, relatedQuery } from '../../utils/mongoQuery'
+import {
+  postsQuery,
+  postQuery,
+  relatedQuery,
+  latestQuery,
+} from '../../utils/mongoQuery'
 import initMiddleware from '../../utils/initMiddleware.js'
 
 const cors = Cors({ methods: ['GET', 'HEAD'] })
@@ -13,7 +18,7 @@ const handler = async (req, res) => {
   await initMiddleware(req, res, cors)
 
   if (req.method === 'GET') {
-    const { slug, page, related, author, search, category } = req.query
+    const { slug, page, related, latest, author, search, category } = req.query
     const client = await connectToDatabase()
     const db = client.db()
 
@@ -45,6 +50,17 @@ const handler = async (req, res) => {
         .toArray()
 
       res.status(200).json({ result: extractPosts(relatedPosts) })
+      client.close()
+      return
+    }
+
+    if (latest) {
+      const latestPosts = await db
+        .collection('posts')
+        .aggregate(latestQuery())
+        .toArray()
+
+      res.status(200).json({ result: extractPosts(latestPosts) })
       client.close()
       return
     }
