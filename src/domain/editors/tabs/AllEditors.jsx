@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { Paper, Table, ActionIcon, LoadingOverlay } from '@mantine/core'
-import { RiDeleteBin5Line, RiEyeLine } from 'react-icons/ri'
+import { Paper, Table, LoadingOverlay } from '@mantine/core'
 
 import { ResourceList } from '../../../components/admin/Resource'
 import SearchPopover from '../../../components/admin/SearchPopover'
+import TableActions from '../../../components/admin/TableActions'
 
 const AllEditorsTab = () => {
   const [search, setSearch] = useState('')
@@ -18,7 +18,7 @@ const AllEditorsTab = () => {
             <thead>
               <tr>
                 <th>Name</th>
-                <th className="hidden md:table-cell">Email</th>
+                <th className="hidden md:table-cell">Username</th>
                 <th>
                   <SearchPopover value={search} setValue={setSearch} />
                 </th>
@@ -34,29 +34,15 @@ const AllEditorsTab = () => {
                     <Link href={`/editors/${editor.username}`} key={editor._id}>
                       <tr className="cursor-pointer">
                         <td>{editor.name}</td>
-                        <td className="hidden md:table-cell">{editor.email}</td>
+                        <td className="hidden md:table-cell">
+                          {editor.username}
+                        </td>
                         <td>
-                          <div className="flex">
-                            <ActionIcon
-                              color="red"
-                              radius="lg"
-                              className="md:mr-2 float-left"
-                              onClick={async (e) => {
-                                e.stopPropagation()
-                                deleteItem(editor._id)
-                              }}
-                            >
-                              <RiDeleteBin5Line className="text-red-400" />
-                            </ActionIcon>
-                            <ActionIcon
-                              radius="lg"
-                              color="blue"
-                              onClick={(e) => e.stopPropagation()}
-                              className="float-left"
-                            >
-                              <RiEyeLine />
-                            </ActionIcon>
-                          </div>
+                          <td className="truncate">
+                            <TableActions
+                              onDelete={() => deleteItem(editor._id)}
+                            />
+                          </td>
                         </td>
                       </tr>
                     </Link>

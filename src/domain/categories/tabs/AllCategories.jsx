@@ -5,6 +5,7 @@ import { RiDeleteBin5Line, RiEdit2Line } from 'react-icons/ri'
 import EditModal from '../EditModal'
 import { ResourceList } from '../../../components/admin/Resource'
 import SearchPopover from '../../../components/admin/SearchPopover'
+import TableActions from '../../../components/admin/TableActions'
 
 const AllCategoriesTab = () => {
   const [showModal, setShowModal] = useState(false)
@@ -33,28 +34,11 @@ const AllCategoriesTab = () => {
                   .map((category) => (
                     <tr key={category._id}>
                       <td>{category.label}</td>
-                      <td className="flex">
-                        <ActionIcon
-                          color="red"
-                          radius="lg"
-                          className="mr-2"
-                          onClick={async (e) => {
-                            e.stopPropagation()
-                            deleteItem(category._id)
-                          }}
-                        >
-                          <RiDeleteBin5Line className="text-red-400" />
-                        </ActionIcon>
-                        <ActionIcon
-                          radius="lg"
-                          color="blue"
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            setShowModal(category)
-                          }}
-                        >
-                          <RiEdit2Line />
-                        </ActionIcon>
+                      <td className="truncate">
+                        <TableActions
+                          onDelete={() => deleteItem(category._id)}
+                          onEdit={() => setShowModal(category)}
+                        />
                       </td>
                     </tr>
                   ))}
