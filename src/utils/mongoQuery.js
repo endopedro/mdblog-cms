@@ -48,7 +48,7 @@ const postsQuery = (page = 1, filter = {}) => [
   ...basePostQuery,
 ]
 
-const postQuery = (slug) => [...postsQuery(), { $match: { slug: slug } }]
+const postQuery = (slug) => [...basePostQuery, { $match: { slug: slug } }]
 
 const relatedQuery = (post) => [
   { $match: { tags: { $in: post.tags }, _id: { $ne: post._id } } },
